@@ -1,0 +1,6 @@
+framework module BZMFrame {
+  umbrella header "BZMFrame-umbrella.h"
+
+  export *
+  module * { export * }
+}

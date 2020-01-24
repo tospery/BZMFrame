@@ -1,0 +1,6 @@
+framework module Pods_BZMFrame_Tests {
+  umbrella header "Pods-BZMFrame_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
