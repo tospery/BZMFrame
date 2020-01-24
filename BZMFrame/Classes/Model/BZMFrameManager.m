@@ -29,19 +29,19 @@
     return _page;
 }
 
-- (UIImage *)loadingImage {
-    if (!_loadingImage) {
-        _loadingImage = BZMImageBundle(@"bzm_loading");
-    }
-    return _loadingImage;
-}
-
-- (UIImage *)waitingImage {
-    if (!_waitingImage) {
-        _waitingImage = BZMImageBundle(@"bzm_waiting");
-    }
-    return _waitingImage;
-}
+//- (UIImage *)loadingImage {
+//    if (!_loadingImage) {
+//        _loadingImage = BZMImageBundle(@"loading");
+//    }
+//    return _loadingImage;
+//}
+//
+//- (UIImage *)waitingImage {
+//    if (!_waitingImage) {
+//        _waitingImage = BZMImageBundle(@"waiting");
+//    }
+//    return _waitingImage;
+//}
 
 + (instancetype)share {
     static id instance;

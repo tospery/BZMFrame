@@ -163,8 +163,12 @@
 - (void)endRefresh {
     self.viewModel.requestMode = BZMRequestModeNone;
     [self.scrollView.mj_header endRefreshing];
-    if (self.viewModel.shouldScrollToMore && !self.viewModel.hasMoreData) {
-        [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+    if (self.viewModel.shouldScrollToMore) {
+        if (self.viewModel.hasMoreData) {
+            [self.scrollView.mj_footer resetNoMoreData];
+        } else {
+            [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+        }
     }
 }
 
@@ -205,14 +209,34 @@
     }
 }
 
-- (void)handleError:(NSError *)error {
-    [super handleError:error];
+- (BOOL)handleError {
+    if (!self.viewModel.error) {
+        return NO;
+    }
     
-//    BOOL canFilter = YES;
-//    BOOL needReload = YES;
-    switch (self.viewModel.requestMode) {
+    BOOL handled = YES;
+    BZMRequestMode requestMode = self.viewModel.requestMode;
+    self.viewModel.requestMode = BZMRequestModeNone;
+    
+    switch (requestMode) {
+        case BZMRequestModeNone: {
+            [self triggerLoad];
+            break;
+        }
+        case BZMRequestModeLoad: {
+            [self reloadData];
+            break;
+        }
         case BZMRequestModeRefresh: {
             [self.scrollView.mj_header endRefreshing];
+            [self setupRefresh:NO];
+            [self setupMore:NO];
+            self.viewModel.dataSource = nil;
+            break;
+        }
+        case BZMRequestModeMore: {
+            handled = NO;
+            [self.scrollView.mj_footer endRefreshing];
             break;
         }
             //        case BZMRequestModeMore: {
@@ -228,9 +252,13 @@
             //            [BZMDialog hideHUD];
             //            break;
             //        }
-        default:
+        default: {
+            handled = NO;
             break;
+        }
     }
+    
+    
     
     //    if (BZMErrorCodeExpired == error.code) {
     //        notFilter = NO;
@@ -249,6 +277,8 @@
     //    if (nedUpdate) {
     //        self.dataSource = nil;
     //    }
+    
+    return handled;
 }
 
 - (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths {
@@ -287,7 +317,25 @@
     //        [self triggerLoad];
     //    }
 
-    [self triggerLoad];
+    // [self triggerLoad];
+    
+    [self handleError];
+}
+
+- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view {
+    //    if (TBErrorCodeAppLoginExpired == self.viewModel.error.code) {
+    //        [(TBUser *)[TBUser current] openLoginIfNeed:^(BOOL isRelogin) {
+    //            if (isRelogin) {
+    //                [self triggerLoad];
+    //            }
+    //        } withError:self.viewModel.error];
+    //    }else {
+    //        [self triggerLoad];
+    //    }
+
+    // [self triggerLoad];
+    
+    [self handleError];
 }
 
 #pragma mark - Class

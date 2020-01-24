@@ -242,8 +242,8 @@
     
 }
 
-- (void)handleError:(NSError *)error {
-    
+- (BOOL)handleError {
+    return NO;
 }
 
 #pragma mark QMUICustomNavigationBarTransitionDelegate

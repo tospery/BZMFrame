@@ -27,6 +27,7 @@
 #import "BZMPageMenuIndicatorModel.h"
 #import "BZMPageMenuAnimator.h"
 #import "BZMBaseCommand.h"
+#import "BZMBaseList.h"
 
 #pragma mark - ViewModel
 #import "BZMBaseViewModel.h"

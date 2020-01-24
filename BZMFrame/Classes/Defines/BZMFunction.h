@@ -48,9 +48,9 @@
 #define BZMFontBold(x)                       ([UIFont bzm_bold:(x)])
 #define BZMFontLight(x)                      ([UIFont bzm_light:(x)])
 
-#pragma mark - 字体
-#define BZMImageLoading          (BZMFrameManager.share.loadingImage)
-#define BZMImageWaiting          (BZMFrameManager.share.waitingImage)
+//#pragma mark - 字体
+//#define BZMImageLoading          (BZMFrameManager.share.loadingImage)
+//#define BZMImageWaiting          (BZMFrameManager.share.waitingImage)
 
 #pragma mark - 日志
 #define BZMLog(name, fmt, ...)               QMUILog((name), fmt, ##__VA_ARGS__)

@@ -22,7 +22,7 @@
 
 @protocol BZMBaseViewModelDelegate <NSObject>
 - (void)reloadData;
-- (void)handleError:(NSError *)error;
+- (BOOL)handleError;
 
 @end
 
@@ -57,7 +57,7 @@
 - (id)fetchLocalData;
 - (RACSignal *)requestRemoteDataSignalWithPage:(NSInteger)page;
 - (BOOL (^)(NSError *error))requestRemoteDataErrorsFilter;
-- (BOOL)filterError:(NSError *)error;
+// - (BOOL)filterError;
 // - (void)handleError:(NSError *)error;
 
 @end

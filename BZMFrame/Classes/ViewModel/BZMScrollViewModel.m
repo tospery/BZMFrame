@@ -15,6 +15,7 @@
 #import "NSAttributedString+BZMFrame.h"
 #import "NSError+BZMFrame.h"
 #import "NSDictionary+BZMFrame.h"
+#import "UIImage+BZMFrame.h"
 
 @interface BZMScrollViewModel ()
 
@@ -57,76 +58,76 @@
     return self.page.index + 1;
 }
 
-- (BOOL)filterError:(NSError *)error {
+//- (BOOL)filterError {
+////
+////    switch (self.requestMode) {
+////        case BZMRequestModeLoad:
+////        case BZMRequestModeUpdate: {
+////            break;
+////        }
+////        case BZMRequestModeRefresh: {
+////            [self.scrollView.mj_header endRefreshing];
+////            break;
+////        }
+////        case BZMRequestModeMore: {
+////            if (BZMErrorCodeEmpty == error.code) {
+////                nedUpdate = NO;
+////                [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+////            }else {
+////                [self.scrollView.mj_footer endRefreshing];
+////            }
+////            break;
+////        }
+////        case BZMRequestModeHUD: {
+////            [BZMDialog hideHUD];
+////            break;
+////        }
+////        default:
+////            break;
+////    }
+////
+////    if (BZMErrorCodeExpired == error.code) {
+////        notFilter = NO;
+////
+////        [gUser checkLoginWithFinish:^(BOOL isRelogin) {
+////            if (isRelogin) {
+////                [self triggerLoad];
+////            }
+////        } error:error];
+////    }else if (BZMErrorCodeEmpty == error.code) {
+////        notFilter = NO;
+////    }
+////
+////    self.error = error;
+////    self.requestMode = BZMRequestModeNone;
+////    if (nedUpdate) {
+////        self.dataSource = nil;
+////    }
+////
+////    return notFilter;
+//
+//    BOOL canFilter = YES;
+//    BOOL needUpdate = YES;
+//
+//    //    BZMRequestModeNone,
+//    //    BZMRequestModeLoad,
+//    //    BZMRequestModeUpdate,
+//    //    BZMRequestModeRefresh,
+//    //    BZMRequestModeMore,
+//    //    BZMRequestModeToast
 //
 //    switch (self.requestMode) {
 //        case BZMRequestModeLoad:
-//        case BZMRequestModeUpdate: {
-//            break;
-//        }
 //        case BZMRequestModeRefresh: {
-//            [self.scrollView.mj_header endRefreshing];
-//            break;
-//        }
-//        case BZMRequestModeMore: {
-//            if (BZMErrorCodeEmpty == error.code) {
-//                nedUpdate = NO;
-//                [self.scrollView.mj_footer endRefreshingWithNoMoreData];
-//            }else {
-//                [self.scrollView.mj_footer endRefreshing];
-//            }
-//            break;
-//        }
-//        case BZMRequestModeHUD: {
-//            [BZMDialog hideHUD];
+//            canFilter = NO;
 //            break;
 //        }
 //        default:
 //            break;
 //    }
 //
-//    if (BZMErrorCodeExpired == error.code) {
-//        notFilter = NO;
-//
-//        [gUser checkLoginWithFinish:^(BOOL isRelogin) {
-//            if (isRelogin) {
-//                [self triggerLoad];
-//            }
-//        } error:error];
-//    }else if (BZMErrorCodeEmpty == error.code) {
-//        notFilter = NO;
-//    }
-//
-//    self.error = error;
-//    self.requestMode = BZMRequestModeNone;
-//    if (nedUpdate) {
-//        self.dataSource = nil;
-//    }
-//
-//    return notFilter;
-    
-    BOOL canFilter = YES;
-    BOOL needUpdate = YES;
-
-    //    BZMRequestModeNone,
-    //    BZMRequestModeLoad,
-    //    BZMRequestModeUpdate,
-    //    BZMRequestModeRefresh,
-    //    BZMRequestModeMore,
-    //    BZMRequestModeToast
-    
-    switch (self.requestMode) {
-        case BZMRequestModeLoad:
-        case BZMRequestModeRefresh: {
-            canFilter = NO;
-            break;
-        }
-        default:
-            break;
-    }
-    
-    return canFilter;
-}
+//    return canFilter;
+//}
 
 #pragma mark - Delegate
 #pragma mark DZNEmptyDataSetSource
@@ -159,7 +160,7 @@
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
     if (!self.error) {
-        return [BZMFrameManager.share.loadingImage qmui_imageWithTintColor:BZMColorKey(TINT)];
+        return [UIImage.bzm_loading qmui_imageWithTintColor:BZMColorKey(TINT)];
     }
     return self.error.bzm_displayImage;
 }

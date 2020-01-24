@@ -18,6 +18,23 @@
 
 @implementation UIImage (BZMFrame)
 
++ (UIImage *)bzm_loading {
+    return BZMImageBundle(@"loading");
+}
+
++ (UIImage *)bzm_waiting {
+    return BZMImageBundle(@"waiting");
+}
+
++ (UIImage *)bzm_network {
+    return BZMImageBundle(@"error_network");
+}
+
++ (UIImage *)bzm_server {
+    return BZMImageBundle(@"error_server");
+}
+
+
 + (UIImage *)bzm_imageURLed:(NSString *)urlString {
     NSString *asset = BZMStrWithFmt(@"%@://", kBZMSchemeAsset);
     if ([urlString hasPrefix:asset]) {

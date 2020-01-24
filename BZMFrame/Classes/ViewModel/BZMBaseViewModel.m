@@ -10,9 +10,11 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "BZMConst.h"
 #import "BZMFunction.h"
+#import "BZMString.h"
 #import "BZMParam.h"
 #import "NSObject+BZMFrame.h"
 #import "NSDictionary+BZMFrame.h"
+#import "NSError+BZMFrame.h"
 #import "BZMBaseViewController.h"
 
 @interface BZMBaseViewModel ()
@@ -112,8 +114,13 @@
     [self.errors subscribeNext:^(NSError *error) {
         @strongify(self)
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewController.view animated:YES];
+        hud.margin = 12;
         hud.mode = MBProgressHUDModeText;
-        hud.label.text = error.localizedDescription;
+        hud.contentColor = UIColorWhite;
+        hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+        hud.bezelView.color = UIColorBlack;
+        hud.label.font = BZMFont(15);
+        hud.label.text = BZMStrWithDft(error.bzm_displayMessage, kStringUnknownError);
         [hud hideAnimated:YES afterDelay:3.f];
     }];
     
@@ -174,20 +181,17 @@
     return ^(NSError *error) {
         @strongify(self)
         self.error = error;
-        BOOL canFilter = [self filterError:error];
-        // self.error = canFilter ? nil : error;
-        if (!canFilter) {
-            [self.delegate handleError:error];
-            self.requestMode = BZMRequestModeNone;
-            self.dataSource = nil;
+        BOOL result = YES;
+        if ([self.delegate respondsToSelector:@selector(handleError)]) {
+            result = ![self.delegate handleError];
         }
-        return canFilter;
+        return result;
     };
 }
 
-- (BOOL)filterError:(NSError *)error {
-    return YES;
-}
+//- (BOOL)filterError {
+//    return YES;
+//}
 
 //- (void)handleError:(NSError *)error {
 //    

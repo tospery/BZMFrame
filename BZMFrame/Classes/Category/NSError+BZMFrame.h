@@ -11,7 +11,8 @@
 //NSString * BZMErrorCodeString(BZMErrorCode code);
 
 @interface NSError (BZMFrame)
-// bzm_isNetwork, bzm_isServer YBZM_TODO
+@property (nonatomic, assign, readonly) BOOL bzm_isNetwork;
+@property (nonatomic, assign, readonly) BOOL bzm_isServer;
 @property (nonatomic, strong, readonly) NSString *bzm_retryTitle;
 @property (nonatomic, strong, readonly) NSString *bzm_displayTitle;
 @property (nonatomic, strong, readonly) NSString *bzm_displayMessage;
@@ -23,6 +24,8 @@
 //- (UIImage *)bzm_reasonImage;
 
 //+ (NSError *)bzm_errorWithCode:(BZMErrorCode)code;
+
++ (NSError *)bzm_errorWithCode:(NSInteger)code;
 + (NSError *)bzm_errorWithCode:(NSInteger)code description:(NSString *)description;
 
 @end
