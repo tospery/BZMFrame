@@ -8,6 +8,7 @@
 
 #import "BZMCollectionViewModel.h"
 #import <QMUIKit/QMUIKit.h>
+#import "BZMSupplementary.h"
 #import "BZMCollectionCell.h"
 #import "NSArray+BZMFrame.h"
 #import "NSDictionary+BZMFrame.h"
@@ -122,44 +123,31 @@
     UICollectionReusableView *view = nil;
     
     BOOL isHeader = YES;
-    Class cls = nil;
-    SEL sel = NSSelectorFromString(@"kind");
+    NSInteger index = self.headerNames.count;
+    NSMutableArray *names = [NSMutableArray arrayWithArray:self.headerNames];
+    [names addObjectsFromArray:self.footerNames];
     
-    for (NSString *name in self.headerNames) {
-        cls = NSClassFromString(name);
-        if (cls && [cls respondsToSelector:sel]) {
-            NSString *myKind = ((NSString *(*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
-            if ([myKind isEqualToString:kind]) {
-                isHeader = YES;
-                break;
-            }
-        }
-        cls = nil;
-    }
-    if (!cls) {
-        for (NSString *name in self.footerNames) {
-            cls = NSClassFromString(name);
-            if (cls && [cls respondsToSelector:sel]) {
-                NSString *myKind = ((NSString *(*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
-                if ([myKind isEqualToString:kind]) {
-                    isHeader = NO;
+    for (NSInteger i = 0; i < names.count; ++i) {
+        Class cls = NSClassFromString(names[i]);
+        if ([cls conformsToProtocol:@protocol(BZMSupplementary)]) {
+            id<BZMSupplementary> supplementary = (id<BZMSupplementary>)cls;
+            NSString *myKind = [supplementary kind];
+            NSString *myIdentifier = [supplementary identifier];
+            if ([myKind isEqualToString:kind] && myIdentifier.length != 0) {
+                view = [collectionView dequeueReusableSupplementaryViewOfKind:myKind withReuseIdentifier:myIdentifier forIndexPath:indexPath];
+                if (view) {
+                    isHeader = (i < index);
                     break;
                 }
             }
         }
-        cls = nil;
     }
     
-    sel = NSSelectorFromString(@"identifier");
-    if (cls && [cls respondsToSelector:sel]) {
-        NSString *myIdentifier = ((NSString *(*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
-        if (myIdentifier.length != 0) {
-            view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:myIdentifier forIndexPath:indexPath];
-            if (isHeader) {
-                [self configureHeader:view atIndexPath:indexPath];
-            }else {
-                [self configureFooter:view atIndexPath:indexPath];
-            }
+    if (view) {
+        if (isHeader) {
+            [self configureHeader:view atIndexPath:indexPath];
+        }else {
+            [self configureFooter:view atIndexPath:indexPath];
         }
     }
     

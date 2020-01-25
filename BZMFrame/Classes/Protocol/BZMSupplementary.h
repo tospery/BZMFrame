@@ -8,10 +8,12 @@
 #import <UIKit/UIKit.h>
 
 @protocol BZMSupplementary <NSObject>
+@property (class, strong, readonly) NSString *kind;
+@property (class, strong, readonly) NSString *identifier;
 
-+ (NSString *)kind;
-+ (NSString *)identifier;
-+ (CGSize)sizeForSection:(NSInteger)section;
+//+ (NSString *)kind;
+//+ (NSString *)identifier;
+//+ (CGSize)sizeForSection:(NSInteger)section;
 
 @end
 

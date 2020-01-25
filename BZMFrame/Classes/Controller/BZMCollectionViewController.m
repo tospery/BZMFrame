@@ -193,31 +193,32 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    if (![collectionView.dataSource conformsToProtocol:@protocol(BZMCollectionViewModelDataSource)]) {
-        return CGSizeZero;
-    }
-    id<BZMCollectionViewModelDataSource> dataSource = (id<BZMCollectionViewModelDataSource>)collectionView.dataSource;
-    
-//    Class cls = [dataSource collectionViewModel:self.viewModel headerClassOfKind:UICollectionElementKindSectionHeader atSection:section];
-    
-    Class cls = NSClassFromString(self.viewModel.headerNames.firstObject);
-    if (cls && [cls respondsToSelector:@selector(sizeForSection:)]) {
-        return [cls sizeForSection:section];
-    }
+//    if (![collectionView.dataSource conformsToProtocol:@protocol(BZMCollectionViewModelDataSource)]) {
+//        return CGSizeZero;
+//    }
+//    id<BZMCollectionViewModelDataSource> dataSource = (id<BZMCollectionViewModelDataSource>)collectionView.dataSource;
+//
+////    Class cls = [dataSource collectionViewModel:self.viewModel headerClassOfKind:UICollectionElementKindSectionHeader atSection:section];
+//
+//    Class cls = NSClassFromString(self.viewModel.headerNames.firstObject);
+//    if (cls && [cls respondsToSelector:@selector(sizeForSection:)]) {
+//        return [cls sizeForSection:section];
+//    }
     
     return CGSizeZero;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    if (![collectionView.dataSource conformsToProtocol:@protocol(BZMCollectionViewModelDataSource)]) {
-        return CGSizeZero;
-    }
-    id<BZMCollectionViewModelDataSource> dataSource = (id<BZMCollectionViewModelDataSource>)collectionView.dataSource;
-    // Class cls = [dataSource collectionViewModel:self.viewModel footerClassOfKind:UICollectionElementKindSectionFooter atSection:section];
-    Class cls = NSClassFromString(self.viewModel.footerNames.firstObject);
-    if (cls && [cls respondsToSelector:@selector(sizeForSection:)]) {
-        return [cls sizeForSection:section];
-    }
+//    if (![collectionView.dataSource conformsToProtocol:@protocol(BZMCollectionViewModelDataSource)]) {
+//        return CGSizeZero;
+//    }
+//    id<BZMCollectionViewModelDataSource> dataSource = (id<BZMCollectionViewModelDataSource>)collectionView.dataSource;
+//    // Class cls = [dataSource collectionViewModel:self.viewModel footerClassOfKind:UICollectionElementKindSectionFooter atSection:section];
+//    Class cls = NSClassFromString(self.viewModel.footerNames.firstObject);
+//    if (cls && [cls respondsToSelector:@selector(sizeForSection:)]) {
+//        return [cls sizeForSection:section];
+//    }
+    
     return CGSizeZero;
 }
 
