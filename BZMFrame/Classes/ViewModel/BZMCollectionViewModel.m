@@ -76,17 +76,17 @@
     return NSClassFromString(name);
 }
 
-- (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel headerClassForSection:(NSInteger)section {
-    NSArray *names = [self.headerClassMapping bzm_arrayForKey:UICollectionElementKindSectionHeader];
-    NSString *name = [names bzm_objectAtIndex:section];
-    return NSClassFromString(name);
-}
-
-- (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel footerClassForSection:(NSInteger)section {
-    NSArray *names = [self.footerClassMapping bzm_arrayForKey:UICollectionElementKindSectionFooter];
-    NSString *name = [names bzm_objectAtIndex:section];
-    return NSClassFromString(name);
-}
+//- (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel headerClassOfKind:(NSString *)kind atSection:(NSInteger)section {
+//    NSArray *names = [self.headerClassMapping bzm_arrayForKey:kind];
+//    NSString *name = [names bzm_objectAtIndex:section];
+//    return NSClassFromString(name);
+//}
+//
+//- (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel footerClassOfKind:(NSString *)kind atSection:(NSInteger)section {
+//    NSArray *names = [self.footerClassMapping bzm_arrayForKey:kind];
+//    NSString *name = [names bzm_objectAtIndex:section];
+//    return NSClassFromString(name);
+//}
 
 #pragma mark UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -120,19 +120,41 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *view = nil;
+    
+    BOOL isHeader = YES;
     Class cls = nil;
-    BOOL isHeader = NO;
-    if ([self.headerClassMapping.allKeys containsObject:kind]) {
-        isHeader = YES;
-        cls = [self collectionViewModel:self headerClassForSection:indexPath.section];
-    }else if ([self.footerClassMapping.allKeys containsObject:kind]) {
-        cls = [self collectionViewModel:self footerClassForSection:indexPath.section];
+    SEL sel = NSSelectorFromString(@"kind");
+    
+    for (NSString *name in self.headerNames) {
+        cls = NSClassFromString(name);
+        if (cls && [cls respondsToSelector:sel]) {
+            NSString *myKind = ((NSString *(*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+            if ([myKind isEqualToString:kind]) {
+                isHeader = YES;
+                break;
+            }
+        }
+        cls = nil;
     }
-    if (cls && [cls respondsToSelector:@selector(identifier)]) {
-        NSString *identifier = [cls identifier];
-        if (identifier.length != 0) {
-            view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
-            // view.backgroundColor = self.backgroundColor;
+    if (!cls) {
+        for (NSString *name in self.footerNames) {
+            cls = NSClassFromString(name);
+            if (cls && [cls respondsToSelector:sel]) {
+                NSString *myKind = ((NSString *(*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+                if ([myKind isEqualToString:kind]) {
+                    isHeader = NO;
+                    break;
+                }
+            }
+        }
+        cls = nil;
+    }
+    
+    sel = NSSelectorFromString(@"identifier");
+    if (cls && [cls respondsToSelector:sel]) {
+        NSString *myIdentifier = ((NSString *(*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+        if (myIdentifier.length != 0) {
+            view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:myIdentifier forIndexPath:indexPath];
             if (isHeader) {
                 [self configureHeader:view atIndexPath:indexPath];
             }else {
@@ -140,6 +162,7 @@
             }
         }
     }
+    
     return view;
 }
 

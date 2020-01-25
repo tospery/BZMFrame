@@ -14,8 +14,8 @@
 @protocol BZMCollectionViewModelDataSource <BZMScrollViewModelDataSource, UICollectionViewDataSource>
 - (BZMCollectionItem *)collectionViewModel:(BZMCollectionViewModel *)viewModel itemAtIndexPath:(NSIndexPath *)indexPath;
 - (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel cellClassForItem:(BZMCollectionItem *)item;
-- (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel headerClassForSection:(NSInteger)section;
-- (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel footerClassForSection:(NSInteger)section;
+//- (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel headerClassOfKind:(NSString *)kind atSection:(NSInteger)section;
+//- (Class)collectionViewModel:(BZMCollectionViewModel *)viewModel footerClassOfKind:(NSString *)kind atSection:(NSInteger)section;
 
 @end
 
@@ -26,8 +26,10 @@
 @interface BZMCollectionViewModel : BZMScrollViewModel <BZMCollectionViewModelDataSource>
 @property (nonatomic, assign) BOOL canSelectCell;
 @property (nonatomic, strong) NSDictionary *itemCellMapping;
-@property (nonatomic, strong) NSDictionary *headerClassMapping;
-@property (nonatomic, strong) NSDictionary *footerClassMapping;
+// @property (nonatomic, strong) NSDictionary *headerClassMapping;
+@property (nonatomic, strong) NSArray *headerNames;
+@property (nonatomic, strong) NSArray *footerNames;
+//@property (nonatomic, strong) NSDictionary *footerClassMapping;
 @property (nonatomic, weak) id<BZMCollectionViewModelDelegate> delegate;
 
 //@property (nonatomic, strong) id headerVM; // YBZM_TODO 新增 collectionHeaderView

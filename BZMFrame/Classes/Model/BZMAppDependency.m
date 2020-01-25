@@ -10,8 +10,10 @@
 #import "BZMConst.h"
 #import "BZMFunction.h"
 #import "BZMUser.h"
+#import "BZMMisc.h"
 
 BZMUser *gUser;
+BZMMisc *gMisc;
 
 @interface BZMAppDependency ()
 @property (nonatomic, strong, readwrite) UIWindow *window;
@@ -55,6 +57,16 @@ BZMUser *gUser;
     } else {
         gUser = [[BZMUser alloc] init];
     }
+    
+    cls = NSClassFromString(@"Misc");
+    if (cls && sel && [cls respondsToSelector:sel]) {
+        gMisc = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+        if (!gMisc) {
+            gMisc = [[cls alloc] init];
+        }
+    } else {
+        gMisc = [[BZMMisc alloc] init];
+    }
 }
 
 #pragma mark - Launch
@@ -73,6 +85,7 @@ BZMUser *gUser;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [gUser saveWithKey:nil];
+    [gMisc saveWithKey:nil];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -85,6 +98,7 @@ BZMUser *gUser;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     [gUser saveWithKey:nil];
+    [gMisc saveWithKey:nil];
 }
 
 #pragma mark - URL

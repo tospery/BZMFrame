@@ -32,6 +32,10 @@
     [self layoutIfNeeded];
 }
 
++ (NSString *)kind {
+    return UICollectionElementKindSectionHeader;
+}
+
 + (NSString *)identifier {
     return BZMStrWithFmt(@"%@Identifier", NSStringFromClass(self));
 }

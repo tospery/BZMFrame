@@ -229,7 +229,11 @@
         }
         case BZMRequestModeRefresh: {
             [self.scrollView.mj_header endRefreshing];
-            [self setupRefresh:NO];
+            @weakify(self)
+            [RACScheduler.currentScheduler afterDelay:1 schedule:^{
+                @strongify(self)
+                [self setupRefresh:NO];
+            }];
             [self setupMore:NO];
             self.viewModel.dataSource = nil;
             break;

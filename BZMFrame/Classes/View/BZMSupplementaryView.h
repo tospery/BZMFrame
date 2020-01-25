@@ -6,15 +6,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BZMSupplementary.h"
 #import "BZMReactiveView.h"
 
-@interface BZMSupplementaryView : UICollectionReusableView <BZMReactiveView>
+@interface BZMSupplementaryView : UICollectionReusableView <BZMSupplementary, BZMReactiveView>
 @property (nonatomic, strong, readonly) id viewModel;
 
 - (void)didInitialize;
 
-+ (NSString *)identifier;
-+ (CGSize)sizeForSection:(NSInteger)section;
+//+ (NSString *)kind;
+//+ (NSString *)identifier;
+//+ (CGSize)sizeForSection:(NSInteger)section;
 
 @end
 

@@ -92,28 +92,40 @@
         }
     }
     
-    for (NSString *kind in self.viewModel.headerClassMapping.allKeys) {
-        NSArray *names = self.viewModel.headerClassMapping[kind];
-        for (NSString *name in names) {
-            Class cls = NSClassFromString(name);
-            if (cls && [cls respondsToSelector:@selector(identifier)]) {
-                NSString *identifier = [cls identifier];
-                if (identifier.length != 0) {
-                    [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind  withReuseIdentifier:identifier];
-                }
-            }
-        }
-    }
+//    for (NSString *kind in self.viewModel.headerClassMapping.allKeys) {
+//        NSArray *names = self.viewModel.headerClassMapping[kind];
+//        for (NSString *name in names) {
+//            Class cls = NSClassFromString(name);
+//            if (cls && [cls respondsToSelector:@selector(identifier)]) {
+//                NSString *identifier = [cls identifier];
+//                if (identifier.length != 0) {
+//                    [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind  withReuseIdentifier:identifier];
+//                }
+//            }
+//        }
+//    }
+//
+//    for (NSString *kind in self.viewModel.footerClassMapping.allKeys) {
+//        NSArray *names = self.viewModel.footerClassMapping[kind];
+//        for (NSString *name in names) {
+//            Class cls = NSClassFromString(name);
+//            if (cls && [cls respondsToSelector:@selector(identifier)]) {
+//                NSString *identifier = [cls identifier];
+//                if (identifier.length != 0) {
+//                    [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind  withReuseIdentifier:identifier];
+//                }
+//            }
+//        }
+//    }
     
-    for (NSString *kind in self.viewModel.footerClassMapping.allKeys) {
-        NSArray *names = self.viewModel.footerClassMapping[kind];
-        for (NSString *name in names) {
-            Class cls = NSClassFromString(name);
-            if (cls && [cls respondsToSelector:@selector(identifier)]) {
-                NSString *identifier = [cls identifier];
-                if (identifier.length != 0) {
-                    [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind  withReuseIdentifier:identifier];
-                }
+    for (NSString *header in self.viewModel.headerNames) {
+        Class cls = NSClassFromString(header);
+        if ([cls conformsToProtocol:@protocol(BZMSupplementary)]) {
+            id<BZMSupplementary> supplementary = (id<BZMSupplementary>)cls;
+            NSString *kind = [supplementary kind];
+            NSString *identifier = [supplementary identifier];
+            if (kind.length != 0 && identifier.length != 0) {
+                [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
             }
         }
     }
@@ -134,11 +146,11 @@
 
 #pragma mark - Method
 - (UICollectionViewLayout *)collectionViewLayout {
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    layout.minimumLineSpacing = 0.0f;
-    layout.minimumInteritemSpacing = 0.0f;
-    return layout;
+//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+//    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+//    layout.minimumLineSpacing = 0.0f;
+//    layout.minimumInteritemSpacing = 0.0f;
+    return [[UICollectionViewFlowLayout alloc] init];
 }
 
 #pragma mark - Delegate
@@ -166,15 +178,33 @@
     return item.cellSize;
 }
 
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsZero;
+}
+
+// 行间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return 0.0f;
+}
+
+// 列间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 0.0f;
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     if (![collectionView.dataSource conformsToProtocol:@protocol(BZMCollectionViewModelDataSource)]) {
         return CGSizeZero;
     }
     id<BZMCollectionViewModelDataSource> dataSource = (id<BZMCollectionViewModelDataSource>)collectionView.dataSource;
-    Class cls = [dataSource collectionViewModel:self.viewModel headerClassForSection:section];
+    
+//    Class cls = [dataSource collectionViewModel:self.viewModel headerClassOfKind:UICollectionElementKindSectionHeader atSection:section];
+    
+    Class cls = NSClassFromString(self.viewModel.headerNames.firstObject);
     if (cls && [cls respondsToSelector:@selector(sizeForSection:)]) {
         return [cls sizeForSection:section];
     }
+    
     return CGSizeZero;
 }
 
@@ -183,7 +213,8 @@
         return CGSizeZero;
     }
     id<BZMCollectionViewModelDataSource> dataSource = (id<BZMCollectionViewModelDataSource>)collectionView.dataSource;
-    Class cls = [dataSource collectionViewModel:self.viewModel footerClassForSection:section];
+    // Class cls = [dataSource collectionViewModel:self.viewModel footerClassOfKind:UICollectionElementKindSectionFooter atSection:section];
+    Class cls = NSClassFromString(self.viewModel.footerNames.firstObject);
     if (cls && [cls respondsToSelector:@selector(sizeForSection:)]) {
         return [cls sizeForSection:section];
     }

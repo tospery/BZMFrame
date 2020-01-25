@@ -52,5 +52,6 @@ Pod::Spec.new do |s|
   s.dependency 'TYAlertController', '1.2.0'
   s.dependency 'MBProgressHUD', '1.1.0'
   s.dependency 'DKNightVersion', '2.4.3'
+  s.dependency 'CHTCollectionViewWaterfallLayout', '0.9.8'
   # s.dependency 'LTNavigationBar', '2.1.9'
 end
