@@ -58,6 +58,7 @@
     [self.collectionView registerClass:UICollectionReusableView.class forSupplementaryViewOfKind:UICollectionElementKindSectionHeader  withReuseIdentifier:kBZMIdentifierCollectionHeader];
     [self.collectionView registerClass:UICollectionReusableView.class forSupplementaryViewOfKind:UICollectionElementKindSectionFooter  withReuseIdentifier:kBZMIdentifierCollectionFooter];
     
+    SEL reuseSel = @selector(bzm_reuseId);
     NSArray *itemNames = self.viewModel.itemCellMapping.allKeys;
     for (NSString *itemName in itemNames) {
         Class itemCls = NSClassFromString(itemName);
@@ -75,33 +76,32 @@
             continue;
         }
         
-        if (![cellCls respondsToSelector:@selector(identifier)]) {
+        if (![cellCls respondsToSelector:reuseSel]) {
             continue;
         }
         
-        NSString *identifier = [cellCls identifier];
-        if (identifier.length == 0) {
+        NSString *reuseId = ((id (*)(id, SEL))[cellCls methodForSelector:reuseSel])(cellCls, reuseSel);
+        if (!reuseId || ![reuseId isKindOfClass:NSString.class] || reuseId.length == 0) {
             continue;
         }
         
         NSString *cellPath = [NSBundle.mainBundle pathForResource:cellName ofType:@"nib"];
         if (cellPath.length == 0) {
-            [self.collectionView registerClass:cellCls forCellWithReuseIdentifier:identifier];
+            [self.collectionView registerClass:cellCls forCellWithReuseIdentifier:reuseId];
         }else {
             UINib *cellNib = [UINib nibWithNibName:cellName bundle:nil];
-            [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:identifier];
+            [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:reuseId];
         }
     }
     
-    SEL sel = @selector(bzm_reuseId);
     NSMutableArray *names = [NSMutableArray arrayWithArray:self.viewModel.headerNames];
     [names addObjectsFromArray:self.viewModel.footerNames];
     for (NSString *name in names) {
         Class cls = NSClassFromString(name);
-        if ([cls conformsToProtocol:@protocol(BZMSupplementary)] && [cls respondsToSelector:sel]) {
+        if ([cls conformsToProtocol:@protocol(BZMSupplementary)] && [cls respondsToSelector:reuseSel]) {
             id<BZMSupplementary> supplementary = (id<BZMSupplementary>)cls;
             NSString *kind = [supplementary kind];
-            NSString *reuse = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+            NSString *reuse = ((id (*)(id, SEL))[cls methodForSelector:reuseSel])(cls, reuseSel);
             if ((kind && [kind isKindOfClass:NSString.class] && kind.length != 0) &&
                 (reuse && [reuse isKindOfClass:NSString.class] && reuse.length != 0)) {
                 [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind withReuseIdentifier:reuse];

@@ -11,6 +11,8 @@
 #import "BZMCollectionItem.h"
 
 @interface BZMCollectionCell : UICollectionViewCell <BZMReactiveView>
+@property (class, assign, readonly) UIEdgeInsets margin;
+@property (class, assign, readonly) UIOffset padding;
 @property (nonatomic, strong, readonly) BZMCollectionItem *viewModel;
 
 // + (NSString *)identifier;

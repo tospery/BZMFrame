@@ -37,8 +37,12 @@
     [self layoutIfNeeded];
 }
 
-//+ (NSString *)identifier {
-//    return BZMStrWithFmt(@"%@Identifier", NSStringFromClass(self));
-//}
++ (UIEdgeInsets)margin {
+    return UIEdgeInsetsZero;
+}
+
++ (UIOffset)padding {
+    return UIOffsetZero;
+}
 
 @end
