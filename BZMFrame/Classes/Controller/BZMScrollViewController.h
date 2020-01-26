@@ -8,7 +8,15 @@
 #import "BZMBaseViewController.h"
 #import "BZMScrollViewModel.h"
 
+typedef NS_ENUM(NSInteger, BZMScrollDirection){
+    BZMScrollDirectionNone,
+    BZMScrollDirectionUp,
+    BZMScrollDirectionDown
+};
+
 @interface BZMScrollViewController : BZMBaseViewController <BZMScrollViewModelDelegate, DZNEmptyDataSetDelegate, UIScrollViewDelegate>
+@property (nonatomic, assign, readonly) CGFloat lastPosition;
+@property (nonatomic, assign, readonly) BZMScrollDirection scrollDirection;
 @property (nonatomic, strong) UIScrollView *scrollView;
 
 - (void)setupRefresh:(BOOL)enable;

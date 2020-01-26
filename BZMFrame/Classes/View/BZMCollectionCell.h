@@ -15,7 +15,5 @@
 @property (class, assign, readonly) UIOffset padding;
 @property (nonatomic, strong, readonly) BZMCollectionItem *viewModel;
 
-// + (NSString *)identifier;
-
 @end
 

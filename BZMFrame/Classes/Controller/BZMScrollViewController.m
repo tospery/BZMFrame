@@ -16,6 +16,8 @@
 #import "UIScrollView+BZMFrame.h"
 
 @interface BZMScrollViewController ()
+@property (nonatomic, assign, readwrite) CGFloat lastPosition;
+@property (nonatomic, assign, readwrite) BZMScrollDirection scrollDirection;
 @property (nonatomic, strong, readwrite) BZMScrollViewModel *viewModel;
 
 @end
@@ -341,6 +343,47 @@
     
     [self handleError];
 }
+
+#pragma mark UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat currentPostion = scrollView.contentOffset.y;
+    CGFloat offset = currentPostion - self.lastPosition;
+    if (offset > 0) {
+        self.scrollDirection = BZMScrollDirectionUp;
+    } else if (offset < 0) {
+        self.scrollDirection = BZMScrollDirectionDown;
+    } else {
+        self.scrollDirection = BZMScrollDirectionUp;
+    }
+    self.lastPosition = currentPostion;
+}
+
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//
+//}
+//
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+//
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+//
+//}
+//
+//- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+//
+//}
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//
+//}
+//
+//- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+//
+//}
+//
+//- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+//
+//}
 
 #pragma mark - Class
 
