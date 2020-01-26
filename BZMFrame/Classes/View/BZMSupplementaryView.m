@@ -36,12 +36,4 @@
     return UICollectionElementKindSectionHeader;
 }
 
-+ (NSString *)identifier {
-    return BZMStrWithFmt(@"%@Identifier", NSStringFromClass(self));
-}
-
-//+ (CGSize)sizeForSection:(NSInteger)section {
-//    return CGSizeZero;
-//}
-
 @end

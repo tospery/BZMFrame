@@ -13,7 +13,7 @@
 @interface BZMCollectionCell : UICollectionViewCell <BZMReactiveView>
 @property (nonatomic, strong, readonly) BZMCollectionItem *viewModel;
 
-+ (NSString *)identifier;
+// + (NSString *)identifier;
 
 @end
 

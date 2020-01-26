@@ -12,6 +12,7 @@
 #import "BZMCollectionCell.h"
 #import "NSArray+BZMFrame.h"
 #import "NSDictionary+BZMFrame.h"
+#import "UICollectionReusableView+BZMFrame.h"
 
 @interface BZMCollectionViewModel ()
 
@@ -101,10 +102,15 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BZMCollectionItem *item = [self collectionViewModel:self itemAtIndexPath:indexPath];
     Class cls = [self collectionViewModel:self cellClassForItem:item];
-    NSString *identifier = [cls identifier];
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    if ([cell isKindOfClass:BZMCollectionCell.class]) {
-        [(BZMCollectionCell *)cell bindViewModel:item];
+    SEL sel = @selector(bzm_reuseId);
+    NSString *reuseId = nil;
+    if ([cls respondsToSelector:sel]) {
+        reuseId = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+    }
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
+    if ([cell conformsToProtocol:@protocol(BZMReactiveView)]) {
+        id<BZMReactiveView> reactiveView = (id<BZMReactiveView>)cell;
+        [reactiveView bindViewModel:item];
     }
     [self configureCell:cell atIndexPath:indexPath withItem:item];
     
@@ -131,13 +137,17 @@
         Class cls = NSClassFromString(names[i]);
         if ([cls conformsToProtocol:@protocol(BZMSupplementary)]) {
             id<BZMSupplementary> supplementary = (id<BZMSupplementary>)cls;
-            NSString *myKind = [supplementary kind];
-            NSString *myIdentifier = [supplementary identifier];
-            if ([myKind isEqualToString:kind] && myIdentifier.length != 0) {
-                view = [collectionView dequeueReusableSupplementaryViewOfKind:myKind withReuseIdentifier:myIdentifier forIndexPath:indexPath];
-                if (view) {
-                    isHeader = (i < index);
-                    break;
+            if ([kind isEqualToString:[supplementary kind]]) {
+                SEL sel = @selector(bzm_reuseId);
+                if ([cls respondsToSelector:sel]) {
+                    NSString *reuseId = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+                    if (reuseId && [reuseId isKindOfClass:NSString.class] && reuseId.length != 0) {
+                        view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseId forIndexPath:indexPath];
+                        if (view) {
+                            isHeader = (i < index);
+                            break;
+                        }
+                    }
                 }
             }
         }

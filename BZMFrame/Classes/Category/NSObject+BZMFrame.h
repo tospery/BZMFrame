@@ -8,9 +8,9 @@
 #import <UIKit/UIKit.h>
 
 @interface NSObject (BZMFrame)
-@property (nonatomic, copy, readonly) NSString *bzm_className;
+@property (nonatomic, strong, readonly) NSString *bzm_className;
 
-@property (class, nonatomic, copy, readonly) NSString *bzm_className;
+@property (class, strong, readonly) NSString *bzm_className;
 
 
 /**

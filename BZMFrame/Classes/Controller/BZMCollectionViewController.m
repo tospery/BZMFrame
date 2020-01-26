@@ -11,6 +11,7 @@
 #import "BZMCollectionCell.h"
 #import "BZMSupplementaryView.h"
 #import "UIViewController+BZMFrame.h"
+#import "UICollectionReusableView+BZMFrame.h"
 
 @interface BZMCollectionViewController ()
 @property (nonatomic, strong, readwrite) UICollectionView *collectionView;
@@ -53,7 +54,7 @@
     self.collectionView = collectionView;
     
     [self.collectionView registerClass:UICollectionViewCell.class forCellWithReuseIdentifier:kBZMIdentifierCollectionCell];
-    [self.collectionView registerClass:BZMCollectionCell.class forCellWithReuseIdentifier:[BZMCollectionCell identifier]];
+    [self.collectionView registerClass:BZMCollectionCell.class forCellWithReuseIdentifier:BZMCollectionCell.bzm_reuseId];
     [self.collectionView registerClass:UICollectionReusableView.class forSupplementaryViewOfKind:UICollectionElementKindSectionHeader  withReuseIdentifier:kBZMIdentifierCollectionHeader];
     [self.collectionView registerClass:UICollectionReusableView.class forSupplementaryViewOfKind:UICollectionElementKindSectionFooter  withReuseIdentifier:kBZMIdentifierCollectionFooter];
     
@@ -92,40 +93,18 @@
         }
     }
     
-//    for (NSString *kind in self.viewModel.headerClassMapping.allKeys) {
-//        NSArray *names = self.viewModel.headerClassMapping[kind];
-//        for (NSString *name in names) {
-//            Class cls = NSClassFromString(name);
-//            if (cls && [cls respondsToSelector:@selector(identifier)]) {
-//                NSString *identifier = [cls identifier];
-//                if (identifier.length != 0) {
-//                    [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind  withReuseIdentifier:identifier];
-//                }
-//            }
-//        }
-//    }
-//
-//    for (NSString *kind in self.viewModel.footerClassMapping.allKeys) {
-//        NSArray *names = self.viewModel.footerClassMapping[kind];
-//        for (NSString *name in names) {
-//            Class cls = NSClassFromString(name);
-//            if (cls && [cls respondsToSelector:@selector(identifier)]) {
-//                NSString *identifier = [cls identifier];
-//                if (identifier.length != 0) {
-//                    [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind  withReuseIdentifier:identifier];
-//                }
-//            }
-//        }
-//    }
-    
-    for (NSString *header in self.viewModel.headerNames) {
-        Class cls = NSClassFromString(header);
-        if ([cls conformsToProtocol:@protocol(BZMSupplementary)]) {
+    SEL sel = @selector(bzm_reuseId);
+    NSMutableArray *names = [NSMutableArray arrayWithArray:self.viewModel.headerNames];
+    [names addObjectsFromArray:self.viewModel.footerNames];
+    for (NSString *name in names) {
+        Class cls = NSClassFromString(name);
+        if ([cls conformsToProtocol:@protocol(BZMSupplementary)] && [cls respondsToSelector:sel]) {
             id<BZMSupplementary> supplementary = (id<BZMSupplementary>)cls;
             NSString *kind = [supplementary kind];
-            NSString *identifier = [supplementary identifier];
-            if (kind.length != 0 && identifier.length != 0) {
-                [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind withReuseIdentifier:identifier];
+            NSString *reuse = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+            if ((kind && [kind isKindOfClass:NSString.class] && kind.length != 0) &&
+                (reuse && [reuse isKindOfClass:NSString.class] && reuse.length != 0)) {
+                [self.collectionView registerClass:cls forSupplementaryViewOfKind:kind withReuseIdentifier:reuse];
             }
         }
     }

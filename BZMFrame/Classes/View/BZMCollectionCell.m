@@ -37,8 +37,8 @@
     [self layoutIfNeeded];
 }
 
-+ (NSString *)identifier {
-    return BZMStrWithFmt(@"%@Identifier", NSStringFromClass(self));
-}
+//+ (NSString *)identifier {
+//    return BZMStrWithFmt(@"%@Identifier", NSStringFromClass(self));
+//}
 
 @end
