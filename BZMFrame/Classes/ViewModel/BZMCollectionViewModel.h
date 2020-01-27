@@ -30,7 +30,6 @@
 @property (nonatomic, strong) NSArray *headerNames;
 @property (nonatomic, strong) NSArray *footerNames;
 //@property (nonatomic, strong) NSDictionary *footerClassMapping;
-//@property (nonatomic, weak) id<BZMCollectionViewModelDelegate> delegate;
 
 //@property (nonatomic, strong) id headerVM; // YBZM_TODO 新增 collectionHeaderView
 //@property (nonatomic, strong) id footerVM;

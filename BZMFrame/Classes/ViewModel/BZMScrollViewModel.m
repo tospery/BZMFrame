@@ -39,15 +39,6 @@
     [super didInitialize];
 }
 
-#pragma mark - Accessor
-//- (NSMutableArray *)preloadPages {
-//    if (!_preloadPages) {
-//        NSMutableArray *mArr = [NSMutableArray array];
-//        _preloadPages = mArr;
-//    }
-//    return _preloadPages;
-//}
-
 #pragma mark - Public
 - (NSUInteger)offsetForPage:(NSUInteger)page {
     return (page - 1) * self.page.size;
@@ -56,77 +47,6 @@
 - (NSInteger)nextPageIndex {
     return self.page.index + 1;
 }
-
-//- (BOOL)filterError {
-////
-////    switch (self.requestMode) {
-////        case BZMRequestModeLoad:
-////        case BZMRequestModeUpdate: {
-////            break;
-////        }
-////        case BZMRequestModeRefresh: {
-////            [self.scrollView.mj_header endRefreshing];
-////            break;
-////        }
-////        case BZMRequestModeMore: {
-////            if (BZMErrorCodeEmpty == error.code) {
-////                nedUpdate = NO;
-////                [self.scrollView.mj_footer endRefreshingWithNoMoreData];
-////            }else {
-////                [self.scrollView.mj_footer endRefreshing];
-////            }
-////            break;
-////        }
-////        case BZMRequestModeHUD: {
-////            [BZMDialog hideHUD];
-////            break;
-////        }
-////        default:
-////            break;
-////    }
-////
-////    if (BZMErrorCodeExpired == error.code) {
-////        notFilter = NO;
-////
-////        [gUser checkLoginWithFinish:^(BOOL isRelogin) {
-////            if (isRelogin) {
-////                [self triggerLoad];
-////            }
-////        } error:error];
-////    }else if (BZMErrorCodeEmpty == error.code) {
-////        notFilter = NO;
-////    }
-////
-////    self.error = error;
-////    self.requestMode = BZMRequestModeNone;
-////    if (nedUpdate) {
-////        self.dataSource = nil;
-////    }
-////
-////    return notFilter;
-//
-//    BOOL canFilter = YES;
-//    BOOL needUpdate = YES;
-//
-//    //    BZMRequestModeNone,
-//    //    BZMRequestModeLoad,
-//    //    BZMRequestModeUpdate,
-//    //    BZMRequestModeRefresh,
-//    //    BZMRequestModeMore,
-//    //    BZMRequestModeToast
-//
-//    switch (self.requestMode) {
-//        case BZMRequestModeLoad:
-//        case BZMRequestModeRefresh: {
-//            canFilter = NO;
-//            break;
-//        }
-//        default:
-//            break;
-//    }
-//
-//    return canFilter;
-//}
 
 #pragma mark - Delegate
 #pragma mark DZNEmptyDataSetSource

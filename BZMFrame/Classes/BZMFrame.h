@@ -126,7 +126,7 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <FCUUID/FCUUID.h>
 #import <SDWebImage/SDWebImage.h>
-#import <MBProgressHUD/MBProgressHUD.h>
+#import <Toast/UIView+Toast.h>
 #import <TYAlertController/TYAlertController.h>
 #import <DKNightVersion/DKNightVersion.h>
 #import <WebViewJavascriptBridge/WebViewJavascriptBridge.h>

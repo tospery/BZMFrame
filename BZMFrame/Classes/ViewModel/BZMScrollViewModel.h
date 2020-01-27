@@ -16,12 +16,6 @@
 
 @end
 
-//@protocol BZMScrollViewModelDelegate <BZMBaseViewModelDelegate>
-//- (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths;
-//- (void)preloadNextPage;
-//
-//@end
-
 @interface BZMScrollViewModel : BZMBaseViewModel <BZMScrollViewModelDataSource>
 @property (nonatomic, assign) BOOL shouldPullToRefresh;
 @property (nonatomic, assign) BOOL shouldScrollToMore;
@@ -29,7 +23,6 @@
 @property (nonatomic, strong) BZMPage *page;
 @property (nonatomic, strong) NSMutableArray *preloadPages;
 @property (nonatomic, strong) RACCommand *didSelectCommand;
-//@property (nonatomic, weak) id<BZMScrollViewModelDelegate> delegate;
 
 - (NSUInteger)offsetForPage:(NSUInteger)page;
 - (NSInteger)nextPageIndex;

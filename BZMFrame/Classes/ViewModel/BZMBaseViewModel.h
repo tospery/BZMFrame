@@ -20,21 +20,13 @@
 
 @end
 
-//@protocol BZMBaseViewModelDelegate <NSObject>
-//- (void)reloadData;
-//- (BOOL)handleError;
-//
-//@end
-
 @interface BZMBaseViewModel : NSObject <BZMBaseViewModelDataSource>
 @property (nonatomic, assign) BOOL hidesNavigationBar;
 @property (nonatomic, assign) BOOL hidesNavBottomLine;
 @property (nonatomic, assign) BOOL shouldFetchLocalData;
 @property (nonatomic, assign) BOOL shouldRequestRemoteData;
-//@property (nonatomic, assign) TBTitleViewType titleViewType;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *subtitle;
-//@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, copy, readonly) NSDictionary<NSString *,id> *parameters;
 @property (nonatomic, strong, readonly) BZMBaseModel *model;
 @property (nonatomic, assign) BZMRequestMode requestMode;
@@ -50,15 +42,12 @@
 @property (nonatomic, strong, readonly) RACCommand *backCommand;
 @property (nonatomic, strong, readonly) RACCommand *requestRemoteDataCommand;
 @property (nonatomic, weak) BZMBaseViewController *viewController;
-//@property (nonatomic, weak) id<BZMBaseViewModelDelegate> delegate;
 
 - (void)didInitialize;
 - (NSArray *)data2Source:(id)data;
 - (id)fetchLocalData;
 - (RACSignal *)requestRemoteDataSignalWithPage:(NSInteger)page;
 - (BOOL (^)(NSError *error))requestRemoteDataErrorsFilter;
-// - (BOOL)filterError;
-// - (void)handleError:(NSError *)error;
 
 @end
 

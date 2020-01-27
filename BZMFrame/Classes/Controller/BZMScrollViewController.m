@@ -78,52 +78,6 @@
 
 #pragma mark - Method
 #pragma mark super
-- (void)beginLoad {
-    [super beginLoad];
-    [self setupRefresh:NO];
-    [self setupMore:NO];
-}
-
-- (void)triggerLoad {
-    [self beginLoad];
-    @weakify(self)
-    [[self.viewModel.requestRemoteDataCommand execute:@(self.viewModel.page.start)].deliverOnMainThread subscribeNext:^(id data) {
-        @strongify(self)
-        self.viewModel.page.index = self.viewModel.page.start;
-    } completed:^{
-        @strongify(self)
-        [self endLoad];
-    }];
-}
-
-- (void)endLoad {
-    [super endLoad];
-    if (self.viewModel.shouldPullToRefresh) {
-        [self setupRefresh:YES];
-    }
-    if (self.viewModel.shouldScrollToMore) {
-        [self setupMore:YES];
-        if (!self.viewModel.hasMoreData) {
-            [self.scrollView.mj_footer endRefreshingWithNoMoreData];
-        }
-    }
-}
-
-- (void)bindViewModel {
-    [super bindViewModel];
-    
-    @weakify(self)
-    [[[RACObserve(self.viewModel, shouldPullToRefresh) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *should) {
-        @strongify(self)
-        [self setupRefresh:should.boolValue];
-    }];
-
-    [[[RACObserve(self.viewModel, shouldScrollToMore) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *should) {
-        @strongify(self)
-        [self setupMore:should.boolValue];
-    }];
-}
-
 - (void)reloadData {
     [super reloadData];
     if ([self.scrollView isMemberOfClass:UIScrollView.class]) {
@@ -205,6 +159,52 @@
     //    }
     
     return handled;
+}
+
+- (void)beginLoad {
+    [super beginLoad];
+    [self setupRefresh:NO];
+    [self setupMore:NO];
+}
+
+- (void)triggerLoad {
+    [self beginLoad];
+    @weakify(self)
+    [[self.viewModel.requestRemoteDataCommand execute:@(self.viewModel.page.start)].deliverOnMainThread subscribeNext:^(id data) {
+        @strongify(self)
+        self.viewModel.page.index = self.viewModel.page.start;
+    } completed:^{
+        @strongify(self)
+        [self endLoad];
+    }];
+}
+
+- (void)endLoad {
+    [super endLoad];
+    if (self.viewModel.shouldPullToRefresh) {
+        [self setupRefresh:YES];
+    }
+    if (self.viewModel.shouldScrollToMore) {
+        [self setupMore:YES];
+        if (!self.viewModel.hasMoreData) {
+            [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+        }
+    }
+}
+
+- (void)bindViewModel {
+    [super bindViewModel];
+    
+    @weakify(self)
+    [[[RACObserve(self.viewModel, shouldPullToRefresh) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *should) {
+        @strongify(self)
+        [self setupRefresh:should.boolValue];
+    }];
+
+    [[[RACObserve(self.viewModel, shouldScrollToMore) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *should) {
+        @strongify(self)
+        [self setupMore:should.boolValue];
+    }];
 }
 
 #pragma mark public

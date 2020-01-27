@@ -7,6 +7,7 @@
 
 #import "BZMAppDependency.h"
 #import <JLRoutes/JLRoutes.h>
+#import <Toast/UIView+Toast.h>
 #import "BZMConst.h"
 #import "BZMFunction.h"
 #import "BZMUser.h"
@@ -39,7 +40,9 @@ BZMMisc *gMisc;
 }
 
 - (void)setupVendor {
-    
+    // Toast
+    [CSToastManager setQueueEnabled:YES];
+    [CSToastManager setDefaultPosition:CSToastPositionCenter];
 }
 
 - (void)setupAppearance {

@@ -7,7 +7,7 @@
 //
 
 #import "BZMBaseViewModel.h"
-#import <MBProgressHUD/MBProgressHUD.h>
+#import <Toast/UIView+Toast.h>
 #import "BZMConst.h"
 #import "BZMFunction.h"
 #import "BZMString.h"
@@ -32,6 +32,7 @@
 @end
 
 @implementation BZMBaseViewModel
+
 #pragma mark - Init
 - (instancetype)initWithRouteParameters:(NSDictionary<NSString *,id> *)parameters {
     if (self = [super init]) {
@@ -108,20 +109,13 @@
     [[self.executing skip:1] subscribeNext:^(NSNumber * _Nullable executing) {
         @strongify(self)
         if (executing.boolValue) {
-            [MBProgressHUD showHUDAddedTo:self.viewController.view animated:YES];
+            self.viewController.view.userInteractionEnabled = NO;
+            [self.viewController.view makeToastActivity:nil];
         }
     }];
     [self.errors subscribeNext:^(NSError *error) {
         @strongify(self)
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewController.view animated:YES];
-        hud.margin = 12;
-        hud.mode = MBProgressHUDModeText;
-        hud.contentColor = UIColorWhite;
-        hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
-        hud.bezelView.color = UIColorBlack;
-        hud.label.font = BZMFont(15);
-        hud.label.text = BZMStrWithDft(error.bzm_displayMessage, kStringUnknownError);
-        [hud hideAnimated:YES afterDelay:3.f];
+        [self.viewController.view makeToast:BZMStrWithDft(error.bzm_displayMessage, kStringUnknownError)];
     }];
     
     self.backCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSNumber * _Nullable isBack) {
@@ -185,14 +179,6 @@
         return handled;
     };
 }
-
-//- (BOOL)filterError {
-//    return YES;
-//}
-
-//- (void)handleError:(NSError *)error {
-//    
-//}
 
 #pragma mark - Class
 + (instancetype)allocWithZone:(struct _NSZone *)zone {
