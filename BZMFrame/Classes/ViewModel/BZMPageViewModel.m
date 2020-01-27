@@ -12,7 +12,6 @@
 @end
 
 @implementation BZMPageViewModel
-@dynamic delegate;
 
 #pragma mark - Init
 #pragma mark - View

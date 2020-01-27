@@ -181,11 +181,8 @@
     return ^(NSError *error) {
         @strongify(self)
         self.error = error;
-        BOOL result = YES;
-        if ([self.delegate respondsToSelector:@selector(handleError)]) {
-            result = ![self.delegate handleError];
-        }
-        return result;
+        BOOL handled = ![self.viewController handleError];
+        return handled;
     };
 }
 

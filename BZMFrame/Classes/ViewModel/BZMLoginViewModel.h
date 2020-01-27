@@ -8,10 +8,6 @@
 #import "BZMScrollViewModel.h"
 #import "BZMType.h"
 
-@protocol BZMLoginViewModelDelegate <BZMScrollViewModelDelegate>
-
-@end
-
 @interface BZMLoginViewModel : BZMScrollViewModel
 @property (nonatomic, strong, readonly) RACSignal *validLoginSignal;
 @property (nonatomic, copy) NSString *username;

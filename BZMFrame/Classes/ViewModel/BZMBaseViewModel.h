@@ -20,11 +20,11 @@
 
 @end
 
-@protocol BZMBaseViewModelDelegate <NSObject>
-- (void)reloadData;
-- (BOOL)handleError;
-
-@end
+//@protocol BZMBaseViewModelDelegate <NSObject>
+//- (void)reloadData;
+//- (BOOL)handleError;
+//
+//@end
 
 @interface BZMBaseViewModel : NSObject <BZMBaseViewModelDataSource>
 @property (nonatomic, assign) BOOL hidesNavigationBar;
@@ -50,7 +50,7 @@
 @property (nonatomic, strong, readonly) RACCommand *backCommand;
 @property (nonatomic, strong, readonly) RACCommand *requestRemoteDataCommand;
 @property (nonatomic, weak) BZMBaseViewController *viewController;
-@property (nonatomic, weak) id<BZMBaseViewModelDelegate> delegate;
+//@property (nonatomic, weak) id<BZMBaseViewModelDelegate> delegate;
 
 - (void)didInitialize;
 - (NSArray *)data2Source:(id)data;

@@ -8,7 +8,7 @@
 #import "BZMCollectionViewController.h"
 #import "BZMWaterfallViewModel.h"
 
-@interface BZMWaterfallViewController : BZMCollectionViewController <BZMCollectionViewModelDelegate, CHTCollectionViewDelegateWaterfallLayout>
+@interface BZMWaterfallViewController : BZMCollectionViewController <CHTCollectionViewDelegateWaterfallLayout>
 
 @end
 

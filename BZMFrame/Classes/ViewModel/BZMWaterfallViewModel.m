@@ -12,7 +12,6 @@
 @end
 
 @implementation BZMWaterfallViewModel
-@dynamic delegate;
 
 #pragma mark - Init
 - (instancetype)initWithRouteParameters:(NSDictionary<NSString *,id> *)parameters {

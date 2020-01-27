@@ -14,10 +14,13 @@ typedef NS_ENUM(NSInteger, BZMScrollDirection){
     BZMScrollDirectionDown
 };
 
-@interface BZMScrollViewController : BZMBaseViewController <BZMScrollViewModelDelegate, DZNEmptyDataSetDelegate, UIScrollViewDelegate>
+@interface BZMScrollViewController : BZMBaseViewController <UIScrollViewDelegate, DZNEmptyDataSetDelegate>
 @property (nonatomic, assign, readonly) CGFloat lastPosition;
 @property (nonatomic, assign, readonly) BZMScrollDirection scrollDirection;
 @property (nonatomic, strong) UIScrollView *scrollView;
+
+- (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths;
+- (void)preloadNextPage;
 
 - (void)setupRefresh:(BOOL)enable;
 - (void)setupMore:(BOOL)enable;

@@ -14,12 +14,7 @@
 
 @end
 
-@protocol BZMPageViewModelDelegate <BZMScrollViewModelDelegate>
-
-@end
-
 @interface BZMPageViewModel : BZMScrollViewModel <BZMPageViewModelDataSource>
-@property (nonatomic, weak) id<BZMPageViewModelDelegate> delegate;
 
 @end
 

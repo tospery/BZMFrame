@@ -8,7 +8,7 @@
 #import <QMUIKit/QMUIKit.h>
 #import "BZMBaseViewModel.h"
 
-@interface BZMBaseViewController : UIViewController <BZMBaseViewModelDelegate>
+@interface BZMBaseViewController : UIViewController
 @property (nonatomic, assign, readonly) CGFloat contentTop;
 @property (nonatomic, assign, readonly) CGFloat contentBottom;
 @property (nonatomic, strong, readonly) BZMBaseViewModel *viewModel;
@@ -18,6 +18,9 @@
 - (instancetype)initWithViewModel:(BZMBaseViewModel *)viewModel;
 
 - (void)bindViewModel;
+
+- (void)reloadData;
+- (BOOL)handleError;
 
 - (void)beginLoad;
 - (void)triggerLoad;

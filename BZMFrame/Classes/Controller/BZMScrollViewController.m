@@ -124,86 +124,6 @@
     }];
 }
 
-#pragma mark public
-- (void)setupRefresh:(BOOL)enable {
-    if (enable) {
-        self.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(triggerRefresh)];
-    }else {
-        [self.scrollView.mj_header removeFromSuperview];
-        self.scrollView.mj_header = nil;
-    }
-}
-
-- (void)setupMore:(BOOL)enable {
-    if (enable) {
-        self.scrollView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(triggerMore)];
-    }else {
-        [self.scrollView.mj_footer removeFromSuperview];
-        self.scrollView.mj_footer = nil;
-    }
-}
-
-- (void)beginRefresh {
-    self.viewModel.requestMode = BZMRequestModeRefresh;
-    if (self.viewModel.error) {
-        self.viewModel.error = nil;
-    }
-}
-
-- (void)triggerRefresh {
-    [self beginRefresh];
-    @weakify(self)
-    [[self.viewModel.requestRemoteDataCommand execute:@(self.viewModel.page.start)].deliverOnMainThread subscribeNext:^(id data) {
-        @strongify(self)
-        self.viewModel.page.index = self.viewModel.page.start;
-    } completed:^{
-        @strongify(self)
-        [self endRefresh];
-    }];
-}
-
-- (void)endRefresh {
-    self.viewModel.requestMode = BZMRequestModeNone;
-    [self.scrollView.mj_header endRefreshing];
-    if (self.viewModel.shouldScrollToMore) {
-        if (self.viewModel.hasMoreData) {
-            [self.scrollView.mj_footer resetNoMoreData];
-        } else {
-            [self.scrollView.mj_footer endRefreshingWithNoMoreData];
-        }
-    }
-}
-
-- (void)beginMore {
-    self.viewModel.requestMode = BZMRequestModeMore;
-}
-
-- (void)triggerMore {
-    [self beginMore];
-    @weakify(self)
-    NSInteger pageIndex = [self.viewModel nextPageIndex];
-    [[self.viewModel.requestRemoteDataCommand execute:@(pageIndex)].deliverOnMainThread subscribeNext:^(id data) {
-        @strongify(self)
-        self.viewModel.page.index = pageIndex;
-    } completed:^{
-        @strongify(self)
-        [self endMore];
-    }];
-}
-
-- (void)endMore {
-    self.viewModel.requestMode = BZMRequestModeNone;
-    if (self.viewModel.hasMoreData) {
-        [self.scrollView.mj_footer endRefreshing];
-    }else {
-        [self.scrollView.mj_footer endRefreshingWithNoMoreData];
-    }
-}
-
-#pragma mark private
-
-#pragma mark - Delegate
-#pragma mark BZMScrollViewModelDelegate
 - (void)reloadData {
     [super reloadData];
     if ([self.scrollView isMemberOfClass:UIScrollView.class]) {
@@ -287,6 +207,82 @@
     return handled;
 }
 
+#pragma mark public
+- (void)setupRefresh:(BOOL)enable {
+    if (enable) {
+        self.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(triggerRefresh)];
+    }else {
+        [self.scrollView.mj_header removeFromSuperview];
+        self.scrollView.mj_header = nil;
+    }
+}
+
+- (void)setupMore:(BOOL)enable {
+    if (enable) {
+        self.scrollView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(triggerMore)];
+    }else {
+        [self.scrollView.mj_footer removeFromSuperview];
+        self.scrollView.mj_footer = nil;
+    }
+}
+
+- (void)beginRefresh {
+    self.viewModel.requestMode = BZMRequestModeRefresh;
+    if (self.viewModel.error) {
+        self.viewModel.error = nil;
+    }
+}
+
+- (void)triggerRefresh {
+    [self beginRefresh];
+    @weakify(self)
+    [[self.viewModel.requestRemoteDataCommand execute:@(self.viewModel.page.start)].deliverOnMainThread subscribeNext:^(id data) {
+        @strongify(self)
+        self.viewModel.page.index = self.viewModel.page.start;
+    } completed:^{
+        @strongify(self)
+        [self endRefresh];
+    }];
+}
+
+- (void)endRefresh {
+    self.viewModel.requestMode = BZMRequestModeNone;
+    [self.scrollView.mj_header endRefreshing];
+    if (self.viewModel.shouldScrollToMore) {
+        if (self.viewModel.hasMoreData) {
+            [self.scrollView.mj_footer resetNoMoreData];
+        } else {
+            [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+        }
+    }
+}
+
+- (void)beginMore {
+    self.viewModel.requestMode = BZMRequestModeMore;
+}
+
+- (void)triggerMore {
+    [self beginMore];
+    @weakify(self)
+    NSInteger pageIndex = [self.viewModel nextPageIndex];
+    [[self.viewModel.requestRemoteDataCommand execute:@(pageIndex)].deliverOnMainThread subscribeNext:^(id data) {
+        @strongify(self)
+        self.viewModel.page.index = pageIndex;
+    } completed:^{
+        @strongify(self)
+        [self endMore];
+    }];
+}
+
+- (void)endMore {
+    self.viewModel.requestMode = BZMRequestModeNone;
+    if (self.viewModel.hasMoreData) {
+        [self.scrollView.mj_footer endRefreshing];
+    }else {
+        [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+    }
+}
+
 - (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths {
     
 }
@@ -294,7 +290,9 @@
 - (void)preloadNextPage {
     
 }
+#pragma mark private
 
+#pragma mark - Delegate
 #pragma mark DZNEmptyDataSetDelegate
 - (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView {
     return (self.viewModel.shouldRequestRemoteData && !self.viewModel.dataSource);

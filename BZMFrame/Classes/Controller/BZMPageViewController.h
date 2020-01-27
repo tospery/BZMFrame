@@ -9,7 +9,7 @@
 #import "BZMPageViewModel.h"
 #import "BZMPageMenuView.h"
 
-@interface BZMPageViewController : BZMScrollViewController <BZMPageViewModelDelegate, BZMPageMenuViewDelegate>
+@interface BZMPageViewController : BZMScrollViewController <BZMPageMenuViewDelegate>
 @property (nonatomic, strong, readonly) BZMPageMenuView *menuView;
 @property (nonatomic, strong, readonly) BZMPageContainerView *containerView;
 

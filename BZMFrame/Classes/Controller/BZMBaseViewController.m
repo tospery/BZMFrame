@@ -25,9 +25,8 @@
 - (instancetype)initWithViewModel:(BZMBaseViewModel *)viewModel {
     if (self = [super init]) {
         self.hidesBottomBarWhenPushed = YES;
-        viewModel.viewController = self;
-        viewModel.delegate = self;
         self.viewModel = viewModel;
+        self.viewModel.viewController = self;
         @weakify(self)
         [[self rac_signalForSelector:@selector(bindViewModel)] subscribeNext:^(RACTuple *tuple) {
             @strongify(self)
@@ -226,6 +225,14 @@
     
 }
 
+- (void)reloadData {
+    
+}
+
+- (BOOL)handleError {
+    return NO;
+}
+
 #pragma mark - Action
 - (void)backBarItemPressed:(UIBarButtonItem *)barItem {
     [self.viewModel.backCommand execute:@(YES)];
@@ -237,20 +244,6 @@
 
 #pragma mark - Notification
 #pragma mark - Delegate
-#pragma mark BZMBaseViewModelDelegate
-- (void)reloadData {
-    
-}
-
-- (BOOL)handleError {
-    return NO;
-}
-
-#pragma mark QMUICustomNavigationBarTransitionDelegate
-- (BOOL)shouldCustomizeNavigationBarTransitionIfHideable {
-    return YES;
-}
-
 #pragma mark UINavigationControllerBackButtonHandlerProtocol
 - (BOOL)forceEnableInteractivePopGestureRecognizer {
     return YES;

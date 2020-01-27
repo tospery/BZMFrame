@@ -124,16 +124,6 @@
 }
 
 #pragma mark - Method
-- (UICollectionViewLayout *)collectionViewLayout {
-//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-//    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-//    layout.minimumLineSpacing = 0.0f;
-//    layout.minimumInteritemSpacing = 0.0f;
-    return [[UICollectionViewFlowLayout alloc] init];
-}
-
-#pragma mark - Delegate
-#pragma mark BZMCollectionViewModelDelegate
 - (void)reloadData {
     [super reloadData];
     [self.collectionView reloadData];
@@ -147,6 +137,15 @@
     [self triggerMore];
 }
 
+- (UICollectionViewLayout *)collectionViewLayout {
+//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+//    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+//    layout.minimumLineSpacing = 0.0f;
+//    layout.minimumInteritemSpacing = 0.0f;
+    return [[UICollectionViewFlowLayout alloc] init];
+}
+
+#pragma mark - Delegate
 #pragma mark UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (![collectionView.dataSource conformsToProtocol:@protocol(BZMCollectionViewModelDataSource)]) {

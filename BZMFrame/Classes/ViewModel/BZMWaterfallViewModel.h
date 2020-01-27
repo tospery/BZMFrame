@@ -14,12 +14,12 @@
 
 @end
 
-@protocol BZMWaterfallViewModelDelegate <BZMCollectionViewModelDelegate>
-
-@end
+//@protocol BZMWaterfallViewModelDelegate <BZMCollectionViewModelDelegate>
+//
+//@end
 
 @interface BZMWaterfallViewModel : BZMCollectionViewModel <BZMWaterfallViewModelDataSource>
-@property (nonatomic, weak) id<BZMWaterfallViewModelDelegate> delegate;
+//@property (nonatomic, weak) id<BZMWaterfallViewModelDelegate> delegate;
 
 @end
 
