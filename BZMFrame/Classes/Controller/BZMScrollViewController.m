@@ -351,11 +351,16 @@
     } else if (offset < 0) {
         self.scrollDirection = BZMScrollDirectionDown;
     } else {
-        self.scrollDirection = BZMScrollDirectionUp;
+        self.scrollDirection = BZMScrollDirectionNone;
     }
     self.lastPosition = currentPostion;
 }
 
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    self.scrollDirection = BZMScrollDirectionNone;
+//
+//    NSLog(@"abc: %ld", self.scrollDirection);
+//}
 //- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 //
 //}
@@ -369,9 +374,6 @@
 //}
 //
 //- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
-//
-//}
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
 //
 //}
 //

@@ -131,6 +131,7 @@
 #import <DKNightVersion/DKNightVersion.h>
 #import <WebViewJavascriptBridge/WebViewJavascriptBridge.h>
 #import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
+#import <MJRefresh/MJRefresh.h>
 
 @interface BZMFrame : NSObject
 
