@@ -6,12 +6,13 @@
 //
 
 #import "BZMBaseViewController.h"
+#import <Toast/UIView+Toast.h>
+#import <DKNightVersion/DKNightVersion.h>
 #import "BZMType.h"
 #import "BZMFunction.h"
 #import "BZMPageViewController.h"
 #import "BZMTabBarViewController.h"
 #import "UIViewController+BZMFrame.h"
-#import <DKNightVersion/DKNightVersion.h>
 
 @interface BZMBaseViewController ()
 @property (nonatomic, assign, readwrite) CGFloat contentTop;
@@ -206,23 +207,29 @@
 }
 
 - (void)beginUpdate {
-    
+    self.viewModel.requestMode = BZMRequestModeUpdate;
+//    if (self.viewModel.error || self.viewModel.dataSource) {
+//        self.viewModel.error = nil;
+//        self.viewModel.dataSource = nil;
+//    }
+    self.view.userInteractionEnabled = NO;
+    [self.view makeToastActivity:CSToastPositionCenter];
 }
 
 - (void)triggerUpdate {
-    //    [self beginUpdate];
-    //
-    //    @weakify(self)
-    //    [[[self.viewModel.requestRemoteDataCommand execute:@1] deliverOnMainThread] subscribeNext:^(id  _Nullable x) {
-    //
-    //    } completed:^{
-    //        @strongify(self)
-    //        [self endUpdate];
-    //    }];
+    [self beginUpdate];
+    @weakify(self)
+    [[self.viewModel.requestRemoteDataCommand execute:nil].deliverOnMainThread subscribeNext:^(id data) {
+    } completed:^{
+        @strongify(self)
+        [self endUpdate];
+    }];
 }
 
 - (void)endUpdate {
-    
+    self.viewModel.requestMode = BZMRequestModeNone;
+    self.view.userInteractionEnabled = YES;
+    [self.view hideToastActivity];
 }
 
 - (void)reloadData {

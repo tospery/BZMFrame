@@ -192,6 +192,18 @@
     }
 }
 
+- (void)triggerUpdate {
+    [self beginUpdate];
+    @weakify(self)
+    [[self.viewModel.requestRemoteDataCommand execute:@(self.viewModel.page.start)].deliverOnMainThread subscribeNext:^(id data) {
+        @strongify(self)
+        self.viewModel.page.index = self.viewModel.page.start;
+    } completed:^{
+        @strongify(self)
+        [self endUpdate];
+    }];
+}
+
 - (void)bindViewModel {
     [super bindViewModel];
     
