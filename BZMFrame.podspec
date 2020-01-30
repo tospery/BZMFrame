@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BZMFrame'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'iOS App Framework.'
 
 # This description is used to generate tags and improve search results.
@@ -53,6 +53,4 @@ Pod::Spec.new do |s|
   s.dependency 'Toast', '4.0.0'
   s.dependency 'DKNightVersion', '2.4.3'
   s.dependency 'CHTCollectionViewWaterfallLayout', '0.9.8'
-  # s.dependency 'LTNavigationBar', '2.1.9'
-  # s.dependency 'MBProgressHUD', '1.1.0'
 end
