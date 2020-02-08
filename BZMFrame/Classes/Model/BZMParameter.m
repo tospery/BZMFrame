@@ -1,17 +1,17 @@
 //
-//  BZMParam.m
+//  BZMParameter.m
 //  Pods
 //
 //  Created by 杨建祥 on 2020/1/21.
 //
 
-#import "BZMParam.h"
+#import "BZMParameter.h"
 
-@interface BZMParam ()
+@interface BZMParameter ()
 
 @end
 
-@implementation BZMParam
+@implementation BZMParameter
 + (NSString *)title {
     return @"title";
 }
@@ -36,8 +36,8 @@
     return @"hideNavBar";
 }
 
-+ (NSString *)hideNavBottomLine {
-    return @"hideNavBottomLine";
++ (NSString *)hideNavLine {
+    return @"hideNavLine";
 }
 
 + (NSString *)page {
@@ -60,8 +60,8 @@
     return @"progressColor";
 }
 
-+ (NSString *)nativeHandlers {
-    return @"nativeHandlers";
++ (NSString *)ocHandlers {
+    return @"ocHandlers";
 }
 
 + (NSString *)jsHandlers {

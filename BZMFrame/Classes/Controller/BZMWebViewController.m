@@ -44,7 +44,7 @@
     [self.view addSubview:self.progressView];
     
     @weakify(self)
-    for (NSString *handler in self.viewModel.nativeHandlers) {
+    for (NSString *handler in self.viewModel.ocHandlers) {
         if (![handler isKindOfClass:NSString.class]) {
             continue;
         }

@@ -5,9 +5,9 @@
 //  Created by 杨建祥 on 2020/1/24.
 //
 
-#import <OvercoatObjC/OvercoatObjC.h>
+#import <RESTful/RESTful.h>
 
-@interface BZMBaseSessionManager : OVCHTTPSessionManager
+@interface BZMBaseSessionManager : RESTHTTPSessionManager
 
 - (RACSignal *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters;
 

@@ -1,20 +1,20 @@
+////
+////  BZMWaterfallViewModel.h
+////  Pods
+////
+////  Created by 杨建祥 on 2020/1/25.
+////
 //
-//  BZMWaterfallViewModel.h
-//  Pods
+//#import "BZMCollectionViewModel.h"
+//#import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
 //
-//  Created by 杨建祥 on 2020/1/25.
+//@class BZMWaterfallViewModel;
 //
-
-#import "BZMCollectionViewModel.h"
-#import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
-
-@class BZMWaterfallViewModel;
-
-@protocol BZMWaterfallViewModelDataSource <BZMCollectionViewModelDataSource>
-
-@end
-
-@interface BZMWaterfallViewModel : BZMCollectionViewModel <BZMWaterfallViewModelDataSource>
-
-@end
-
+//@protocol BZMWaterfallViewModelDataSource <BZMCollectionViewModelDataSource>
+//
+//@end
+//
+//@interface BZMWaterfallViewModel : BZMCollectionViewModel <BZMWaterfallViewModelDataSource>
+//
+//@end
+//

@@ -34,6 +34,10 @@ BZMMisc *gMisc;
     return self;
 }
 
+- (void)initialScreen {
+    
+}
+
 #pragma mark - Setup
 - (void)setupFrame {
     

@@ -46,7 +46,7 @@
 #import "BZMPageMenuIndicatorItem.h"
 #import "BZMPageMenuTitleItem.h"
 #import "BZMPage.h"
-#import "BZMParam.h"
+#import "BZMParameter.h"
 #import "BZMBaseResponse.h"
 #import "BZMBaseSessionManager.h"
 #import "BZMWaterfallViewModel.h"
@@ -122,7 +122,7 @@
 #import <JLRoutes/JLRRouteHandler.h>
 #import <JLRoutes/JLRRouteDefinition.h>
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
-#import <OvercoatObjC/OvercoatObjC.h>
+#import <RESTful/RESTful.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <FCUUID/FCUUID.h>
 #import <SDWebImage/SDWebImage.h>
@@ -130,9 +130,6 @@
 #import <TYAlertController/TYAlertController.h>
 #import <DKNightVersion/DKNightVersion.h>
 #import <WebViewJavascriptBridge/WebViewJavascriptBridge.h>
-#import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
 #import <MJRefresh/MJRefresh.h>
+#import <QMUIKit/QMUIKit.h>
 
-@interface BZMFrame : NSObject
-
-@end

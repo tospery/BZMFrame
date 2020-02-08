@@ -5,9 +5,9 @@
 //  Created by 杨建祥 on 2020/1/24.
 //
 
-#import <OvercoatObjC/OvercoatObjC.h>
+#import <RESTful/RESTful.h>
 
-@interface BZMBaseResponse : OVCResponse
+@interface BZMBaseResponse : RESTResponse
 @property (nonatomic, strong, readonly) NSString *message;
 @property (nonatomic, assign) NSInteger code;
 

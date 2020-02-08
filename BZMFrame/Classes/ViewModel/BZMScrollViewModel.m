@@ -10,7 +10,7 @@
 #import "BZMConst.h"
 #import "BZMFunction.h"
 #import "BZMString.h"
-#import "BZMParam.h"
+#import "BZMParameter.h"
 #import "BZMFrameManager.h"
 #import "NSAttributedString+BZMFrame.h"
 #import "NSError+BZMFrame.h"
@@ -26,11 +26,11 @@
 #pragma mark - Init
 - (instancetype)initWithRouteParameters:(NSDictionary<NSString *,id> *)parameters {
     if (self = [super initWithRouteParameters:parameters]) {
-        self.shouldPullToRefresh = BZMBoolMember(parameters, BZMParam.pullRefresh, NO);
-        self.shouldScrollToMore = BZMBoolMember(parameters, BZMParam.scrollMore, NO);
+        self.shouldPullToRefresh = BZMBoolMember(parameters, BZMParameter.pullRefresh, NO);
+        self.shouldScrollToMore = BZMBoolMember(parameters, BZMParameter.scrollMore, NO);
         self.page = [[BZMPage alloc] init];
-        self.page.start = BZMIntMember(parameters, BZMParam.page, BZMFrameManager.share.page.start);
-        self.page.size = BZMIntMember(parameters, BZMParam.pageSize, BZMFrameManager.share.page.size);
+        self.page.start = BZMIntMember(parameters, BZMParameter.page, BZMFrameManager.share.page.start);
+        self.page.size = BZMIntMember(parameters, BZMParameter.pageSize, BZMFrameManager.share.page.size);
     }
     return self;
 }

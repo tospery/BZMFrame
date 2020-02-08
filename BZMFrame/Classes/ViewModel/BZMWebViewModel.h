@@ -10,7 +10,7 @@
 @interface BZMWebViewModel : BZMScrollViewModel
 @property (nonatomic, strong, readonly) NSURL *url;
 @property (nonatomic, strong, readonly) UIColor *progressColor;
-@property (nonatomic, strong) NSArray *nativeHandlers;
+@property (nonatomic, strong) NSArray *ocHandlers;
 @property (nonatomic, strong) NSArray *jsHandlers;
 
 @end

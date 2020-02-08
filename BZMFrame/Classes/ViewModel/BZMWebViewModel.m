@@ -9,7 +9,7 @@
 #import <JLRoutes/JLRoutes.h>
 #import "BZMConst.h"
 #import "BZMFunction.h"
-#import "BZMParam.h"
+#import "BZMParameter.h"
 #import "NSDictionary+BZMFrame.h"
 
 @interface BZMWebViewModel ()
@@ -23,9 +23,9 @@
     if (self = [super initWithRouteParameters:parameters]) {
         self.shouldFetchLocalData = NO;
         self.shouldRequestRemoteData = YES;
-        self.nativeHandlers = BZMArrMember(parameters, BZMParam.nativeHandlers, nil);
-        self.jsHandlers = BZMArrMember(parameters, BZMParam.jsHandlers, nil);
-        self.url = BZMObjWithDft(BZMURLMember(parameters, JLRouteURLKey, nil), BZMURLMember(parameters, BZMParam.url, nil));
+        self.ocHandlers = BZMArrMember(parameters, BZMParameter.ocHandlers, nil);
+        self.jsHandlers = BZMArrMember(parameters, BZMParameter.jsHandlers, nil);
+        self.url = BZMObjWithDft(BZMURLMember(parameters, JLRouteURLKey, nil), BZMURLMember(parameters, BZMParameter.url, nil));
         self.progressColor = BZMColorKey(TINT);
     }
     return self;

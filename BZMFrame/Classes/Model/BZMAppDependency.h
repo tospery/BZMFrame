@@ -12,6 +12,8 @@
 
 - (instancetype)initWithWindow:(UIWindow *)window;
 
+- (void)initialScreen;
+
 - (void)setupFrame;
 - (void)setupVendor;
 - (void)setupAppearance;

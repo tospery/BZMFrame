@@ -11,7 +11,7 @@
 #import "BZMConst.h"
 #import "BZMFunction.h"
 #import "BZMString.h"
-#import "BZMParam.h"
+#import "BZMParameter.h"
 #import "NSObject+BZMFrame.h"
 #import "NSDictionary+BZMFrame.h"
 #import "NSError+BZMFrame.h"
@@ -37,12 +37,12 @@
 - (instancetype)initWithRouteParameters:(NSDictionary<NSString *,id> *)parameters {
     if (self = [super init]) {
         self.parameters = parameters;
-        self.shouldFetchLocalData = BZMBoolMember(parameters, BZMParam.fetchLocal, YES);
-        self.shouldRequestRemoteData = BZMBoolMember(parameters, BZMParam.requestRemote, NO);
-        self.hidesNavigationBar = BZMBoolMember(parameters, BZMParam.hideNavBar, NO);
-        self.hidesNavBottomLine = BZMBoolMember(parameters, BZMParam.hideNavBottomLine, NO);
-        self.title = BZMStrMember(parameters, BZMParam.title, nil);
-        id modelObject = BZMStrMember(parameters, BZMParam.model, nil).bzm_JSONObject;
+        self.shouldFetchLocalData = BZMBoolMember(parameters, BZMParameter.fetchLocal, YES);
+        self.shouldRequestRemoteData = BZMBoolMember(parameters, BZMParameter.requestRemote, NO);
+        self.hidesNavigationBar = BZMBoolMember(parameters, BZMParameter.hideNavBar, NO);
+        self.hidesNavBottomLine = BZMBoolMember(parameters, BZMParameter.hideNavLine, NO);
+        self.title = BZMStrMember(parameters, BZMParameter.title, nil);
+        id modelObject = BZMStrMember(parameters, BZMParameter.model, nil).bzm_JSONObject;
         if (modelObject && [modelObject isKindOfClass:NSDictionary.class]) {
             Class modelClass = NSClassFromString([NSStringFromClass(self.class) stringByReplacingOccurrencesOfString:kBZMVMSuffix withString:@""]);
             if (modelClass) {

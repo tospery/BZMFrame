@@ -60,7 +60,7 @@
     } else {
         if (self.presentingViewController) {
             UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(backBarItemPressed:)];
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(closeBarItemPressed:)];
         } else {
             self.navigationItem.leftBarButtonItem = nil;
         }

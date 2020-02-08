@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BZMFrame'
-  s.version          = '1.0.1'
+  s.version          = '1.0.2'
   s.summary          = 'iOS App Framework.'
 
 # This description is used to generate tags and improve search results.
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Foundation', 'UIKit', 'Accelerate', 'QuartzCore', 'CoreLocation', 'SystemConfiguration', 'AdSupport', 'WebKit', 'CoreGraphics', 'Photos'
-  s.dependency 'OvercoatObjC', '1.0.1'
+  s.dependency 'RESTful', '1.0.0'
   s.dependency 'CocoaLumberjack', '3.6.0'
   s.dependency 'SDWebImage', '5.4.0'
   s.dependency 'MJRefresh', '3.3.1'
@@ -52,5 +52,4 @@ Pod::Spec.new do |s|
   s.dependency 'TYAlertController', '1.2.0'
   s.dependency 'Toast', '4.0.0'
   s.dependency 'DKNightVersion', '2.4.3'
-  s.dependency 'CHTCollectionViewWaterfallLayout', '0.9.8'
 end

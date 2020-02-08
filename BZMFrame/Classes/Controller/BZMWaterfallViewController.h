@@ -1,14 +1,14 @@
+////
+////  BZMWaterfallViewController.h
+////  Pods
+////
+////  Created by 杨建祥 on 2020/1/25.
+////
 //
-//  BZMWaterfallViewController.h
-//  Pods
+//#import "BZMCollectionViewController.h"
+//#import "BZMWaterfallViewModel.h"
 //
-//  Created by 杨建祥 on 2020/1/25.
+//@interface BZMWaterfallViewController : BZMCollectionViewController <CHTCollectionViewDelegateWaterfallLayout>
 //
-
-#import "BZMCollectionViewController.h"
-#import "BZMWaterfallViewModel.h"
-
-@interface BZMWaterfallViewController : BZMCollectionViewController <CHTCollectionViewDelegateWaterfallLayout>
-
-@end
-
+//@end
+//
