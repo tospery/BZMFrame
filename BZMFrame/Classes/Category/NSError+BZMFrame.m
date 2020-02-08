@@ -70,25 +70,6 @@
     return error;
 }
 
-// YBZM_TODO 清理不需要的图标
-//- (UIImage *)bzm_reasonImage {
-//    UIImage *image = nil;
-//    if (BZMErrorCodeNetwork == self.code) {
-//        image = BZMFrameManager.share.networkImage;
-//    }else if (BZMErrorCodeServer == self.code) {
-//        image = BZMFrameManager.share.serverImage;
-//    }else if (BZMErrorCodeExpired == self.code) {
-//        image = BZMFrameManager.share.expireImage;
-//    }else {
-//        image = BZMFrameManager.share.emptyImage;
-//    }
-//    return image;
-//}
-
-//+ (NSError *)bzm_errorWithCode:(BZMErrorCode)code {
-//    return [NSError bzm_errorWithCode:code description:BZMErrorCodeString(code)];
-//}
-
 + (NSError *)bzm_errorWithCode:(NSInteger)code {
     return [NSError bzm_errorWithCode:code description:nil];
 }

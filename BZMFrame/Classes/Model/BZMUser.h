@@ -10,8 +10,8 @@
 @interface BZMUser : BZMBaseModel
 @property (nonatomic, assign) BOOL isLogined;
 
-- (void)login:(BZMUser *)user;
-- (void)logout;
+//- (void)login:(BZMUser *)user;
+//- (void)logout;
 
 @end
 

@@ -111,6 +111,9 @@
         if (executing.boolValue) {
             self.viewController.view.userInteractionEnabled = NO;
             [self.viewController.view makeToastActivity:CSToastPositionCenter];
+        } else {
+            self.viewController.view.userInteractionEnabled = YES;
+            [self.viewController.view hideToastActivity];
         }
     }];
     [self.errors subscribeNext:^(NSError *error) {

@@ -25,7 +25,7 @@
     return nil;
 }
 
-// YBZM_TODO 兼容性，变为属性
+// YJX_TODO 兼容性，变为属性
 - (NSString *)bzm_urlEncoded {
     NSString *str = [self bzm_urlDecoded]; // 避免两次encode
 #pragma clang diagnostic push

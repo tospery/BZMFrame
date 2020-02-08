@@ -153,7 +153,7 @@
 }
 
 - (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL result))completionHandler {
-    // YBZM_TODO
+    // YJX_TODO
 //    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:kStringCancel otherButtonTitles:kStringOK, nil];
 //    [alertView.rac_buttonClickedSignal subscribeNext:^(NSNumber *index) {
 //        completionHandler(index.integerValue == 1);

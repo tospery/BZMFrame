@@ -8,9 +8,6 @@
 #ifndef BZMConst_h
 #define BZMConst_h
 
-// YBZM_TODO 分在不同文件
-#pragma mark - 初始参数
-
 #pragma mark - 通知标识
 #define kBZMUserWillLoginNotification               (@"kBZMUserWillLoginNotification")
 #define kBZMUserDidLoginNotification                (@"kBZMUserDidLoginNotification")

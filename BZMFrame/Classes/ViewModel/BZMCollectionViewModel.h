@@ -31,7 +31,7 @@
 @property (nonatomic, strong) NSArray *footerNames;
 //@property (nonatomic, strong) NSDictionary *footerClassMapping;
 
-//@property (nonatomic, strong) id headerVM; // YBZM_TODO 新增 collectionHeaderView
+//@property (nonatomic, strong) id headerVM;
 //@property (nonatomic, strong) id footerVM;
 
 - (void)configureCell:(UICollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath withItem:(BZMCollectionItem *)item;
