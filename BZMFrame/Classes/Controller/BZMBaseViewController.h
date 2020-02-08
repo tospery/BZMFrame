@@ -11,6 +11,7 @@
 @interface BZMBaseViewController : UIViewController
 @property (nonatomic, assign, readonly) CGFloat contentTop;
 @property (nonatomic, assign, readonly) CGFloat contentBottom;
+@property (nonatomic, assign, readonly) CGRect contentFrame;
 @property (nonatomic, strong, readonly) BZMBaseViewModel *viewModel;
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;

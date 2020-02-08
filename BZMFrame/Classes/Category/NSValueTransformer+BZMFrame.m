@@ -8,12 +8,20 @@
 #import "NSValueTransformer+BZMFrame.h"
 #import <Mantle/Mantle.h>
 #import "BZMFunction.h"
+#import "NSString+BZMFrame.h"
+#import "NSNumber+BZMFrame.h"
 
+NSString * const BZMStringValueTransformerName = @"BZMStringValueTransformerName";
 NSString * const BZMColorValueTransformerName = @"BZMColorValueTransformerName";
 
 @implementation NSValueTransformer (BZMFrame)
 + (void)load {
     @autoreleasepool {
+        MTLValueTransformer *stringValueTransformer = [MTLValueTransformer transformerUsingForwardBlock:^id(id obj, BOOL *success, NSError *__autoreleasing *error) {
+            return [NSString bzm_stringWithObject:obj];
+        }];
+        [NSValueTransformer setValueTransformer:stringValueTransformer forName:BZMStringValueTransformerName];
+        
         MTLValueTransformer *colorValueTransformer = [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *str, BOOL *success, NSError *__autoreleasing *error) {
             if (str == nil) return nil;
             if (![str isKindOfClass:NSString.class]) {

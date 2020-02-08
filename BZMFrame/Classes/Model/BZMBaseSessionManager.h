@@ -9,7 +9,7 @@
 
 @interface BZMBaseSessionManager : RESTHTTPSessionManager
 
-- (RACSignal *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters;
+- (RACSignal *)get:(NSString *)URLString parameters:(NSDictionary *)parameters;
 
 @end
 

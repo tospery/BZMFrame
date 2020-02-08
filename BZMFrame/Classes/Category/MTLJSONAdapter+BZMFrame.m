@@ -9,6 +9,10 @@
 #import "NSValueTransformer+BZMFrame.h"
 
 @implementation MTLJSONAdapter (BZMFrame)
++ (NSValueTransformer *)NSStringJSONTransformer {
+    return [NSValueTransformer valueTransformerForName:BZMStringValueTransformerName];
+}
+
 + (NSValueTransformer *)UIColorJSONTransformer {
     return [NSValueTransformer valueTransformerForName:BZMColorValueTransformerName];
 }

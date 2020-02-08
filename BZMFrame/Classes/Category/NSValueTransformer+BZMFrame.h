@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString * const BZMStringValueTransformerName;
 extern NSString * const BZMColorValueTransformerName;
 
 @interface NSValueTransformer (BZMFrame)

@@ -43,7 +43,7 @@ typedef RACSignal *(^MapBlock)(BZMBaseResponse *);
     return self;
 }
 
-- (RACSignal *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters {
+- (RACSignal *)get:(NSString *)URLString parameters:(NSDictionary *)parameters {
 //    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
 //        [[[self rac_GET:URLString parameters:parameters] flattenMap:self.mapBlock] subscribeNext:^(id responseObject) {
 //            [subscriber sendNext:responseObject];
@@ -57,7 +57,7 @@ typedef RACSignal *(^MapBlock)(BZMBaseResponse *);
 //        }];
 //    }] retry:1];
     
-    return [[self rac_GET:URLString parameters:parameters] flattenMap:self.mapBlock];
+    return [[self rac_GET:URLString parameters:parameters progress:nil] flattenMap:self.mapBlock];
 }
 
 @end

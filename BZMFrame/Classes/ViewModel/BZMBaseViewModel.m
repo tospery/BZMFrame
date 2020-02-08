@@ -110,7 +110,7 @@
         @strongify(self)
         if (executing.boolValue) {
             self.viewController.view.userInteractionEnabled = NO;
-            [self.viewController.view makeToastActivity:nil];
+            [self.viewController.view makeToastActivity:CSToastPositionCenter];
         }
     }];
     [self.errors subscribeNext:^(NSError *error) {

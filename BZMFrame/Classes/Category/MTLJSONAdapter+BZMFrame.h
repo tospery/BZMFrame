@@ -8,6 +8,7 @@
 #import <Mantle/Mantle.h>
 
 @interface MTLJSONAdapter (BZMFrame)
++ (NSValueTransformer *)NSStringJSONTransformer;
 + (NSValueTransformer *)UIColorJSONTransformer;
 
 @end

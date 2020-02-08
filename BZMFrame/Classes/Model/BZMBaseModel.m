@@ -11,6 +11,7 @@
 #import "BZMFunction.h"
 #import "NSString+BZMFrame.h"
 #import "NSNumber+BZMFrame.h"
+#import "MTLJSONAdapter+BZMFrame.h"
 
 @interface BZMBaseModel ()
 @property (nonatomic, copy, readwrite) NSString *mid;
@@ -57,12 +58,18 @@
     return mapping;
 }
 
-+ (NSValueTransformer *)midJSONTransformer {
-    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-        return [NSString bzm_stringWithObject:value];
-    } reverseBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-        return [NSString bzm_stringWithObject:value];
-    }];
+//+ (NSValueTransformer *)midJSONTransformer {
+//    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+//        return [NSString bzm_stringWithObject:value];
+//    } reverseBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+//        return [NSString bzm_stringWithObject:value];
+//    }];
+//}
+
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key {
+    return @{
+        @"mid": [MTLJSONAdapter NSStringJSONTransformer]
+    }[key];
 }
 
 #pragma mark public

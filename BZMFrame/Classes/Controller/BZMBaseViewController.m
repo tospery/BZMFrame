@@ -17,6 +17,7 @@
 @interface BZMBaseViewController ()
 @property (nonatomic, assign, readwrite) CGFloat contentTop;
 @property (nonatomic, assign, readwrite) CGFloat contentBottom;
+@property (nonatomic, assign, readwrite) CGRect contentFrame;
 @property (nonatomic, strong, readwrite) BZMBaseViewModel *viewModel;
 
 @end
@@ -106,6 +107,10 @@
         value += tabBar.qmui_height;
     }
     return value;
+}
+
+- (CGRect)contentFrame {
+    return CGRectMake(0, self.contentTop, self.view.qmui_width, self.view.qmui_height - self.contentTop - self.contentBottom);
 }
 
 #pragma mark - Private
