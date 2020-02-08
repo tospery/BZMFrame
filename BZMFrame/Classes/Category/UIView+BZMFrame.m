@@ -38,4 +38,11 @@
     self.layer.borderColor = borderColor.CGColor;
 }
 
+- (BZMBorderLayer *)bzm_borderLayer {
+    if ([self.layer isKindOfClass:BZMBorderLayer.class]) {
+        return (BZMBorderLayer *)self.layer;
+    }
+    return nil;
+}
+
 @end

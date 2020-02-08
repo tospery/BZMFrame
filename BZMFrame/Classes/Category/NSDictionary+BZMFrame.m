@@ -25,11 +25,11 @@
     return result;
 }
 
-- (NSString *)bzm_stringForKey:(NSString *)key {
+- (NSString *)bzm_stringForKey:(id)key {
     return [self bzm_stringForKey:key withDefault:nil];
 }
 
-- (NSString *)bzm_stringForKey:(NSString *)key withDefault:(NSString *)dft {
+- (NSString *)bzm_stringForKey:(id)key withDefault:(NSString *)dft {
     if (!key) {
         return dft;
     }
@@ -48,11 +48,11 @@
     return string;
 }
 
-- (NSNumber *)bzm_numberForKey:(NSString *)key {
+- (NSNumber *)bzm_numberForKey:(id)key {
     return [self bzm_numberForKey:key withDefault:nil];
 }
 
-- (NSNumber *)bzm_numberForKey:(NSString *)key withDefault:(NSNumber *)dft {
+- (NSNumber *)bzm_numberForKey:(id)key withDefault:(NSNumber *)dft {
     if (!key) {
         return dft;
     }
@@ -71,11 +71,11 @@
     return number;
 }
 
-- (NSArray *)bzm_arrayForKey:(NSString *)key {
+- (NSArray *)bzm_arrayForKey:(id)key {
     return [self bzm_arrayForKey:key withDefault:nil];
 }
 
-- (NSArray *)bzm_arrayForKey:(NSString *)key withDefault:(NSArray *)dft {
+- (NSArray *)bzm_arrayForKey:(id)key withDefault:(NSArray *)dft {
     if (!key) {
         return dft;
     }
@@ -88,11 +88,11 @@
     return array;
 }
 
-- (NSDictionary *)bzm_dictionaryForKey:(NSString *)key {
+- (NSDictionary *)bzm_dictionaryForKey:(id)key {
     return [self bzm_dictionaryForKey:key withDefault:nil];
 }
 
-- (NSDictionary *)bzm_dictionaryForKey:(NSString *)key withDefault:(NSDictionary *)dft {
+- (NSDictionary *)bzm_dictionaryForKey:(id)key withDefault:(NSDictionary *)dft {
     if (!key) {
         return dft;
     }
@@ -105,25 +105,17 @@
     return dictionary;
 }
 
-- (id)bzm_objectForKey:(NSString *)key {
+- (id)bzm_objectForKey:(id)key {
     return [self bzm_objectForKey:key withDefault:nil];
 }
 
-- (id)bzm_objectForKey:(NSString *)key withDefault:(id)dft {
-    return [self bzm_objectForKey:key withDefault:dft baseClass:nil];
-}
-
-- (id)bzm_objectForKey:(NSString *)key withDefault:(id)dft baseClass:(Class)cls {
+- (id)bzm_objectForKey:(id)key withDefault:(id)dft {
     if (!key) {
         return dft;
     }
     
     id object = [self objectForKey:key];
     if (!object) {
-        return dft;
-    }
-    
-    if (cls && ![object isKindOfClass:cls]) {
         return dft;
     }
     

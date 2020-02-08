@@ -11,21 +11,20 @@
 
 - (NSDictionary *)bzm_dictionaryByUnderlineValuesFromCamel;
 
-- (NSString *)bzm_stringForKey:(NSString *)key;
-- (NSString *)bzm_stringForKey:(NSString *)key withDefault:(NSString *)dft;
+- (NSString *)bzm_stringForKey:(id)key;
+- (NSString *)bzm_stringForKey:(id)key withDefault:(NSString *)dft;
 
-- (NSNumber *)bzm_numberForKey:(NSString *)key;
-- (NSNumber *)bzm_numberForKey:(NSString *)key withDefault:(NSNumber *)dft;
+- (NSNumber *)bzm_numberForKey:(id)key;
+- (NSNumber *)bzm_numberForKey:(id)key withDefault:(NSNumber *)dft;
 
-- (NSArray *)bzm_arrayForKey:(NSString *)key;
-- (NSArray *)bzm_arrayForKey:(NSString *)key withDefault:(NSArray *)dft;
+- (NSArray *)bzm_arrayForKey:(id)key;
+- (NSArray *)bzm_arrayForKey:(id)key withDefault:(NSArray *)dft;
 
-- (NSDictionary *)bzm_dictionaryForKey:(NSString *)key;
-- (NSDictionary *)bzm_dictionaryForKey:(NSString *)key withDefault:(NSDictionary *)dft;
+- (NSDictionary *)bzm_dictionaryForKey:(id)key;
+- (NSDictionary *)bzm_dictionaryForKey:(id)key withDefault:(NSDictionary *)dft;
 
-- (id)bzm_objectForKey:(NSString *)key;
-- (id)bzm_objectForKey:(NSString *)key withDefault:(id)dft;
-- (id)bzm_objectForKey:(NSString *)key withDefault:(id)dft baseClass:(Class)cls;
+- (id)bzm_objectForKey:(id)key;
+- (id)bzm_objectForKey:(id)key withDefault:(id)dft;
 
 + (NSDictionary *)bzm_dictionaryFromID:(id)data;
 

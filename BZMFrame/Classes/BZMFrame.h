@@ -50,6 +50,7 @@
 #import "BZMBaseResponse.h"
 #import "BZMBaseSessionManager.h"
 #import "BZMWaterfallViewModel.h"
+#import "BZMNormalCollectionItem.h"
 
 #pragma mark - Controller
 #import "BZMBaseViewController.h"
@@ -80,6 +81,8 @@
 #import "BZMPageMenuTitleView.h"
 #import "BZMLabel.h"
 #import "BZMButton.h"
+#import "BZMNormalCollectionCell.h"
+#import "BZMBorderLayer.h"
 
 #pragma mark - Category
 #import "NSObject+BZMFrame.h"
