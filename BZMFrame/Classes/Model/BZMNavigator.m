@@ -8,6 +8,7 @@
 #import "BZMNavigator.h"
 #import <JLRoutes/JLRoutes.h>
 #import "BZMConst.h"
+#import "BZMFunction.h"
 #import "BZMBaseViewController.h"
 #import "BZMNavigationController.h"
 #import "BZMTabBarViewController.h"
@@ -64,6 +65,12 @@
 
 - (BOOL)routeURL:(NSURL *)URL {
     return [JLRoutes routeURL:URL];
+}
+
+- (BOOL)routePattern:(NSString *)pattern {
+    NSString *scheme = UIApplication.sharedApplication.bzm_urlScheme;
+    NSURL *url = BZMURLWithStr(BZMStrWithFmt(@"%@://m.%@.com%@", scheme, scheme, pattern));
+    return [self routeURL:url];
 }
 
 #pragma mark - Delegate

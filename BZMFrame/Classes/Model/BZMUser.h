@@ -11,7 +11,7 @@
 @property (nonatomic, assign) BOOL isLogined;
 
 //- (void)login:(BZMUser *)user;
-//- (void)logout;
+- (void)logout;
 
 @end
 

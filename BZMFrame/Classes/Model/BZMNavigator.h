@@ -20,6 +20,7 @@
 
 - (BOOL)canRouteURL:(NSURL *)URL;
 - (BOOL)routeURL:(NSURL *)URL;
+- (BOOL)routePattern:(NSString *)pattern;
 
 + (instancetype)share;
 

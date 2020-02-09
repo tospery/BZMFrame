@@ -6,6 +6,7 @@
 //
 
 #import "BZMScrollViewController.h"
+#import <Mantle/Mantle.h>
 #import <MJRefresh/MJRefresh.h>
 #import "BZMFunction.h"
 #import "BZMUser.h"
@@ -160,8 +161,7 @@ extern BZMUser *gUser;
     //    }
     
     if (BZMErrorCodeUnauthorized == self.viewModel.error.code) {
-        NSLog(@"");
-        gUser.isLogined = NO;
+        [gUser logout];
     }
     
     return handled;

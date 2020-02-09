@@ -6,6 +6,7 @@
 //
 
 #import "BZMUser.h"
+#import <Mantle/Mantle.h>
 #import "BZMConst.h"
 #import "BZMFunction.h"
 
@@ -14,5 +15,9 @@
 @end
 
 @implementation BZMUser
+
+- (void)logout {
+    [self mergeValuesForKeysFromModel:[[self.class alloc] init]];
+}
 
 @end
