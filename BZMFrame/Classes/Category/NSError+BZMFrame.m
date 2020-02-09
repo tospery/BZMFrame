@@ -19,7 +19,8 @@
 }
 
 - (BOOL)bzm_isServer {
-    return (self.code > BZMErrorCodeSuccess && self.code <= BZMErrorCodeHTTPVersionNotSupported);
+    // return (self.code > BZMErrorCodeSuccess && self.code <= BZMErrorCodeHTTPVersionNotSupported);
+    return self.code == BZMErrorCodeInternalServerError;
 }
 
 - (NSString *)bzm_retryTitle {
@@ -111,10 +112,6 @@
 //            }
 //            case BZMErrorCodeLoginUnfinished: {
 //                result = kStringLoginUnfinished;
-//                break;
-//            }
-//            case BZMErrorCodeExpired: {
-//                result = kStringLoginExpired;
 //                break;
 //            }
 //            case BZMErrorCodeLoginFailure: {

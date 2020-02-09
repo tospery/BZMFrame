@@ -5,7 +5,7 @@
 //  Created by 杨建祥 on 2020/1/9.
 //
 
-#import "BZMBaseView.h"
+#import <UIKit/UIKit.h>
 
 @interface BZMWebProgressView : UIView
 @property (nonatomic, assign) CGFloat progress;

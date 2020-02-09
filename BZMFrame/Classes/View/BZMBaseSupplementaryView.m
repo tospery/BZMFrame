@@ -1,20 +1,20 @@
 //
-//  BZMSupplementaryView.m
+//  BZMBaseSupplementaryView.m
 //  Pods
 //
 //  Created by 杨建祥 on 2020/1/7.
 //
 
-#import "BZMSupplementaryView.h"
+#import "BZMBaseSupplementaryView.h"
 #import <QMUIKit/QMUIKit.h>
 #import "BZMFunction.h"
 
-@interface BZMSupplementaryView ()
+@interface BZMBaseSupplementaryView ()
 @property (nonatomic, strong, readwrite) id viewModel;
 
 @end
 
-@implementation BZMSupplementaryView
+@implementation BZMBaseSupplementaryView
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self didInitialize];

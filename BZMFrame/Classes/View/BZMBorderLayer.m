@@ -152,7 +152,7 @@
 
 - (void)updateBordersFrame {
     [CATransaction begin];
-    [CATransaction setValue:(id) kCFBooleanTrue forKey:kCATransactionDisableActions];
+    [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
     
     CGFloat thick = [self thickForBorder:BZMBorderPositionTop];
     UIEdgeInsets insets = [self insetsForBorder:BZMBorderPositionTop];

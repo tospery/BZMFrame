@@ -8,7 +8,7 @@
 
 #import "BZMCollectionViewModel.h"
 #import <QMUIKit/QMUIKit.h>
-#import "BZMSupplementary.h"
+#import "BZMSupplementaryView.h"
 #import "BZMCollectionCell.h"
 #import "NSArray+BZMFrame.h"
 #import "NSDictionary+BZMFrame.h"
@@ -134,8 +134,8 @@
     
     for (NSInteger i = 0; i < names.count; ++i) {
         Class cls = NSClassFromString(names[i]);
-        if ([cls conformsToProtocol:@protocol(BZMSupplementary)]) {
-            id<BZMSupplementary> supplementary = (id<BZMSupplementary>)cls;
+        if ([cls conformsToProtocol:@protocol(BZMSupplementaryView)]) {
+            id<BZMSupplementaryView> supplementary = (id<BZMSupplementaryView>)cls;
             if ([kind isEqualToString:[supplementary kind]]) {
                 SEL sel = @selector(bzm_reuseId);
                 if ([cls respondsToSelector:sel]) {

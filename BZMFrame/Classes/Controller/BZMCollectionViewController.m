@@ -98,8 +98,8 @@
     [names addObjectsFromArray:self.viewModel.footerNames];
     for (NSString *name in names) {
         Class cls = NSClassFromString(name);
-        if ([cls conformsToProtocol:@protocol(BZMSupplementary)] && [cls respondsToSelector:reuseSel]) {
-            id<BZMSupplementary> supplementary = (id<BZMSupplementary>)cls;
+        if ([cls conformsToProtocol:@protocol(BZMSupplementaryView)] && [cls respondsToSelector:reuseSel]) {
+            id<BZMSupplementaryView> supplementary = (id<BZMSupplementaryView>)cls;
             NSString *kind = [supplementary kind];
             NSString *reuse = ((id (*)(id, SEL))[cls methodForSelector:reuseSel])(cls, reuseSel);
             if ((kind && [kind isKindOfClass:NSString.class] && kind.length != 0) &&

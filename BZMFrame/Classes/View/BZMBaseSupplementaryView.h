@@ -1,15 +1,15 @@
 //
-//  BZMSupplementaryView.h
+//  BZMBaseSupplementaryView.h
 //  Pods
 //
 //  Created by 杨建祥 on 2020/1/7.
 //
 
 #import <UIKit/UIKit.h>
-#import "BZMSupplementary.h"
 #import "BZMReactiveView.h"
+#import "BZMSupplementaryView.h"
 
-@interface BZMSupplementaryView : UICollectionReusableView <BZMSupplementary, BZMReactiveView>
+@interface BZMBaseSupplementaryView : UICollectionReusableView <BZMSupplementaryView, BZMReactiveView>
 @property (nonatomic, strong, readonly) id viewModel;
 
 - (void)didInitialize;

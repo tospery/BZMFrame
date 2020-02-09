@@ -1,21 +1,21 @@
 //
-//  BZMBaseView.m
+//  BZMBaseReactiveView.m
 //  ReactHub
 //
 //  Created by 杨建祥 on 2019/12/30.
 //  Copyright © 2019 杨建祥. All rights reserved.
 //
 
-#import "BZMBaseView.h"
+#import "BZMBaseReactiveView.h"
 #import <QMUIKit/QMUIKit.h>
 #import "BZMFunction.h"
 
-@interface BZMBaseView ()
+@interface BZMBaseReactiveView ()
 @property (nonatomic, strong, readwrite) id viewModel;
 
 @end
 
-@implementation BZMBaseView
+@implementation BZMBaseReactiveView
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.dk_backgroundColorPicker = DKColorPickerWithKey(BG);

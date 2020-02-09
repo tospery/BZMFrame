@@ -17,9 +17,6 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
-//        self.qmui_borderWidth = PixelOne;
-//        self.qmui_borderColor = UIColorSeparator;
-//        self.qmui_borderPosition = QMUIViewBorderPositionBottom;
     }
     return self;
 }

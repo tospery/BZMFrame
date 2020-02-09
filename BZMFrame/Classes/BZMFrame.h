@@ -65,10 +65,10 @@
 #import "BZMWaterfallViewController.h"
 
 #pragma mark - View
-#import "BZMBaseView.h"
+#import "BZMBaseReactiveView.h"
 #import "BZMTableCell.h"
 #import "BZMCollectionCell.h"
-#import "BZMSupplementaryView.h"
+#import "BZMBaseSupplementaryView.h"
 #import "BZMWebProgressView.h"
 #import "BZMPageMenuCollectionView.h"
 #import "BZMPageContainerView.h"
@@ -109,7 +109,7 @@
 #pragma mark - Protocol
 #import "BZMIdentifiable.h"
 #import "BZMReactiveView.h"
-#import "BZMSupplementary.h"
+#import "BZMSupplementaryView.h"
 #import "BZMNavigationProtocol.h"
 #import "BZMProvisionProtocol.h"
 #import "BZMPageMenuIndicator.h"

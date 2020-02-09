@@ -5,7 +5,7 @@
 //  Created by 杨建祥 on 2020/1/10.
 //
 
-#import "BZMBaseView.h"
+#import <UIKit/UIKit.h>
 #import "BZMType.h"
 #import "BZMPageContainerProtocol.h"
 #import "BZMPageMenuItem.h"

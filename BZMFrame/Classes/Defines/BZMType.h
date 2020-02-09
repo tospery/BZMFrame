@@ -135,7 +135,6 @@ typedef NS_ENUM(NSInteger, BZMErrorCode){
     BZMErrorCodeServer,
     BZMErrorCodeData,
     BZMErrorCodeLoginUnfinished,
-    BZMErrorCodeExpired,
     BZMErrorCodeLoginFailure,
     BZMErrorCodeArgumentInvalid,
     

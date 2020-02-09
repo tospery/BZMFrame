@@ -8,12 +8,15 @@
 #import "BZMScrollViewController.h"
 #import <MJRefresh/MJRefresh.h>
 #import "BZMFunction.h"
+#import "BZMUser.h"
 #import "BZMTableViewController.h"
 #import "BZMCollectionViewController.h"
 #import "BZMTabBarViewController.h"
 #import "BZMPageViewController.h"
 #import "BZMWebViewController.h"
 #import "UIScrollView+BZMFrame.h"
+
+extern BZMUser *gUser;
 
 @interface BZMScrollViewController ()
 @property (nonatomic, assign, readwrite) CGFloat lastPosition;
@@ -138,8 +141,6 @@
         }
     }
     
-    
-    
     //    if (BZMErrorCodeExpired == error.code) {
     //        notFilter = NO;
     //
@@ -157,6 +158,11 @@
     //    if (nedUpdate) {
     //        self.dataSource = nil;
     //    }
+    
+    if (BZMErrorCodeUnauthorized == self.viewModel.error.code) {
+        NSLog(@"");
+        gUser.isLogined = NO;
+    }
     
     return handled;
 }
