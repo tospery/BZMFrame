@@ -52,4 +52,5 @@ Pod::Spec.new do |s|
   s.dependency 'TYAlertController', '1.2.0'
   s.dependency 'Toast', '4.0.0'
   s.dependency 'DKNightVersion', '2.4.3'
+  s.dependency 'TTTAttributedLabel', '2.0.0'
 end

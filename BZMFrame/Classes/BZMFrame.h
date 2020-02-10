@@ -135,4 +135,4 @@
 #import <WebViewJavascriptBridge/WebViewJavascriptBridge.h>
 #import <MJRefresh/MJRefresh.h>
 #import <QMUIKit/QMUIKit.h>
-
+#import <TTTAttributedLabel/TTTAttributedLabel.h>
