@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImageDownloader.h>
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "NSString+BZMFrame.h"
 #import "NSBundle+BZMFrame.h"

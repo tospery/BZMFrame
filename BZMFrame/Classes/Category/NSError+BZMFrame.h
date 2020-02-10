@@ -8,7 +8,74 @@
 #import <UIKit/UIKit.h>
 #import "BZMType.h"
 
-//NSString * BZMErrorCodeString(BZMErrorCode code);
+typedef NS_ENUM(NSInteger, BZMErrorCode){
+    BZMErrorCodeSuccess = 200,
+    BZMErrorCodeOK = BZMErrorCodeSuccess, // 2xx的状态码表示请求成功
+    BZMErrorCodeCreated,
+    BZMErrorCodeAccepted,
+    BZMErrorCodeNonAuthInfo,
+    BZMErrorCodeNoContent,
+    BZMErrorCodeResetContent,
+    BZMErrorCodePartialContent,
+    BZMErrorCodeMultipleChoices = 300, // 3xxx重定向错误
+    BZMErrorCodeMovedPermanently,
+    BZMErrorCodeFound,
+    BZMErrorCodeSeeOther,
+    BZMErrorCodeNotModified,
+    BZMErrorCodeUseProxy,
+    BZMErrorCodeUnused,
+    BZMErrorCodeTemporaryRedirect,
+    BZMErrorCodeBadRequest = 400,  // 4xx客户端错误
+    BZMErrorCodeUnauthorized,
+    BZMErrorCodePaymentRequired,
+    BZMErrorCodeForbidden,
+    BZMErrorCodeNotFound,
+    BZMErrorCodeMethodNotAllowed,
+    BZMErrorCodeNotAcceptable,
+    BZMErrorCodeProxyAuthRequired,
+    BZMErrorCodeRequestTimeout,
+    BZMErrorCodeConflict,
+    BZMErrorCodeGone,
+    BZMErrorCodeLengthRequired,
+    BZMErrorCodePreconditionFailed,
+    BZMErrorCodeRequestEntityTooLarge,
+    BZMErrorCodeRequestURITooLong,
+    BZMErrorCodeUnsupportedMediaType,
+    BZMErrorCodeRequestedRangeNotSatisfiable,
+    BZMErrorCodeExpectationFailed,
+    BZMErrorCodeInternalServerError = 500, // 5xx服务器错误
+    BZMErrorCodeNotImplemented,
+    BZMErrorCodeBadGateway,
+    BZMErrorCodeServiceUnavailable,
+    BZMErrorCodeGatewayTimeout,
+    BZMErrorCodeHTTPVersionNotSupported,
+    
+    BZMErrorCodePlaceholder = 10000,      // App自定义错误
+    //    BZMErrorCodeNetwork,
+    //    BZMErrorCodeServer,
+    BZMErrorCodeEmpty,
+    BZMErrorCodeData,
+    BZMErrorCodeLoginUnfinished,
+    BZMErrorCodeLoginFailure,
+    BZMErrorCodeArgumentInvalid,
+    BZMErrorCodeLoginHasnotAccount,
+    BZMErrorCodeLoginWrongPassword,
+    BZMErrorCodeLoginNotPermission,
+    BZMErrorCodeSigninFailure,
+    BZMErrorCodeLocateClosed,
+    BZMErrorCodeLocateDenied,
+    BZMErrorCodeLocateFailure,
+    BZMErrorCodeDeviceNotSupport,
+    BZMErrorCodeFileNotPicture,
+    BZMErrorCodeCheckUpdateFailure,
+    BZMErrorCodeExecuteFailure,
+    BZMErrorCodeActionFailure,
+    BZMErrorCodeParseFailure,
+    
+    BZMErrorCodeTotal
+};
+
+NSString * BZMErrorCodeString(BZMErrorCode code);
 
 @interface NSError (BZMFrame)
 @property (nonatomic, assign, readonly) BOOL bzm_isNetwork;

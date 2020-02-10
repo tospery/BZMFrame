@@ -8,7 +8,7 @@
 
 #import "BZMBaseViewModel.h"
 #import <Toast/UIView+Toast.h>
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMString.h"
 #import "BZMParameter.h"
@@ -118,7 +118,7 @@
     }];
     [self.errors subscribeNext:^(NSError *error) {
         @strongify(self)
-        [self.viewController.view makeToast:BZMStrWithDft(error.bzm_displayMessage, kStringUnknownError)];
+        [self.viewController.view makeToast:BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)];
     }];
     
     self.backCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSNumber * _Nullable isBack) {

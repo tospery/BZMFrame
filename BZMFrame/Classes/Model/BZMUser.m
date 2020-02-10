@@ -7,7 +7,7 @@
 
 #import "BZMUser.h"
 #import <Mantle/Mantle.h>
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 
 @interface BZMUser ()

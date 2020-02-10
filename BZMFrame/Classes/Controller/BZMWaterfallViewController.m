@@ -6,7 +6,7 @@
 ////
 //
 //#import "BZMWaterfallViewController.h"
-//#import "BZMConst.h"
+//#import "BZMConstant.h"
 //#import "BZMFunction.h"
 //#import "BZMCollectionCell.h"
 //#import "BZMSupplementaryView.h"

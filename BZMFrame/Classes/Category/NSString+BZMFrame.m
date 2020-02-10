@@ -119,4 +119,20 @@
 #pragma clang diagnostic pop
 }
 
+- (CGSize)bzm_sizeFits:(CGSize)size font:(UIFont *)font lines:(NSInteger)lines {
+    CGSize result = [self boundingRectWithSize:size options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading) attributes:(font ? @{NSFontAttributeName: font} : nil) context:nil].size;
+    if (font != nil && lines > 0) {
+        result.height = MIN(size.height, font.lineHeight * lines);
+    }
+    return result;
+}
+
+- (CGFloat)bzm_widthFits:(CGFloat)height font:(UIFont *)font lines:(NSInteger)lines {
+    return ceil([self bzm_sizeFits:CGSizeMake(CGFLOAT_MAX, height) font:font lines:lines].width);
+}
+
+- (CGFloat)bzm_heightFits:(CGFloat)width font:(UIFont *)font lines:(NSInteger)lines {
+    return ceil([self bzm_sizeFits:CGSizeMake(width, CGFLOAT_MAX) font:font lines:lines].height);
+}
+
 @end

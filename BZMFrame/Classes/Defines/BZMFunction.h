@@ -53,9 +53,31 @@
 //#define BZMImageWaiting          (BZMFrameManager.share.waitingImage)
 
 #pragma mark - 日志
-#define BZMLog(name, fmt, ...)               QMUILog((name), fmt, ##__VA_ARGS__)
-#define BZMLogInfo(name, fmt, ...)           QMUILogInfo((name), fmt, ##__VA_ARGS__)
-#define BZMLogWarn(name, fmt, ...)           QMUILogWarn((name), fmt, ##__VA_ARGS__)
+#ifdef DEBUG
+#define BZMLogVerbose(fmt, ...)                                                                 \
+NSLog(@"Verbose(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define BZMLogDebug(fmt, ...)                                                                   \
+NSLog(@"Debug(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define BZMLogInfo(fmt, ...)                                                                    \
+NSLog(@"Info(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define BZMLogWarn(fmt, ...)                                                                    \
+NSLog(@"Warn(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define BZMLogError(fmt, ...)                                                                   \
+NSLog(@"Error(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define BZMLogVerbose(fmt, ...)
+#define BZMLogDebug(fmt, ...)
+#define BZMLogInfo(fmt, ...)                                                                    \
+NSLog(@"Info(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define BZMLogWarn(fmt, ...)                                                                    \
+NSLog(@"Warn(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define BZMLogError(fmt, ...)                                                                   \
+NSLog(@"Error(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#endif
+
+//#define BZMLog(name, fmt, ...)               QMUILog((name), fmt, ##__VA_ARGS__)
+//#define BZMLogInfo(name, fmt, ...)           QMUILogInfo((name), fmt, ##__VA_ARGS__)
+//#define BZMLogWarn(name, fmt, ...)           QMUILogWarn((name), fmt, ##__VA_ARGS__)
 
 #pragma mark - 便捷方法
 #define BZMStrWithBool(x)                    ((x) ? @"YES" : @"NO")
@@ -247,13 +269,13 @@ BZMURLMember(NSDictionary *dict, NSString *key, NSURL *dft) {
 }
 
 #pragma mark - 其他
-CG_INLINE NSArray *
-BZMDataSource(NSArray *arr) {
-    if (!arr ||
-        ![arr isKindOfClass:NSArray.class]) {
-        return nil;
-    }
-    return @[arr];
-}
+//CG_INLINE NSArray *
+//BZMDataSource(NSArray *arr) {
+//    if (!arr ||
+//        ![arr isKindOfClass:NSArray.class]) {
+//        return nil;
+//    }
+//    return @[arr];
+//}
 
 #endif /* BZMFunc_h */

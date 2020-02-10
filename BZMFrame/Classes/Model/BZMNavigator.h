@@ -18,9 +18,12 @@
 
 - (BZMBaseViewController *)viewController:(BZMBaseViewModel *)viewModel;
 
-- (BOOL)canRouteURL:(NSURL *)URL;
-- (BOOL)routeURL:(NSURL *)URL;
-- (BOOL)routePattern:(NSString *)pattern;
+//- (BOOL)canRouteURL:(NSURL *)URL;
+//- (BOOL)routeURL:(NSURL *)URL;
+//- (BOOL)routePattern:(NSString *)pattern;
+
+- (BOOL)routeURL:(NSURL *)URL withParameters:(NSDictionary *)parameters;
+- (BOOL)routePattern:(NSString *)pattern withParameters:(NSDictionary *)parameters;
 
 + (instancetype)share;
 

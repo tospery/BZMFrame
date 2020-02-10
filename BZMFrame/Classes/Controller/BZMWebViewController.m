@@ -8,7 +8,7 @@
 #import "BZMWebViewController.h"
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <ReactiveObjC/NSObject+RACKVOWrapper.h>
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMWebViewModel.h"
 #import "BZMWebProgressView.h"
@@ -55,7 +55,7 @@
             if ([self.viewModel respondsToSelector:selector]) {
                 ((id(*)(id, SEL, id, WVJBResponseCallback))[self.viewModel methodForSelector:selector])(self.viewModel, selector, data, responseCallback);
             }else {
-                BZMLogWarn(kBZMFrameName, @"%@找不到！！！", method);
+                BZMLogWarn(@"Web找不到oc handler: %@", method);
             }
         }];
     }

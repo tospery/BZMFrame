@@ -10,7 +10,7 @@
 #import <WebKit/WebKit.h>
 
 #pragma mark - Defines
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMType.h"
 #import "BZMFunction.h"
 #import "BZMString.h"

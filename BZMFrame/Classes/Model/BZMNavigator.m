@@ -7,7 +7,7 @@
 
 #import "BZMNavigator.h"
 #import <JLRoutes/JLRoutes.h>
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMBaseViewController.h"
 #import "BZMNavigationController.h"
@@ -59,18 +59,28 @@
     return [[cls alloc] initWithViewModel:viewModel];
 }
 
-- (BOOL)canRouteURL:(NSURL *)URL {
-    return [JLRoutes canRouteURL:URL];
+//- (BOOL)canRouteURL:(NSURL *)URL {
+//    return [JLRoutes canRouteURL:URL];
+//}
+//
+//- (BOOL)routeURL:(NSURL *)URL {
+//    return [JLRoutes routeURL:URL];
+//}
+//
+//- (BOOL)routePattern:(NSString *)pattern {
+//    NSString *scheme = UIApplication.sharedApplication.bzm_urlScheme;
+//    NSURL *url = BZMURLWithStr(BZMStrWithFmt(@"%@://m.%@.com%@", scheme, scheme, pattern));
+//    return [self routeURL:url];
+//}
+
+- (BOOL)routeURL:(NSURL *)URL withParameters:(NSDictionary *)parameters {
+    return [JLRoutes routeURL:URL withParameters:parameters];
 }
 
-- (BOOL)routeURL:(NSURL *)URL {
-    return [JLRoutes routeURL:URL];
-}
-
-- (BOOL)routePattern:(NSString *)pattern {
+- (BOOL)routePattern:(NSString *)pattern withParameters:(NSDictionary *)parameters {
     NSString *scheme = UIApplication.sharedApplication.bzm_urlScheme;
     NSURL *url = BZMURLWithStr(BZMStrWithFmt(@"%@://m.%@.com%@", scheme, scheme, pattern));
-    return [self routeURL:url];
+    return [JLRoutes routeURL:url withParameters:parameters];
 }
 
 #pragma mark - Delegate

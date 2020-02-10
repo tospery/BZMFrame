@@ -34,12 +34,12 @@
     [self layoutIfNeeded];
 }
 
-+ (UIEdgeInsets)margin {
-    return UIEdgeInsetsZero;
-}
-
-+ (UIOffset)padding {
-    return UIOffsetZero;
-}
+//+ (UIEdgeInsets)margin {
+//    return UIEdgeInsetsZero;
+//}
+//
+//+ (UIOffset)padding {
+//    return UIOffsetZero;
+//}
 
 @end

@@ -8,7 +8,7 @@
 #import "BZMAppDependency.h"
 #import <JLRoutes/JLRoutes.h>
 #import <Toast/UIView+Toast.h>
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMUser.h"
 #import "BZMMisc.h"
@@ -100,7 +100,7 @@ BZMMisc *gMisc;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    BZMLog(kBZMFrameName, @"disk = %@", NSHomeDirectory());
+    BZMLogDebug(@"disk = %@", NSHomeDirectory());
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

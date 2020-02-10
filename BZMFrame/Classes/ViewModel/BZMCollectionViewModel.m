@@ -12,6 +12,7 @@
 #import "BZMCollectionCell.h"
 #import "NSArray+BZMFrame.h"
 #import "NSDictionary+BZMFrame.h"
+#import "NSError+BZMFrame.h"
 #import "UICollectionReusableView+BZMFrame.h"
 
 @interface BZMCollectionViewModel ()
@@ -35,24 +36,18 @@
 #pragma mark - View
 #pragma mark - Property
 #pragma mark - Method
-#pragma mark super
-//- (BOOL (^)(NSError *error))requestRemoteDataErrorsFilter {
-//    return ^(NSError *error) {
-//        switch (self.requestMode) {
-//            case TBRequestModeMore: {
-//                if (TBErrorCodeAppDataEmpty != error.code) {
-//                    // [self.preloadPages removeObject:@([self nextPageIndex])];
-//                }
-//                break;
-//            }
-//            default:
-//                break;
-//        }
-//        return YES;
-//    };
-//}
+- (NSArray *)data2Source:(id)data {
+    if (!data || ![data isKindOfClass:NSArray.class]) {
+        return nil;
+    }
+    NSArray *items = (NSArray *)data;
+    if (items.count == 0) {
+        self.error = [NSError bzm_errorWithCode:BZMErrorCodeEmpty];
+        return nil;
+    }
+    return @[items];
+}
 
-#pragma mark public
 - (void)configureCell:(UICollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath withItem:(BZMCollectionItem *)item {
     
 }

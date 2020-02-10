@@ -1,12 +1,12 @@
 //
-//  BZMConst.h
+//  BZMConstant.h
 //  BZMFrame
 //
 //  Created by 杨建祥 on 2019/12/30.
 //
 
-#ifndef BZMConst_h
-#define BZMConst_h
+#ifndef BZMConstant_h
+#define BZMConstant_h
 
 #pragma mark - 通知标识
 #define kBZMUserWillLoginNotification               (@"kBZMUserWillLoginNotification")
@@ -55,4 +55,4 @@
 //#define kBZMUndefinedFloat                          (-1.0f)
 //#define kBZMUndefinedEdgeInsets                     (UIEdgeInsetsMake(-1, -1, -1, -1))
 
-#endif /* BZMConst_h */
+#endif /* BZMConstant_h */

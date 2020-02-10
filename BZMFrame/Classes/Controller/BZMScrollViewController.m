@@ -16,6 +16,7 @@
 #import "BZMPageViewController.h"
 #import "BZMWebViewController.h"
 #import "UIScrollView+BZMFrame.h"
+#import "NSError+BZMFrame.h"
 
 extern BZMUser *gUser;
 
@@ -81,7 +82,27 @@ extern BZMUser *gUser;
 //}
 
 #pragma mark - Method
-#pragma mark super
+#pragma mark bind
+- (void)bindViewModel {
+    [super bindViewModel];
+    
+    @weakify(self)
+    [[[RACObserve(self.viewModel, shouldPullToRefresh) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *should) {
+        @strongify(self)
+        [self setupRefresh:should.boolValue];
+    }];
+
+    [[[RACObserve(self.viewModel, shouldScrollToMore) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *should) {
+        @strongify(self)
+        [self setupMore:should.boolValue];
+    }];
+    
+    [[[RACObserve(gUser, isLogined) skip:1] ignore:@(NO)].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *isLogined) {
+        @strongify(self)
+        [self handleError];
+    }];
+}
+
 - (void)reloadData {
     [super reloadData];
     if ([self.scrollView isMemberOfClass:UIScrollView.class]) {
@@ -207,21 +228,6 @@ extern BZMUser *gUser;
     } completed:^{
         @strongify(self)
         [self endUpdate];
-    }];
-}
-
-- (void)bindViewModel {
-    [super bindViewModel];
-    
-    @weakify(self)
-    [[[RACObserve(self.viewModel, shouldPullToRefresh) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *should) {
-        @strongify(self)
-        [self setupRefresh:should.boolValue];
-    }];
-
-    [[[RACObserve(self.viewModel, shouldScrollToMore) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *should) {
-        @strongify(self)
-        [self setupMore:should.boolValue];
     }];
 }
 

@@ -87,10 +87,6 @@ BZMT(NSLocalizedString(@"So sorry", @"非常抱歉"), @"非常抱歉")
 BZMT(NSLocalizedString(@"Exception report", @"异常报告"), @"异常报告")
 #define kStringHandling                                                                 \
 BZMT(NSLocalizedString(@"Handling ", @"正在处理"), @"正在处理")
-#define kStringUnknownError                                                             \
-BZMT(NSLocalizedString(@"kStringUnknownError", @"未知错误"), @"未知错误")
-#define kStringLoginFailure                                                             \
-BZMT(NSLocalizedString(@"kStringLoginFailure", @"登录失败"), @"登录失败")
 #define kStringSigninFailure                                                            \
 BZMT(NSLocalizedString(@"kStringSigninFailure", @"注册失败"), @"注册失败")
 #define kStringLocateFailure                                                            \
@@ -225,5 +221,25 @@ BZMT(NSLocalizedString(@"kStringLocationServiceIsClosedPleaseToOpenInSetting", @
 BZMT(NSLocalizedString(@"kStringLocationServiceIsRejectedPleaseToOpenInSetting", @"定位服务已拒绝，请前往设置页打开"), @"定位服务已拒绝，请前往设置页打开")
 #define kStringBackToSeeEffect                    \
 BZMT(NSLocalizedString(@"kStringBackToSeeEffect", @"直接返回查看效果"), @"直接返回查看效果")
+
+/********************************************************************************************************
+错误
+********************************************************************************************************/
+#define kStringErrorRequest                             \
+BZMT(NSLocalizedString(@"kStringErrorRequest", @"HTTP请求错误"), @"HTTP请求错误")
+#define kStringErrorRedirect                            \
+BZMT(NSLocalizedString(@"kStringErrorRedirect", @"HTTP重定向错误"), @"HTTP重定向错误")
+#define kStringErrorClient                              \
+BZMT(NSLocalizedString(@"kStringErrorClient", @"HTTP客户端错误"), @"HTTP客户端错误")
+#define kStringErrorServer                              \
+BZMT(NSLocalizedString(@"kStringErrorServer", @"HTTP服务器错误"), @"HTTP服务器错误")
+#define kStringErrorEmpty                               \
+BZMT(NSLocalizedString(@"kStringErrorEmpty", @"HTTP数据为空"), @"HTTP数据为空")
+#define kStringErrorData                                \
+BZMT(NSLocalizedString(@"kStringErrorData", @"HTTP数据异常"), @"HTTP数据异常")
+#define kStringErrorUnknown                             \
+BZMT(NSLocalizedString(@"kStringErrorUnknown", @"未知错误"), @"未知错误")
+#define kStringErrorExpired                             \
+BZMT(NSLocalizedString(@"kStringErrorExpired", @"登录过期"), @"登录过期")
 
 #endif /* BZMStrs_h */

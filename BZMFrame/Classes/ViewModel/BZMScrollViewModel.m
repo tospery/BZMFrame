@@ -7,7 +7,7 @@
 //
 
 #import "BZMScrollViewModel.h"
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMString.h"
 #import "BZMParameter.h"

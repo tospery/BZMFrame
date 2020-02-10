@@ -7,7 +7,7 @@
 
 #import "BZMWebViewModel.h"
 #import <JLRoutes/JLRoutes.h>
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMParameter.h"
 #import "NSDictionary+BZMFrame.h"

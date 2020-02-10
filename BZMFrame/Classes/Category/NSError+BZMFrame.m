@@ -6,7 +6,7 @@
 //
 
 #import "NSError+BZMFrame.h"
-#import "BZMConst.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMString.h"
 #import "BZMFrameManager.h"
@@ -72,42 +72,44 @@
 }
 
 + (NSError *)bzm_errorWithCode:(NSInteger)code {
-    return [NSError bzm_errorWithCode:code description:nil];
+    return [NSError bzm_errorWithCode:code description:BZMErrorCodeString(code)];
 }
 
 + (NSError *)bzm_errorWithCode:(NSInteger)code description:(NSString *)description {
-    return [NSError errorWithDomain:UIApplication.sharedApplication.bzm_bundleID code:code userInfo:@{NSLocalizedDescriptionKey: BZMStrWithDft(description, kStringUnknownError)}];
+    return [NSError errorWithDomain:UIApplication.sharedApplication.bzm_bundleID code:code userInfo:@{NSLocalizedDescriptionKey: BZMStrWithDft(description, kStringErrorUnknown)}];
 }
 
 @end
 
 
-//NSString * BZMErrorCodeString(BZMErrorCode code) {
-//    NSString *result = @"未知错误";
-//    if (code >= BZMErrorCodeCreated && code <= BZMErrorCodePartialContent) {
-//        result = @"HTTP请求错误";
-//    }else if (code >= BZMErrorCodeMultipleChoices && code <= BZMErrorCodeTemporaryRedirect) {
-//        result = @"HTTP重定向错误";
-//    }else if (code >= BZMErrorCodeBadRequest && code <= BZMErrorCodeExpectationFailed) {
-//        result = @"HTTP客户端错误";
-//    }else if (code >= BZMErrorCodeInternalServerError && code <= BZMErrorCodeHTTPVersionNotSupported) {
-//        result = @"HTTP服务器错误";
-//    }else {
+NSString * BZMErrorCodeString(BZMErrorCode code) {
+    NSString *result = kStringErrorUnknown;
+    if (code >= BZMErrorCodeCreated && code <= BZMErrorCodePartialContent) {
+        result = kStringErrorRequest;
+    }else if (code >= BZMErrorCodeMultipleChoices && code <= BZMErrorCodeTemporaryRedirect) {
+        result = kStringErrorRedirect;
+    }else if (code >= BZMErrorCodeBadRequest && code <= BZMErrorCodeExpectationFailed) {
+        result = kStringErrorClient;
+    }else if (code >= BZMErrorCodeInternalServerError && code <= BZMErrorCodeHTTPVersionNotSupported) {
+        result = kStringErrorServer;
+    }
+    
+    if (code == BZMErrorCodeUnauthorized) {
+        result = kStringErrorExpired;
+    } else if (code == BZMErrorCodeData) {
+        result = kStringErrorData;
+    } else if (code == BZMErrorCodeEmpty) {
+        result = kStringErrorEmpty;
+    }
+    
+//    else {
 //        switch (code) {
 //            case BZMErrorCodePlaceholder: {
-//                result = @"错误码占位符";
-//                break;
-//            }
-//            case BZMErrorCodeServer: {
-//                result = kStringServerException;
-//                break;
-//            }
-//            case BZMErrorCodeNetwork: {
-//                result = kStringNetworkException;
+//                result = kStringErrorUnknown;
 //                break;
 //            }
 //            case BZMErrorCodeData: {
-//                result = kStringDataInvalid;
+//                result = kStringErrorData;
 //                break;
 //            }
 //            case BZMErrorCodeLoginUnfinished: {
@@ -182,6 +184,6 @@
 //                break;
 //        }
 //    }
-//
-//    return result;
-//}
+
+    return result;
+}
