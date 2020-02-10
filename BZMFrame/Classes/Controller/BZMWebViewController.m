@@ -8,6 +8,7 @@
 #import "BZMWebViewController.h"
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <ReactiveObjC/NSObject+RACKVOWrapper.h>
+#import <Toast/UIView+Toast.h>
 #import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMWebViewModel.h"
@@ -56,6 +57,7 @@
                 ((id(*)(id, SEL, id, WVJBResponseCallback))[self.viewModel methodForSelector:selector])(self.viewModel, selector, data, responseCallback);
             }else {
                 BZMLogWarn(@"Web找不到oc handler: %@", method);
+                [self.view makeToast:BZMStrWithFmt(@"缺少%@方法", method)];
             }
         }];
     }
