@@ -41,7 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, self.contentTop, self.view.qmui_width, self.view.qmui_height - self.contentTop - self.contentBottom) collectionViewLayout:[self collectionViewLayout]];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.contentFrame collectionViewLayout:[self collectionViewLayout]];
     collectionView.dataSource = self.viewModel;
     collectionView.delegate = self;
     collectionView.emptyDataSetSource = self.viewModel;
@@ -51,6 +51,9 @@
         collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     [self.view addSubview:collectionView];
+//    [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self.view);
+//    }];
     self.collectionView = collectionView;
     
     [self.collectionView registerClass:UICollectionViewCell.class forCellWithReuseIdentifier:kBZMIdentifierCollectionCell];
@@ -203,9 +206,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    if (!self.viewModel.canSelectCell) {
-        return;
-    }
+//    if (!self.viewModel.canSelectCell) {
+//        return;
+//    }
     if (![collectionView.dataSource conformsToProtocol:@protocol(BZMCollectionViewModelDataSource)]) {
         return;
     }

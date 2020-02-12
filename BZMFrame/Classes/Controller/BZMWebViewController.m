@@ -40,8 +40,6 @@
     [super viewDidLoad];
     
     [self.view addSubview:self.webView];
-    self.webView.frame = CGRectMake(0, self.contentTop, self.view.qmui_width, self.view.qmui_height - self.contentTop - self.contentBottom);
-    
     [self.view addSubview:self.progressView];
     
     @weakify(self)
@@ -63,11 +61,16 @@
     }
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.webView.frame = self.contentFrame;
+}
+
 #pragma mark - Property
 - (WKWebView *)webView {
     if (!_webView) {
         WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
-        WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
+        WKWebView *webView = [[WKWebView alloc] initWithFrame:self.contentFrame configuration:configuration];
         webView.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
         webView.navigationDelegate = self;
         webView.UIDelegate = self;

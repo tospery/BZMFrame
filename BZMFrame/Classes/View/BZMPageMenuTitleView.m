@@ -50,7 +50,7 @@
 - (void)refreshDataSource {
     NSMutableArray *tempArray = [NSMutableArray array];
     for (int i = 0; i < self.titles.count; i++) {
-        BZMPageMenuTitleItem *item = [[BZMPageMenuTitleItem alloc] init];
+        BZMPageMenuTitleItem *item = [[BZMPageMenuTitleItem alloc] initWithModel:nil];
         [tempArray addObject:item];
     }
     self.dataSource = tempArray;

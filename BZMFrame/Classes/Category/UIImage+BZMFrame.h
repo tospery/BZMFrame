@@ -15,7 +15,7 @@
 
 + (UIImage *)bzm_imageURLed:(NSString *)urlString;
 + (UIImage *)bzm_imageInAsset:(NSString *)name;
-+ (UIImage *)bzm_imageInBundle:(NSString *)name;
++ (UIImage *)bzm_imageInFrame:(NSString *)name;
 + (UIImage *)bzm_imageInResource:(NSString *)name;
 + (UIImage *)bzm_imageInDocuments:(NSString *)name;
 

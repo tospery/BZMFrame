@@ -24,7 +24,7 @@
 //@end
 
 @interface BZMCollectionViewModel : BZMScrollViewModel <BZMCollectionViewModelDataSource>
-@property (nonatomic, assign) BOOL canSelectCell;
+// @property (nonatomic, assign) BOOL canSelectCell;
 @property (nonatomic, strong) NSDictionary *itemCellMapping;
 // @property (nonatomic, strong) NSDictionary *headerClassMapping;
 @property (nonatomic, strong) NSArray *headerNames;

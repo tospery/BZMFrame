@@ -19,19 +19,19 @@
 @implementation UIImage (BZMFrame)
 
 + (UIImage *)bzm_loading {
-    return BZMImageBundle(@"loading");
+    return BZMImageFrame(@"loading");
 }
 
 + (UIImage *)bzm_waiting {
-    return BZMImageBundle(@"waiting");
+    return BZMImageFrame(@"waiting");
 }
 
 + (UIImage *)bzm_network {
-    return BZMImageBundle(@"error_network");
+    return BZMImageFrame(@"error_network");
 }
 
 + (UIImage *)bzm_server {
-    return BZMImageBundle(@"error_server");
+    return BZMImageFrame(@"error_server");
 }
 
 
@@ -41,9 +41,9 @@
         return [self bzm_imageInAsset:[urlString substringFromIndex:asset.length]];
     }
     
-    NSString *bundle = BZMStrWithFmt(@"%@://", kBZMSchemeBundle);
+    NSString *bundle = BZMStrWithFmt(@"%@://", kBZMSchemeFrame);
     if ([urlString hasPrefix:bundle]) {
-        return [self bzm_imageInBundle:[urlString substringFromIndex:bundle.length]];
+        return [self bzm_imageInFrame:[urlString substringFromIndex:bundle.length]];
     }
     
     NSString *resource = BZMStrWithFmt(@"%@://", kBZMSchemeResource);
@@ -67,23 +67,27 @@
     return [UIImage imageNamed:name];
 }
 
-+ (UIImage *)bzm_imageInBundle:(NSString *)name {
-    if (name.length == 0) {
++ (UIImage *)bzm_imageInFrame:(NSString *)path {
+    if (path.length == 0) {
         return nil;
     }
     
-    NSArray *arr = [name componentsSeparatedByString:@"/"];
+    NSArray *arr = [path componentsSeparatedByString:@"/"];
     if (arr.count != 2) {
         return nil;
     }
     
     NSString *module = arr[0];
-    NSString *file = arr[1];
+    NSString *name = arr[1];
     
     NSBundle *bundle = [NSBundle bzm_bundleWithModule:module];
-    bundle = [NSBundle bundleWithPath:[bundle pathForResource:module ofType:@"bundle"]];
+    UIImage *image = [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
+    if (image) {
+        return image;
+    }
     
-    return [UIImage imageNamed:file inBundle:bundle compatibleWithTraitCollection:nil];
+    bundle = [NSBundle bundleWithPath:[bundle pathForResource:module ofType:@"bundle"]];
+    return [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
 }
 
 + (UIImage *)bzm_imageInResource:(NSString *)name {

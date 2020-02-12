@@ -25,11 +25,11 @@
 #define kBZMIdentifierCollectionFooter               (@"kBZMIdentifierCollectionFooter")
 
 #pragma mark - Scheme
-#define kBZMSchemeHTTP                               (@"http")
-#define kBZMSchemeAsset                              (@"asset")
-#define kBZMSchemeBundle                             (@"bundle")
-#define kBZMSchemeResource                           (@"resource")
-#define kBZMSchemeDocuments                          (@"documents")
+#define kBZMSchemeHTTP                              (@"http")
+#define kBZMSchemeAsset                             (@"asset")
+#define kBZMSchemeFrame                             (@"frame")
+#define kBZMSchemeResource                          (@"resource")
+#define kBZMSchemeDocuments                         (@"documents")
 
 #pragma mark - 便捷
 #define kBZMFrameName                                (@"BZMFrame")

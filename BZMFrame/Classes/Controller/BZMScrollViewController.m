@@ -50,7 +50,7 @@ extern BZMUser *gUser;
     if (![self isKindOfClass:BZMTableViewController.class] &&
         ![self isKindOfClass:BZMCollectionViewController.class] &&
         ![self isKindOfClass:BZMWebViewController.class]) {
-        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.contentTop, self.view.qmui_width, self.view.qmui_height - self.contentTop - self.contentBottom)];
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.contentFrame];
         scrollView.bzm_contentView = [[UIView alloc] init];
         scrollView.bzm_contentView.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
         scrollView.contentSize = CGSizeMake(scrollView.qmui_width, scrollView.qmui_height + PixelOne);
@@ -69,6 +69,7 @@ extern BZMUser *gUser;
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     // self.scrollView.frame = CGRectMake(self.contentTop, 0, self.view.qmui_width, self.view.qmui_height - self.contentTop - self.contentBottom + PixelOne);
+    self.scrollView.frame = self.contentFrame;
 }
 
 #pragma mark - Property

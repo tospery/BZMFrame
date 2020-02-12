@@ -24,7 +24,7 @@
 #pragma mark - Init
 - (instancetype)initWithRouteParameters:(NSDictionary<NSString *,id> *)parameters {
     if (self = [super initWithRouteParameters:parameters]) {
-        self.canSelectCell = YES;
+        //self.canSelectCell = YES;
     }
     return self;
 }

@@ -8,6 +8,8 @@
 #import "BZMCollectionCell.h"
 
 @interface BZMNormalCollectionCell : BZMCollectionCell
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+@property (nonatomic, strong, readonly) UIImageView *arrowImageView;
 
 @end
 

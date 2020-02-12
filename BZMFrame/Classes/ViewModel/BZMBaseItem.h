@@ -11,6 +11,7 @@
 @interface BZMBaseItem : BZMObject
 @property (nonatomic, strong, readonly) BZMBaseModel *model;
 
+- (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithMid:(NSString *)mid NS_UNAVAILABLE;
 - (instancetype)initWithModel:(BZMBaseModel *)model;
 

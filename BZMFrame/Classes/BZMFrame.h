@@ -29,6 +29,7 @@
 #import "BZMBaseCommand.h"
 #import "BZMBaseList.h"
 #import "BZMMisc.h"
+#import "BZMNormalModel.h"
 
 #pragma mark - ViewModel
 #import "BZMBaseViewModel.h"

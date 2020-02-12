@@ -6,8 +6,10 @@
 //
 
 #import "BZMCollectionItem.h"
+#import "BZMNormalModel.h"
 
 @interface BZMNormalCollectionItem : BZMCollectionItem
+@property (nonatomic, strong, readonly) BZMNormalModel *model;
 
 @end
 

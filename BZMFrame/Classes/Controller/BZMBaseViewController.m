@@ -88,10 +88,10 @@
 
 #pragma mark - Property
 - (CGFloat)contentTop {
-    CGFloat value = BZMStatusBarHeightConstant;
+    CGFloat value = 0;
     UINavigationBar *navBar = self.navigationController.navigationBar;
     if (navBar != nil && navBar.isHidden != YES) {
-        value += navBar.qmui_height;
+        value += (BZMStatusBarHeightConstant + navBar.qmui_height);
     }
     BZMPageMenuView *menuView = self.bzm_pageViewController.menuView;
     if (menuView != nil && menuView.isHidden != YES) {
@@ -120,6 +120,22 @@
     // RAC(self.view, backgroundColor) = RACObserve(self.viewModel, backgroundColor);
     RAC(self.navigationItem, title) = RACObserve(self.viewModel, title);
     
+    @weakify(self)
+    [RACObserve(self.viewModel, hidesNavigationBar).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
+        @strongify(self)
+        self.navigationController.navigationBar.hidden = hide.boolValue;
+    }];
+    [RACObserve(self.viewModel, hidesNavBottomLine).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
+        @strongify(self)
+        UINavigationBar *navBar = self.navigationController.navigationBar;
+        navBar.qmui_shadowImageView.hidden = hide.boolValue;
+        if (hide.boolValue) {
+            [navBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+        } else {
+            [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+        }
+    }];
+    
     //    // Double title view
     //    TBDoubleTitleView *doubleTitleView = [[TBDoubleTitleView alloc] init];
     //    RAC(doubleTitleView.titleLabel, text)    = RACObserve(self.viewModel, title);
@@ -143,7 +159,6 @@
     //        }
     //    }];
     
-    @weakify(self)
     [RACObserve(self.viewModel, dataSource).deliverOnMainThread subscribeNext:^(id x) {
         @strongify(self)
         [self reloadData];
@@ -173,19 +188,6 @@
 //            [self presentViewController:alertController animated:YES completion:NULL];
 //        }
     }];
-    
-//    [[[RACObserve(self.viewModel, hidesNavigationBar) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *hidesNavigationBar) {
-//        @strongify(self)
-//        self.navigationController.navigationBar.hidden = hidesNavigationBar.boolValue;
-//    }];
-//
-//    [[RACObserve(self.viewModel, hidesNavBottomLine) distinctUntilChanged] subscribeNext:^(NSNumber *hidden) {
-//        @strongify(self)
-//        UIImage *image = hidden.boolValue ? [[UIImage alloc] init] : nil;
-//        UINavigationBar *navigationBar = self.navigationController.navigationBar;
-//        [navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-//        navigationBar.shadowImage = image;
-//    }];
 }
 
 - (void)beginLoad {
