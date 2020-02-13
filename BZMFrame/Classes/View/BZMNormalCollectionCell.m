@@ -48,7 +48,7 @@
 - (UIImageView *)arrowImageView {
     if (!_arrowImageView) {
         UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.image = [BZMImageFrame(@"arrowRight") imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        imageView.image = [UIImage.bzm_indicator imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         imageView.dk_tintColorPicker = DKColorPickerWithKey(IND);
         [imageView sizeToFit];
         _arrowImageView = imageView;

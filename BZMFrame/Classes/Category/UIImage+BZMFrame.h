@@ -8,13 +8,13 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (BZMFrame)
+@property (class, strong, readonly) UIImage *bzm_back;
 @property (class, strong, readonly) UIImage *bzm_close;
+@property (class, strong, readonly) UIImage *bzm_indicator;
 @property (class, strong, readonly) UIImage *bzm_loading;
 @property (class, strong, readonly) UIImage *bzm_waiting;
 @property (class, strong, readonly) UIImage *bzm_network;
 @property (class, strong, readonly) UIImage *bzm_server;
-@property (class, strong, readonly) UIImage *bzm_arrowRight;
-@property (class, strong, readonly) UIImage *bzm_arrowLeft;
 
 + (UIImage *)bzm_imageURLed:(NSString *)urlString;
 + (UIImage *)bzm_imageInAsset:(NSString *)name;

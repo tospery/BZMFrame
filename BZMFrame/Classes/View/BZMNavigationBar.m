@@ -72,10 +72,11 @@
     
     CGFloat left = 0;
     CGFloat top = BZMStatusBarHeightConstant;
-    CGFloat height = BZMNavBarHeight;
+    CGFloat width = BZMNavBarHeight;
+    CGFloat height = width;
     for (NSInteger i = 0; i < self.leftButtons.count; ++i) {
         UIButton *button = self.leftButtons[i];
-        button.qmui_width += 10.f;
+        button.qmui_width = width;
         button.qmui_height = height;
         button.qmui_top = top;
         button.qmui_left = left;
@@ -84,7 +85,7 @@
     CGFloat right = self.qmui_width;
     for (NSInteger i = 0; i < self.rightButtons.count; ++i) {
         UIButton *button = self.rightButtons[i];
-        button.qmui_width += 10.f;
+        button.qmui_width = width;
         button.qmui_height = height;
         button.qmui_top = top;
         button.qmui_right = right;
@@ -96,12 +97,12 @@
     UIButton *rightLastButton = self.rightButtons.lastObject;
     CGFloat rightDistance = rightLastButton ? (self.qmui_width - rightLastButton.qmui_left) : 0;
     left = MAX(leftDistance, rightDistance);
-    CGFloat width = flat(self.qmui_width - left * 2);
+    width = flat(self.qmui_width - left * 2);
     self.titleLabel.frame = CGRectMake(left, BZMStatusBarHeightConstant, width, BZMNavBarHeight);
 }
 
 - (UIButton *)addBackButtonToLeft {
-    return [self addButtonToLeftWithImage:UIImage.bzm_arrowLeft];
+    return [self addButtonToLeftWithImage:UIImage.bzm_back];
 }
 
 - (UIButton *)addCloseButtonToLeft {
@@ -110,6 +111,7 @@
 
 - (UIButton *)addButtonToLeftWithImage:(UIImage *)image {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = UIColorClear;
     button.dk_tintColorPicker = DKColorPickerWithKey(BAR);
     [button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [button sizeToFit];
@@ -127,7 +129,7 @@
 
 - (UIButton *)addButtonToRightWithImage:(UIImage *)image {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = UIColor.redColor;
+    button.backgroundColor = UIColorClear;
     button.dk_tintColorPicker = DKColorPickerWithKey(BAR);
     [button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [button sizeToFit];
@@ -145,6 +147,7 @@
 
 - (UIButton *)addButtonToRightWithTitle:(NSAttributedString *)title {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = UIColorClear;
     [button setAttributedTitle:title forState:UIControlStateNormal];
     [button sizeToFit];
     [self addSubview:button];

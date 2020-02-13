@@ -6,6 +6,7 @@
 //
 
 #import "UIImage+BZMFrame.h"
+#import <QMUIKit/QMUIKit.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <Accelerate/Accelerate.h>
 #import <QuartzCore/QuartzCore.h>
@@ -18,8 +19,16 @@
 
 @implementation UIImage (BZMFrame)
 
++ (UIImage *)bzm_back {
+    return [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(10, 18) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
+}
+
 + (UIImage *)bzm_close {
-    return BZMImageFrame(@"close");
+    return [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
+}
+
++ (UIImage *)bzm_indicator {
+    return [UIImage qmui_imageWithShape:QMUIImageShapeDisclosureIndicator size:CGSizeMake(8, 15) lineWidth:1 tintColor:BZMColorKey(IND)];
 }
 
 + (UIImage *)bzm_loading {
@@ -36,14 +45,6 @@
 
 + (UIImage *)bzm_server {
     return BZMImageFrame(@"errorServer");
-}
-
-+ (UIImage *)bzm_arrowLeft {
-    return BZMImageFrame(@"arrowLeft");
-}
-
-+ (UIImage *)bzm_arrowRight {
-    return BZMImageFrame(@"arrowRight");
 }
 
 + (UIImage *)bzm_imageURLed:(NSString *)urlString {
