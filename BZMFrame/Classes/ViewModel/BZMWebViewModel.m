@@ -21,8 +21,8 @@
 @implementation BZMWebViewModel
 - (instancetype)initWithRouteParameters:(NSDictionary<NSString *,id> *)parameters {
     if (self = [super initWithRouteParameters:parameters]) {
-        self.shouldFetchLocalData = NO;
-        self.shouldRequestRemoteData = YES;
+        self.shouldFetchLocalData = BZMBoolMember(parameters, BZMParameter.requestRemote, NO);
+        self.shouldRequestRemoteData = BZMBoolMember(parameters, BZMParameter.requestRemote, YES);
         self.ocHandlers = BZMArrMember(parameters, BZMParameter.ocHandlers, nil);
         self.jsHandlers = BZMArrMember(parameters, BZMParameter.jsHandlers, nil);
         self.url = BZMObjWithDft(BZMURLMember(parameters, JLRouteURLKey, nil), BZMURLMember(parameters, BZMParameter.url, nil));

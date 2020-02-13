@@ -62,6 +62,9 @@
     self.navigationController.navigationBar.hidden = YES;
     if (!self.viewModel.hidesNavigationBar) {
         [self addNavigationBar];
+        if (self.viewModel.hidesNavBottomLine) {
+            self.navigationBar.qmui_borderLayer.hidden = YES;
+        }
     }
     if (self.navigationController.viewControllers.count > 1) {
         UIButton *backButton = [self.navigationBar addBackButtonToLeft];

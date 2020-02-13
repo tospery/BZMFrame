@@ -42,6 +42,7 @@
 @property (nonatomic, strong, readonly) RACCommand *backCommand;
 @property (nonatomic, strong, readonly) RACCommand *closeCommand;
 @property (nonatomic, strong, readonly) RACCommand *requestRemoteDataCommand;
+@property (nonatomic, strong, readonly) RACSignal *reloadSignal;
 @property (nonatomic, weak) BZMBaseViewController *viewController;
 
 - (void)didInitialize;

@@ -29,6 +29,7 @@
 @property (nonatomic, strong, readwrite) RACCommand *backCommand;
 @property (nonatomic, strong, readwrite) RACCommand *closeCommand;
 @property (nonatomic, strong, readwrite) RACCommand *requestRemoteDataCommand;
+@property (nonatomic, strong, readwrite) RACSignal *reloadSignal;
 
 @end
 
@@ -147,19 +148,24 @@
     // RACSignal *fetchLocalDataSignal = [RACSignal return:[self fetchLocalData]];
     RACSignal *requestRemoteDataSignal = self.requestRemoteDataCommand.executionSignals.switchToLatest;
     if (self.shouldFetchLocalData && !self.shouldRequestRemoteData) {
-        RAC(self, dataSource) = [[RACSignal return:[self fetchLocalData]].deliverOnMainThread map:^id(id data) {
+        self.reloadSignal = [RACSignal return:[self fetchLocalData]].deliverOnMainThread;
+        RAC(self, dataSource) = [self.reloadSignal map:^id(id data) {
             @strongify(self)
             return [self data2Source:data];
         }];
     }else if (!self.shouldFetchLocalData && self.shouldRequestRemoteData) {
-        RAC(self, dataSource) = [requestRemoteDataSignal.deliverOnMainThread map:^id(id data) {
+        self.reloadSignal = requestRemoteDataSignal.deliverOnMainThread;
+        RAC(self, dataSource) = [self.reloadSignal map:^id(id data) {
             @strongify(self)
             return [self data2Source:data];
         }];
     }else if (self.shouldFetchLocalData && self.shouldRequestRemoteData) {
-        RAC(self, dataSource) = [[requestRemoteDataSignal startWith:[self fetchLocalData]].deliverOnMainThread map:^id(id data) {
+        self.reloadSignal = [requestRemoteDataSignal startWith:[self fetchLocalData]].deliverOnMainThread;
+        RAC(self, dataSource) = [self.reloadSignal map:^id(id data) {
             return [self data2Source:data];
         }];
+    } else {
+        self.reloadSignal = RACSignal.empty;
     }
 }
 
