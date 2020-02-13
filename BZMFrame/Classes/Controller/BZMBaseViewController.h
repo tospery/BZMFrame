@@ -7,11 +7,13 @@
 
 #import <QMUIKit/QMUIKit.h>
 #import "BZMBaseViewModel.h"
+#import "BZMNavigationBar.h"
 
 @interface BZMBaseViewController : UIViewController
 @property (nonatomic, assign, readonly) CGFloat contentTop;
 @property (nonatomic, assign, readonly) CGFloat contentBottom;
 @property (nonatomic, assign, readonly) CGRect contentFrame;
+@property (nonatomic, strong, readonly) BZMNavigationBar *navigationBar;
 @property (nonatomic, strong, readonly) BZMBaseViewModel *viewModel;
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;

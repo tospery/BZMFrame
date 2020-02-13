@@ -18,6 +18,10 @@
 
 @implementation UIImage (BZMFrame)
 
++ (UIImage *)bzm_close {
+    return BZMImageFrame(@"close");
+}
+
 + (UIImage *)bzm_loading {
     return BZMImageFrame(@"loading");
 }
@@ -27,13 +31,20 @@
 }
 
 + (UIImage *)bzm_network {
-    return BZMImageFrame(@"error_network");
+    return BZMImageFrame(@"errorNetwork");
 }
 
 + (UIImage *)bzm_server {
-    return BZMImageFrame(@"error_server");
+    return BZMImageFrame(@"errorServer");
 }
 
++ (UIImage *)bzm_arrowLeft {
+    return BZMImageFrame(@"arrowLeft");
+}
+
++ (UIImage *)bzm_arrowRight {
+    return BZMImageFrame(@"arrowRight");
+}
 
 + (UIImage *)bzm_imageURLed:(NSString *)urlString {
     NSString *asset = BZMStrWithFmt(@"%@://", kBZMSchemeAsset);

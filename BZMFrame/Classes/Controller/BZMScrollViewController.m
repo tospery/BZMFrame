@@ -69,7 +69,7 @@ extern BZMUser *gUser;
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     // self.scrollView.frame = CGRectMake(self.contentTop, 0, self.view.qmui_width, self.view.qmui_height - self.contentTop - self.contentBottom + PixelOne);
-    self.scrollView.frame = self.contentFrame;
+    // self.scrollView.frame = self.contentFrame;
 }
 
 #pragma mark - Property

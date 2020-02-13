@@ -40,6 +40,7 @@
 @property (nonatomic, strong, readonly) RACSubject *executing;
 @property (nonatomic, strong, readonly) RACSubject *willDisappearSignal;
 @property (nonatomic, strong, readonly) RACCommand *backCommand;
+@property (nonatomic, strong, readonly) RACCommand *closeCommand;
 @property (nonatomic, strong, readonly) RACCommand *requestRemoteDataCommand;
 @property (nonatomic, weak) BZMBaseViewController *viewController;
 

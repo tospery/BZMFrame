@@ -27,6 +27,7 @@
 @property (nonatomic, strong, readwrite) RACSubject *executing;
 @property (nonatomic, strong, readwrite) RACSubject *willDisappearSignal;
 @property (nonatomic, strong, readwrite) RACCommand *backCommand;
+@property (nonatomic, strong, readwrite) RACCommand *closeCommand;
 @property (nonatomic, strong, readwrite) RACCommand *requestRemoteDataCommand;
 
 @end
@@ -121,13 +122,14 @@
         [self.viewController.view makeToast:BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)];
     }];
     
-    self.backCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal * _Nonnull(NSNumber * _Nullable isBack) {
+    self.backCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(UIButton *button) {
         @strongify(self)
-        if (isBack.boolValue) {
-            [self.navigator popViewModelAnimated:YES];
-        }else {
-            [self.navigator dismissViewModelAnimated:YES completion:nil];
-        }
+        [self.navigator popViewModelAnimated:YES];
+        return RACSignal.empty;
+    }];
+    self.closeCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(UIButton *button) {
+        @strongify(self)
+        [self.navigator dismissViewModelAnimated:YES completion:nil];
         return RACSignal.empty;
     }];
     

@@ -10,7 +10,6 @@
 #import <DKNightVersion/DKNightVersion.h>
 #import "BZMType.h"
 #import "BZMFunction.h"
-#import "BZMNavigationBar.h"
 #import "BZMPageViewController.h"
 #import "BZMTabBarViewController.h"
 #import "UIViewController+BZMFrame.h"
@@ -60,27 +59,39 @@
     
     self.view.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
     
-//    if (self.navigationController.viewControllers.count > 1) {
-//        UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(10, 18) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
-//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(backBarItemPressed:)];
-//    } else {
-//        if (self.presentingViewController) {
-//            UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
-//            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(closeBarItemPressed:)];
-//        } else {
-//            self.navigationItem.leftBarButtonItem = nil;
-//        }
-//    }
-    
     self.navigationController.navigationBar.hidden = YES;
     if (!self.viewModel.hidesNavigationBar) {
         [self addNavigationBar];
+    }
+    if (self.navigationController.viewControllers.count > 1) {
+        UIButton *backButton = [self.navigationBar addBackButtonToLeft];
+        backButton.rac_command = self.viewModel.backCommand;
+    } else {
+        if (self.presentingViewController) {
+            UIButton *closeButton = [self.navigationBar addCloseButtonToLeft];
+            closeButton.rac_command = self.viewModel.closeCommand;
+        }
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.viewModel.willDisappearSignal sendNext:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.view bringSubviewToFront:self.navigationBar];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.view bringSubviewToFront:self.navigationBar];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self.view bringSubviewToFront:self.navigationBar];
 }
 
 #pragma mark - Super
@@ -108,11 +119,11 @@
 - (CGFloat)contentTop {
     CGFloat value = 0;
     UINavigationBar *navBar = self.navigationController.navigationBar;
-    if (navBar != nil && navBar.isHidden != YES && self.navigationBar.superview) {
-        value += (BZMStatusBarHeightConstant + navBar.qmui_height);
+    if ((navBar && !navBar.hidden) || !self.viewModel.hidesNavigationBar) {
+        value += BZMNavContentTopConstant;
     }
     BZMPageMenuView *menuView = self.bzm_pageViewController.menuView;
-    if (menuView != nil && menuView.isHidden != YES) {
+    if (menuView && !menuView.hidden) {
         value += menuView.qmui_height;
     }
     return value;
@@ -121,7 +132,7 @@
 - (CGFloat)contentBottom {
     CGFloat value = BZMSafeBottom;
     UITabBar *tabBar = self.tabBarController.tabBar; // self.bzm_tabBarViewController.innerTabBarController.tabBar;
-    if (!self.hidesBottomBarWhenPushed && tabBar != nil && tabBar.isHidden != YES) {
+    if (tabBar && !tabBar.hidden && !self.hidesBottomBarWhenPushed) {
         value += tabBar.qmui_height;
     }
     return value;
@@ -135,27 +146,17 @@
 
 #pragma mark - Public
 - (void)bindViewModel {
-    // RAC(self.view, backgroundColor) = RACObserve(self.viewModel, backgroundColor);
-    // RAC(self.navigationItem, title) = RACObserve(self.viewModel, title);
     RAC(self.navigationBar.titleLabel, text) = RACObserve(self.viewModel, title);
-//    NSLog(@"abc: %@", self.viewModel.title);
-//    self.navigationBar.titleLabel.text = self.viewModel.title;
     
-//    @weakify(self)
-//    [RACObserve(self.viewModel, hidesNavigationBar).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
-//        @strongify(self)
-//        self.navigationController.navigationBar.hidden = hide.boolValue;
-//    }];
-//    [RACObserve(self.viewModel, hidesNavBottomLine).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
-//        @strongify(self)
-//        UINavigationBar *navBar = self.navigationController.navigationBar;
-//        navBar.qmui_shadowImageView.hidden = hide.boolValue;
-//        if (hide.boolValue) {
-//            [navBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-//        } else {
-//            [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-//        }
-//    }];
+    @weakify(self)
+    [[RACObserve(self.viewModel, hidesNavigationBar) skip:1].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
+        @strongify(self)
+        hide.boolValue ? [self removeNavigationBar] : [self addNavigationBar];
+    }];
+    [[RACObserve(self.viewModel, hidesNavBottomLine) skip:1].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
+        @strongify(self)
+        self.navigationBar.qmui_borderLayer.hidden = hide.boolValue;
+    }];
     
     //    // Double title view
     //    TBDoubleTitleView *doubleTitleView = [[TBDoubleTitleView alloc] init];
@@ -180,7 +181,6 @@
     //        }
     //    }];
     
-    @weakify(self)
     [RACObserve(self.viewModel, dataSource).deliverOnMainThread subscribeNext:^(id x) {
         @strongify(self)
         [self reloadData];
@@ -279,15 +279,6 @@
     if (self.navigationBar.superview) {
         [self.navigationBar removeFromSuperview];
     }
-}
-
-#pragma mark - Action
-- (void)backBarItemPressed:(UIBarButtonItem *)barItem {
-    [self.viewModel.backCommand execute:@(YES)];
-}
-
-- (void)closeBarItemPressed:(UIBarButtonItem *)barItem {
-    [self.viewModel.backCommand execute:@(NO)];
 }
 
 #pragma mark - Notification

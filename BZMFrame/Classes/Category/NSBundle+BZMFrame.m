@@ -10,20 +10,19 @@
 
 @implementation NSBundle (BZMFrame)
 + (NSBundle *)bzm_bundleWithModule:(NSString *)module {
-    if (module.length == 0) {
-        return [NSBundle mainBundle];
-    }
-    
-    NSBundle *bundle = [NSBundle bundleForClass:NSClassFromString(module)];
-    if (!bundle) {
-        NSString *identifier = BZMStrWithFmt(@"org.cocoapods.%@", module);
-        bundle = [NSBundle bundleWithIdentifier:identifier];
-    }
-    if (!bundle) {
-        return [NSBundle mainBundle];
-    }
-    
-    return bundle;
+//    if (module.length == 0) {
+//        return [NSBundle mainBundle];
+//    }
+//
+////    NSBundle *bundle = [NSBundle bundleForClass:NSClassFromString(module)];
+////    if (!bundle) {
+////        NSString *identifier = BZMStrWithFmt(@"org.cocoapods.%@", module);
+////        bundle = [NSBundle bundleWithIdentifier:identifier];
+////    }
+//
+    NSString *identifier = BZMStrWithFmt(@"org.cocoapods.%@", module);
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:identifier];
+    return bundle ? bundle : NSBundle.mainBundle;
 }
 
 @end
