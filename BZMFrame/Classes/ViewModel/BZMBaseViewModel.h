@@ -25,8 +25,8 @@
 @property (nonatomic, assign) BOOL hidesNavBottomLine;
 @property (nonatomic, assign) BOOL shouldFetchLocalData;
 @property (nonatomic, assign) BOOL shouldRequestRemoteData;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *subtitle;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *subtitle;
 @property (nonatomic, copy, readonly) NSDictionary<NSString *,id> *parameters;
 @property (nonatomic, strong, readonly) BZMBaseModel *model;
 @property (nonatomic, assign) BZMRequestMode requestMode;

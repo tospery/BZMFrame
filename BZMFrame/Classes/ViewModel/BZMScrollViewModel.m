@@ -18,6 +18,7 @@
 #import "UIImage+BZMFrame.h"
 
 @interface BZMScrollViewModel ()
+@property (nonatomic, strong, readwrite) RACCommand *selectCommand;
 
 @end
 
@@ -37,6 +38,9 @@
 
 - (void)didInitialize {
     [super didInitialize];
+    self.selectCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        return [RACSignal return:input];
+    }];
 }
 
 #pragma mark - Public

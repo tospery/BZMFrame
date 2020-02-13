@@ -18,6 +18,10 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 - (instancetype)initWithViewModel:(BZMBaseViewModel *)viewModel;
 
+
+- (void)addNavigationBar;
+- (void)removeNavigationBar;
+
 - (void)bindViewModel;
 
 - (void)reloadData;

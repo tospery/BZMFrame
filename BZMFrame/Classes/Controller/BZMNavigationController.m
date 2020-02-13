@@ -15,7 +15,8 @@
 @implementation BZMNavigationController
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController {
     if (self = [super initWithRootViewController:rootViewController]) {
-        self.navigationBar.tintColor = BZMColorKey(BAR);
+        // self.navigationBar.tintColor = BZMColorKey(BAR);
+        // self.navigationBar.hidden = YES;
         self.modalPresentationStyle = UIModalPresentationFullScreen;
     }
     return self;

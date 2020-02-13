@@ -214,7 +214,7 @@
     }
     id<BZMCollectionViewModelDataSource> dataSource = (id<BZMCollectionViewModelDataSource>)collectionView.dataSource;
     BZMCollectionItem *item = [dataSource collectionViewModel:self.viewModel itemAtIndexPath:indexPath];
-    [self.viewModel.didSelectCommand execute:RACTuplePack(indexPath, item)];
+    [self.viewModel.selectCommand execute:RACTuplePack(indexPath, item)];
 }
 
 #pragma mark - UIScrollViewDelegate

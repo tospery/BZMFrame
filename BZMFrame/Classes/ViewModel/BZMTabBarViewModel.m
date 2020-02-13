@@ -8,5 +8,11 @@
 #import "BZMTabBarViewModel.h"
 
 @implementation BZMTabBarViewModel
+- (instancetype)initWithRouteParameters:(NSDictionary<NSString *,id> *)parameters {
+    if (self = [super initWithRouteParameters:parameters]) {
+        self.hidesNavigationBar = BZMBoolMember(parameters, BZMParameter.hideNavBar, YES);
+    }
+    return self;
+}
 
 @end

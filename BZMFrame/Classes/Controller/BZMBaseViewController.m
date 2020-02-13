@@ -10,6 +10,7 @@
 #import <DKNightVersion/DKNightVersion.h>
 #import "BZMType.h"
 #import "BZMFunction.h"
+#import "BZMNavigationBar.h"
 #import "BZMPageViewController.h"
 #import "BZMTabBarViewController.h"
 #import "UIViewController+BZMFrame.h"
@@ -18,6 +19,7 @@
 @property (nonatomic, assign, readwrite) CGFloat contentTop;
 @property (nonatomic, assign, readwrite) CGFloat contentBottom;
 @property (nonatomic, assign, readwrite) CGRect contentFrame;
+@property (nonatomic, strong, readwrite) BZMNavigationBar *navigationBar;
 @property (nonatomic, strong, readwrite) BZMBaseViewModel *viewModel;
 
 @end
@@ -51,23 +53,29 @@
 #pragma mark - View
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    if (self.navigationController.viewControllers.count > 1) {
-        UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(10, 18) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(backBarItemPressed:)];
-    } else {
-        if (self.presentingViewController) {
-            UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(closeBarItemPressed:)];
-        } else {
-            self.navigationItem.leftBarButtonItem = nil;
-        }
-    }
-    
     self.view.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
+    
+//    if (self.navigationController.viewControllers.count > 1) {
+//        UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(10, 18) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
+//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(backBarItemPressed:)];
+//    } else {
+//        if (self.presentingViewController) {
+//            UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
+//            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(closeBarItemPressed:)];
+//        } else {
+//            self.navigationItem.leftBarButtonItem = nil;
+//        }
+//    }
+    
+    self.navigationController.navigationBar.hidden = YES;
+    if (!self.viewModel.hidesNavigationBar) {
+        [self addNavigationBar];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -87,10 +95,20 @@
 }
 
 #pragma mark - Property
+- (BZMNavigationBar *)navigationBar {
+    if (!_navigationBar) {
+        BZMNavigationBar *navigationBar = [[BZMNavigationBar alloc] init];
+        navigationBar.layer.zPosition = FLT_MAX;
+        [navigationBar sizeToFit];
+        _navigationBar = navigationBar;
+    }
+    return _navigationBar;
+}
+
 - (CGFloat)contentTop {
     CGFloat value = 0;
     UINavigationBar *navBar = self.navigationController.navigationBar;
-    if (navBar != nil && navBar.isHidden != YES) {
+    if (navBar != nil && navBar.isHidden != YES && self.navigationBar.superview) {
         value += (BZMStatusBarHeightConstant + navBar.qmui_height);
     }
     BZMPageMenuView *menuView = self.bzm_pageViewController.menuView;
@@ -118,23 +136,26 @@
 #pragma mark - Public
 - (void)bindViewModel {
     // RAC(self.view, backgroundColor) = RACObserve(self.viewModel, backgroundColor);
-    RAC(self.navigationItem, title) = RACObserve(self.viewModel, title);
+    // RAC(self.navigationItem, title) = RACObserve(self.viewModel, title);
+    RAC(self.navigationBar.titleLabel, text) = RACObserve(self.viewModel, title);
+//    NSLog(@"abc: %@", self.viewModel.title);
+//    self.navigationBar.titleLabel.text = self.viewModel.title;
     
-    @weakify(self)
-    [RACObserve(self.viewModel, hidesNavigationBar).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
-        @strongify(self)
-        self.navigationController.navigationBar.hidden = hide.boolValue;
-    }];
-    [RACObserve(self.viewModel, hidesNavBottomLine).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
-        @strongify(self)
-        UINavigationBar *navBar = self.navigationController.navigationBar;
-        navBar.qmui_shadowImageView.hidden = hide.boolValue;
-        if (hide.boolValue) {
-            [navBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-        } else {
-            [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        }
-    }];
+//    @weakify(self)
+//    [RACObserve(self.viewModel, hidesNavigationBar).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
+//        @strongify(self)
+//        self.navigationController.navigationBar.hidden = hide.boolValue;
+//    }];
+//    [RACObserve(self.viewModel, hidesNavBottomLine).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
+//        @strongify(self)
+//        UINavigationBar *navBar = self.navigationController.navigationBar;
+//        navBar.qmui_shadowImageView.hidden = hide.boolValue;
+//        if (hide.boolValue) {
+//            [navBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+//        } else {
+//            [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+//        }
+//    }];
     
     //    // Double title view
     //    TBDoubleTitleView *doubleTitleView = [[TBDoubleTitleView alloc] init];
@@ -159,6 +180,7 @@
     //        }
     //    }];
     
+    @weakify(self)
     [RACObserve(self.viewModel, dataSource).deliverOnMainThread subscribeNext:^(id x) {
         @strongify(self)
         [self reloadData];
@@ -245,6 +267,18 @@
 
 - (BOOL)handleError {
     return NO;
+}
+
+- (void)addNavigationBar {
+    if (!self.navigationBar.superview) {
+        [self.view addSubview:self.navigationBar];
+    }
+}
+
+- (void)removeNavigationBar {
+    if (self.navigationBar.superview) {
+        [self.navigationBar removeFromSuperview];
+    }
 }
 
 #pragma mark - Action

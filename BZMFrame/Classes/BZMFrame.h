@@ -84,6 +84,7 @@
 #import "BZMButton.h"
 #import "BZMNormalCollectionCell.h"
 #import "BZMBorderLayer.h"
+#import "BZMNavigationBar.h"
 
 #pragma mark - Category
 #import "NSObject+BZMFrame.h"

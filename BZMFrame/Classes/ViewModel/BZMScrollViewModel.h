@@ -22,7 +22,7 @@
 @property (nonatomic, assign) BOOL hasMoreData;
 @property (nonatomic, strong) BZMPage *page;
 @property (nonatomic, strong) NSMutableArray *preloadPages;
-@property (nonatomic, strong) RACCommand *didSelectCommand;
+@property (nonatomic, strong, readonly) RACCommand *selectCommand;
 
 - (NSUInteger)offsetForPage:(NSUInteger)page;
 - (NSInteger)nextPageIndex;
