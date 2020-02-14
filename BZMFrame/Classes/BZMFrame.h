@@ -107,6 +107,7 @@
 #import "UIViewController+BZMFrame.h"
 #import "MTLJSONAdapter+BZMFrame.h"
 #import "UICollectionReusableView+BZMFrame.h"
+#import "MTLModel+BZMFrame.h"
 
 #pragma mark - Protocol
 #import "BZMIdentifiable.h"

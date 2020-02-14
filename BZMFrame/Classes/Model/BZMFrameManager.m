@@ -16,8 +16,9 @@
 @implementation BZMFrameManager
 - (instancetype)init {
     if (self = [super init]) {
+        self.autoLogin = YES;
+        self.loginPattern = @"/login";
         self.fontScale = IS_320WIDTH_SCREEN ? -2 : 0;
-        //self.primaryColor = UIColorYellow;
     }
     return self;
 }

@@ -11,7 +11,9 @@
 @class BZMFrameManager;
 
 @interface BZMFrameManager : NSObject
+@property (nonatomic, assign) CGFloat autoLogin;
 @property (nonatomic, assign) CGFloat fontScale;
+@property (nonatomic, strong) NSString *loginPattern;
 @property (nonatomic, strong) BZMPage *page;
 
 + (instancetype)share;

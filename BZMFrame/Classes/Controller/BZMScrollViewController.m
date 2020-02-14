@@ -10,6 +10,8 @@
 #import <MJRefresh/MJRefresh.h>
 #import "BZMFunction.h"
 #import "BZMUser.h"
+#import "BZMFrameManager.h"
+#import "BZMLoginViewController.h"
 #import "BZMTableViewController.h"
 #import "BZMCollectionViewController.h"
 #import "BZMTabBarViewController.h"
@@ -183,7 +185,13 @@ extern BZMUser *gUser;
     //    }
     
     if (BZMErrorCodeUnauthorized == self.viewModel.error.code) {
-        [gUser logout];
+        if (gUser.isLogined) {
+            [gUser logout];
+        }
+        if (BZMFrameManager.share.autoLogin &&
+            ![self.viewModel.navigator.topNavigationController.topViewController isKindOfClass:BZMLoginViewController.class]) {
+            [self.viewModel.navigator routePattern:BZMFrameManager.share.loginPattern withParameters:nil];
+        }
     }
     
     return handled;
