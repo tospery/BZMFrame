@@ -23,7 +23,7 @@
 //- (BOOL)routePattern:(NSString *)pattern;
 
 - (BOOL)routeURL:(NSURL *)URL withParameters:(NSDictionary *)parameters;
-- (BOOL)routePattern:(NSString *)pattern withParameters:(NSDictionary *)parameters;
+//- (BOOL)routePattern:(NSString *)pattern withParameters:(NSDictionary *)parameters;
 
 + (instancetype)share;
 

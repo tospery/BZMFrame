@@ -12,6 +12,7 @@
 - (NSURL *)bzm_addQueries:(NSDictionary *)queries;
 
 + (NSURL *)bzm_urlWithString:(NSString *)urlString;
++ (NSURL *)bzm_urlWithPath:(NSString *)path;
 
 @end
 

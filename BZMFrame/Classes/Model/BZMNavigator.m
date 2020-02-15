@@ -77,11 +77,11 @@
     return [JLRoutes routeURL:URL withParameters:parameters];
 }
 
-- (BOOL)routePattern:(NSString *)pattern withParameters:(NSDictionary *)parameters {
-    NSString *scheme = UIApplication.sharedApplication.bzm_urlScheme;
-    NSURL *url = BZMURLWithStr(BZMStrWithFmt(@"%@://m.%@.com%@", scheme, scheme, pattern));
-    return [JLRoutes routeURL:url withParameters:parameters];
-}
+//- (BOOL)routePattern:(NSString *)pattern withParameters:(NSDictionary *)parameters {
+//    NSString *scheme = UIApplication.sharedApplication.bzm_urlScheme;
+//    NSURL *url = BZMURLWithStr(BZMStrWithFmt(@"%@://m.%@.com%@", scheme, scheme, pattern));
+//    return [JLRoutes routeURL:url withParameters:parameters];
+//}
 
 #pragma mark - Delegate
 #pragma mark BZMNavigationProtocol

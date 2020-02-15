@@ -7,8 +7,10 @@
 
 #import "NSURL+BZMFrame.h"
 #import <QMUIKit/QMUIKit.h>
+#import "BZMFunction.h"
 #import "NSObject+BZMFrame.h"
 #import "NSString+BZMFrame.h"
+#import "UIApplication+BZMFrame.h"
 
 @implementation NSURL (BZMFrame)
 - (NSURL *)bzm_addQueries:(NSDictionary *)queries {
@@ -45,10 +47,18 @@
 }
 
 + (NSURL *)bzm_urlWithString:(NSString *)urlString {
-    if (!urlString || ![urlString isKindOfClass:[NSString class]] || !urlString.length) {
+    if (!urlString || ![urlString isKindOfClass:NSString.class] || !urlString.length) {
         return nil;
     }
     return [NSURL URLWithString:[urlString bzm_urlEncoded]];
+}
+
++ (NSURL *)bzm_urlWithPath:(NSString *)path {
+    if (!path || ![path isKindOfClass:NSString.class] || !path.length) {
+        return nil;
+    }
+    NSString *base = BZMStrWithFmt(@"https://m.%@.com", UIApplication.sharedApplication.bzm_urlScheme);
+    return [NSURL URLWithString:path relativeToURL:BZMURLWithStr(base)];
 }
 
 @end
