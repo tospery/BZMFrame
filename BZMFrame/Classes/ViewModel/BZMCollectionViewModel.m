@@ -102,11 +102,11 @@
         reuseId = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
     }
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
+    [self configureCell:cell atIndexPath:indexPath withItem:item];
     if ([cell conformsToProtocol:@protocol(BZMReactiveView)]) {
         id<BZMReactiveView> reactiveView = (id<BZMReactiveView>)cell;
         [reactiveView bindViewModel:item];
     }
-    [self configureCell:cell atIndexPath:indexPath withItem:item];
     
 //    NSArray *items = (NSArray *)self.dataSource.lastObject;
 //    if (self.shouldScrollToMore &&
