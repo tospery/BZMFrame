@@ -13,8 +13,8 @@
 #import "BZMUser.h"
 #import "BZMMisc.h"
 
-BZMUser *gUser;
-BZMMisc *gMisc;
+//BZMUser *gUser;
+//BZMMisc *gMisc;
 
 @interface BZMAppDependency ()
 @property (nonatomic, strong, readwrite) UIWindow *window;
@@ -54,26 +54,26 @@ BZMMisc *gMisc;
 }
 
 - (void)setupData {
-    Class cls = NSClassFromString(@"User");
-    SEL sel = NSSelectorFromString(@"cachedObject");
-    if (cls && sel && [cls respondsToSelector:sel]) {
-        gUser = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
-        if (!gUser) {
-            gUser = [[cls alloc] init];
-        }
-    } else {
-        gUser = [[BZMUser alloc] init];
-    }
-    
-    cls = NSClassFromString(@"Misc");
-    if (cls && sel && [cls respondsToSelector:sel]) {
-        gMisc = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
-        if (!gMisc) {
-            gMisc = [[cls alloc] init];
-        }
-    } else {
-        gMisc = [[BZMMisc alloc] init];
-    }
+//    Class cls = NSClassFromString(@"User");
+//    SEL sel = NSSelectorFromString(@"cachedObject");
+//    if (cls && sel && [cls respondsToSelector:sel]) {
+//        gUser = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+//        if (!gUser) {
+//            gUser = [[cls alloc] init];
+//        }
+//    } else {
+//        gUser = [[BZMUser alloc] init];
+//    }
+//
+//    cls = NSClassFromString(@"Misc");
+//    if (cls && sel && [cls respondsToSelector:sel]) {
+//        gMisc = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+//        if (!gMisc) {
+//            gMisc = [[cls alloc] init];
+//        }
+//    } else {
+//        gMisc = [[BZMMisc alloc] init];
+//    }
 }
 
 #pragma mark - Launch
@@ -91,8 +91,8 @@ BZMMisc *gMisc;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [gUser saveWithKey:nil];
-    [gMisc saveWithKey:nil];
+//    [gUser saveWithKey:nil];
+//    [gMisc saveWithKey:nil]; 
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -104,8 +104,8 @@ BZMMisc *gMisc;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    [gUser saveWithKey:nil];
-    [gMisc saveWithKey:nil];
+//    [gUser saveWithKey:nil];
+//    [gMisc saveWithKey:nil];
 }
 
 #pragma mark - URL

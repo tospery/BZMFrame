@@ -13,6 +13,8 @@
 #import "NSNumber+BZMFrame.h"
 #import "MTLJSONAdapter+BZMFrame.h"
 
+NSMutableDictionary *currents = nil;
+
 @interface BZMBaseModel ()
 @property (nonatomic, copy, readwrite) NSString *mid;
 
@@ -123,6 +125,22 @@
         }
     }
     return array;
+}
+
++ (instancetype)current {
+    if (!currents) {
+        currents = [NSMutableDictionary dictionary];
+    }
+    NSString *key = [self objectArchiverKey:nil];
+    BZMBaseModel *obj = [currents bzm_objectForKey:key];
+    if (!obj) {
+        obj = [self cachedObject];
+        if (!obj) {
+            obj = [[self alloc] init];
+        }
+        [currents setObject:obj forKey:key];
+    }
+    return obj;
 }
 
 #pragma mark private

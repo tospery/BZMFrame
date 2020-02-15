@@ -20,8 +20,6 @@
 #import "UIScrollView+BZMFrame.h"
 #import "NSError+BZMFrame.h"
 
-extern BZMUser *gUser;
-
 @interface BZMScrollViewController ()
 @property (nonatomic, assign, readwrite) CGFloat lastPosition;
 @property (nonatomic, assign, readwrite) BZMScrollDirection scrollDirection;
@@ -100,7 +98,7 @@ extern BZMUser *gUser;
         [self setupMore:should.boolValue];
     }];
     
-    [[[RACObserve(gUser, isLogined) skip:1] ignore:@(NO)].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *isLogined) {
+    [[[RACObserve(self.viewModel.user, isLogined) skip:1] ignore:@(NO)].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *isLogined) {
         @strongify(self)
         [self handleError];
     }];
@@ -185,8 +183,8 @@ extern BZMUser *gUser;
     //    }
     
     if (BZMErrorCodeUnauthorized == self.viewModel.error.code) {
-        if (gUser.isLogined) {
-            [gUser logout];
+        if (self.viewModel.user.isLogined) {
+            [self.viewModel.user logout];
         }
         if (BZMFrameManager.share.autoLogin &&
             ![self.viewModel.navigator.topNavigationController.topViewController isKindOfClass:BZMLoginViewController.class]) {

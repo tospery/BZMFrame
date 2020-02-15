@@ -24,5 +24,7 @@
 + (BZMBaseModel *)cachedObjectWithKey:(NSString *)key;
 + (NSArray *)cachedArray;
 
++ (instancetype)current;
+
 @end
 

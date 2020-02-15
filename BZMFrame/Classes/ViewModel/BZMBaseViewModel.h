@@ -10,6 +10,7 @@
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <JLRoutes/JLRRouteHandler.h>
 #import "BZMType.h"
+#import "BZMUser.h"
 #import "BZMBaseModel.h"
 #import "BZMNavigator.h"
 #import "BZMProvider.h"
@@ -29,6 +30,7 @@
 @property (nonatomic, strong) NSString *subtitle;
 @property (nonatomic, copy, readonly) NSDictionary<NSString *,id> *parameters;
 @property (nonatomic, strong, readonly) BZMBaseModel *model;
+@property (nonatomic, strong, readonly) BZMUser *user;
 @property (nonatomic, assign) BZMRequestMode requestMode;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, copy) NSArray *dataSource;

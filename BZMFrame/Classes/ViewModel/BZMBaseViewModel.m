@@ -20,6 +20,7 @@
 @interface BZMBaseViewModel ()
 @property (nonatomic, copy, readwrite) NSDictionary<NSString *,id> *parameters;;
 @property (nonatomic, strong, readwrite) BZMBaseModel *model;
+@property (nonatomic, strong, readwrite) BZMUser *user;
 @property (nonatomic, strong, readwrite) NSArray *items;
 @property (nonatomic, strong, readwrite) BZMNavigator *navigator;
 @property (nonatomic, strong, readwrite) BZMProvider *provider;
@@ -47,8 +48,19 @@
         id modelObject = BZMStrMember(parameters, BZMParameter.model, nil).bzm_JSONObject;
         if (modelObject && [modelObject isKindOfClass:NSDictionary.class]) {
             Class modelClass = NSClassFromString([NSStringFromClass(self.class) stringByReplacingOccurrencesOfString:kBZMVMSuffix withString:@""]);
-            if (modelClass) {
+            if (modelClass && [modelClass isSubclassOfClass:MTLModel.class]) {
                 self.model = [[modelClass alloc] initWithDictionary:(NSDictionary *)modelObject error:nil];
+            }
+        }
+        id userObject = BZMStrMember(parameters, BZMParameter.user, nil).bzm_JSONObject;
+        Class userClass = NSClassFromString(@"User") ? NSClassFromString(@"User") : BZMUser.class;
+        if (userObject && [userObject isKindOfClass:NSDictionary.class]) {
+            if ([userClass isSubclassOfClass:MTLModel.class]) {
+                self.user = [[userClass alloc] initWithDictionary:(NSDictionary *)userObject error:nil];
+            }
+        } else {
+            if ([userClass isSubclassOfClass:BZMBaseModel.class]) {
+                self.user = [userClass current];
             }
         }
     }
