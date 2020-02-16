@@ -20,8 +20,8 @@
 + (void)storeObject:(BZMBaseModel *)object withKey:(NSString *)key;
 + (void)storeArray:(NSArray *)array;
 
-+ (BZMBaseModel *)cachedObject;
-+ (BZMBaseModel *)cachedObjectWithKey:(NSString *)key;
++ (instancetype)cachedObject;
++ (instancetype)cachedObjectWithKey:(NSString *)key;
 + (NSArray *)cachedArray;
 
 + (instancetype)current;

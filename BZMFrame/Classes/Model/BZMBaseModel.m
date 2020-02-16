@@ -87,11 +87,11 @@ NSMutableDictionary *currents = nil;
     [PINCache.sharedCache setObject:array forKey:[self arrayArchiverKey]];
 }
 
-+ (BZMBaseModel *)cachedObject {
++ (instancetype)cachedObject {
     return [self cachedObjectWithKey:nil];
 }
 
-+ (BZMBaseModel *)cachedObjectWithKey:(NSString *)key {
++ (instancetype)cachedObjectWithKey:(NSString *)key {
     NSString *archiverKey = [self objectArchiverKey:key];
     BZMBaseModel *object = [PINCache.sharedCache objectForKey:archiverKey];
     if (!object) {
