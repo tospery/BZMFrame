@@ -29,6 +29,9 @@
 }
 
 - (void)bindViewModel:(BZMCollectionItem *)item {
+    if (self.viewModel == item) {
+        return;
+    }
     self.viewModel = item;
     [self setNeedsLayout];
     [self layoutIfNeeded];

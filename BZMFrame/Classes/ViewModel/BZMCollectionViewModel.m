@@ -105,7 +105,9 @@
     [self configureCell:cell atIndexPath:indexPath withItem:item];
     if ([cell conformsToProtocol:@protocol(BZMReactiveView)]) {
         id<BZMReactiveView> reactiveView = (id<BZMReactiveView>)cell;
-        [reactiveView bindViewModel:item];
+        if (reactiveView.viewModel != item) {
+            [reactiveView bindViewModel:item];
+        }
     }
     
 //    NSArray *items = (NSArray *)self.dataSource.lastObject;

@@ -24,6 +24,9 @@
 }
 
 - (void)bindViewModel:(id)viewModel {
+    if (self.viewModel == viewModel) {
+        return;
+    }
     self.viewModel = viewModel;
     [self setNeedsLayout];
     [self layoutIfNeeded];
