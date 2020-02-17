@@ -123,10 +123,10 @@
     [[self.executing skip:1] subscribeNext:^(NSNumber * _Nullable executing) {
         @strongify(self)
         if (executing.boolValue) {
-            self.viewController.view.userInteractionEnabled = NO;
+            //self.viewController.view.userInteractionEnabled = NO;
             [self.viewController.view makeToastActivity:CSToastPositionCenter];
         } else {
-            self.viewController.view.userInteractionEnabled = YES;
+            //self.viewController.view.userInteractionEnabled = YES;
             [self.viewController.view hideToastActivity];
         }
     }];

@@ -87,6 +87,20 @@ NSMutableDictionary *currents = nil;
     [PINCache.sharedCache setObject:array forKey:[self arrayArchiverKey]];
 }
 
++ (void)eraseObject:(BZMBaseModel *)object {
+    [self eraseObjectForKey:object.mid];
+}
+
++ (void)eraseObjectForKey:(NSString *)key {
+    NSString *archiverKey = [self objectArchiverKey:key];
+    [PINCache.sharedCache removeObjectForKey:archiverKey];
+}
+
++ (void)eraseArray {
+    NSString *archiverKey = [self arrayArchiverKey];
+    [PINCache.sharedCache removeObjectForKey:archiverKey];
+}
+
 + (instancetype)cachedObject {
     return [self cachedObjectWithKey:nil];
 }

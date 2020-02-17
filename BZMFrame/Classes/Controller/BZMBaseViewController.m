@@ -244,7 +244,7 @@
 //        self.viewModel.error = nil;
 //        self.viewModel.dataSource = nil;
 //    }
-    self.view.userInteractionEnabled = NO;
+    //self.view.userInteractionEnabled = NO;
     [self.view makeToastActivity:CSToastPositionCenter];
 }
 
@@ -260,7 +260,7 @@
 
 - (void)endUpdate {
     self.viewModel.requestMode = BZMRequestModeNone;
-    self.view.userInteractionEnabled = YES;
+    //self.view.userInteractionEnabled = YES;
     [self.view hideToastActivity];
 }
 

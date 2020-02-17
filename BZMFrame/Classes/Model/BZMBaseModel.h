@@ -20,6 +20,10 @@
 + (void)storeObject:(BZMBaseModel *)object withKey:(NSString *)key;
 + (void)storeArray:(NSArray *)array;
 
++ (void)eraseObject:(BZMBaseModel *)object;
++ (void)eraseObjectForKey:(NSString *)key;
++ (void)eraseArray;
+
 + (instancetype)cachedObject;
 + (instancetype)cachedObjectWithKey:(NSString *)key;
 + (NSArray *)cachedArray;
