@@ -52,6 +52,7 @@
 - (id)fetchLocalData;
 - (RACSignal *)requestRemoteDataSignalWithPage:(NSInteger)page;
 - (BOOL (^)(NSError *error))requestRemoteDataErrorsFilter;
+- (void)reload;
 
 @end
 

@@ -219,7 +219,11 @@
     self.viewModel.requestMode = BZMRequestModeLoad;
     if (self.viewModel.error || self.viewModel.dataSource) {
         self.viewModel.error = nil;
-        self.viewModel.dataSource = nil;
+        if (self.viewModel.shouldFetchLocalData) {
+            self.viewModel.dataSource = [self.viewModel data2Source:[self.viewModel fetchLocalData]];
+        } else {
+            self.viewModel.dataSource = nil;
+        }
     }
 }
 
@@ -244,7 +248,7 @@
 //        self.viewModel.error = nil;
 //        self.viewModel.dataSource = nil;
 //    }
-    //self.view.userInteractionEnabled = NO;
+    self.view.userInteractionEnabled = NO;
     [self.view makeToastActivity:CSToastPositionCenter];
 }
 
@@ -260,7 +264,7 @@
 
 - (void)endUpdate {
     self.viewModel.requestMode = BZMRequestModeNone;
-    //self.view.userInteractionEnabled = YES;
+    self.view.userInteractionEnabled = YES;
     [self.view hideToastActivity];
 }
 

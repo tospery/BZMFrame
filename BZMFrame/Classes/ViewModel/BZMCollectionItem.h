@@ -10,7 +10,7 @@
 
 @interface BZMCollectionItem : BZMBaseItem
 @property (nonatomic, assign) CGSize cellSize;
-@property (nonatomic, strong, readonly) RACCommand *selectCommand;
+@property (nonatomic, strong, readonly) RACCommand *clickCommand;
 
 @end
 

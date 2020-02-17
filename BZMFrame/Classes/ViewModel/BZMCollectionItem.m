@@ -9,7 +9,7 @@
 #import "BZMFunction.h"
 
 @interface BZMCollectionItem ()
-@property (nonatomic, strong, readwrite) RACCommand *selectCommand;
+@property (nonatomic, strong, readwrite) RACCommand *clickCommand;
 
 @end
 
@@ -23,8 +23,8 @@
 
 - (void)didInitialize {
     [super didInitialize];
-    self.selectCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-        return [RACSignal return:input];
+    self.clickCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        return [[RACSignal return:input] takeUntil:self.rac_deallocDisposable];
     }];
 }
 
