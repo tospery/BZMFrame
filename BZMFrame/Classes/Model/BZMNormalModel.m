@@ -8,7 +8,6 @@
 #import "BZMNormalModel.h"
 
 @interface BZMNormalModel ()
-@property (nonatomic, strong, readwrite) NSString *title;
 
 @end
 

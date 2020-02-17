@@ -28,7 +28,7 @@
 }
 
 + (UIImage *)bzm_indicator {
-    return [UIImage qmui_imageWithShape:QMUIImageShapeDisclosureIndicator size:CGSizeMake(8, 15) lineWidth:1 tintColor:BZMColorKey(IND)];
+    return [UIImage qmui_imageWithShape:QMUIImageShapeDisclosureIndicator size:CGSizeMake(6, 11) lineWidth:1 tintColor:BZMColorKey(IND)];
 }
 
 + (UIImage *)bzm_loading {

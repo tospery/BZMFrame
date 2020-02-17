@@ -23,4 +23,8 @@
     return self;
 }
 
+- (void)didInitialize {
+    [super didInitialize];
+}
+
 @end

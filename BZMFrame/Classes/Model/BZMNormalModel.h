@@ -8,7 +8,8 @@
 #import "BZMBaseModel.h"
 
 @interface BZMNormalModel : BZMBaseModel
-@property (nonatomic, strong, readonly) NSString *title;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *detail;
 
 @end
 

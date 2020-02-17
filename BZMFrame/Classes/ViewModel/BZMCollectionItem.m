@@ -24,7 +24,7 @@
 - (void)didInitialize {
     [super didInitialize];
     self.clickCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-        return [[RACSignal return:input] takeUntil:self.rac_deallocDisposable];
+        return [[RACSignal return:input] takeUntil:self.rac_willDeallocSignal];
     }];
 }
 
