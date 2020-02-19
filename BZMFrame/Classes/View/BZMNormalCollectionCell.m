@@ -53,7 +53,7 @@
     if (!_detailLabel) {
         UILabel *label = [[UILabel alloc] init];
         label.font = BZMFont(13);
-        label.dk_textColorPicker = DKColorPickerWithKey(SUBTITLE);
+        label.dk_textColorPicker = DKColorPickerWithKey(BODY);
         _detailLabel = label;
     }
     return _detailLabel;

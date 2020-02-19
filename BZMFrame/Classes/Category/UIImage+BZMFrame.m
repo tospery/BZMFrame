@@ -20,11 +20,11 @@
 @implementation UIImage (BZMFrame)
 
 + (UIImage *)bzm_back {
-    return [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(10, 18) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
+    return [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(10, 18) lineWidth:1.5 tintColor:BZMColorKey(TEXT)];
 }
 
 + (UIImage *)bzm_close {
-    return [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:BZMColorKey(BAR)];
+    return [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:BZMColorKey(TEXT)];
 }
 
 + (UIImage *)bzm_indicator {

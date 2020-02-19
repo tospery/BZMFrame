@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <JLRoutes/JLRRouteHandler.h>
 #import "BZMReactiveView.h"
 
-@interface BZMBaseReactiveView : UIView <BZMReactiveView>
+@interface BZMBaseReactiveView : UIView <BZMReactiveView, JLRRouteHandlerTarget>
+@property (nonatomic, strong, readonly) NSDictionary<NSString *,id> *parameters;
 @property (nonatomic, strong, readonly) id viewModel;
 
 @end

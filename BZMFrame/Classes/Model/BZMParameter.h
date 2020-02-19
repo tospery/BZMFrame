@@ -10,6 +10,7 @@
 @interface BZMParameter : NSObject
 @property (class, strong, readonly) NSString *title;
 @property (class, strong, readonly) NSString *model;
+@property (class, strong, readonly) NSString *viewModel;
 @property (class, strong, readonly) NSString *user;
 @property (class, strong, readonly) NSString *url;
 @property (class, strong, readonly) NSString *fetchLocal;

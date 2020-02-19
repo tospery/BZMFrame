@@ -188,7 +188,7 @@
         }
         if (BZMFrameManager.share.autoLogin &&
             ![self.viewModel.navigator.topNavigationController.topViewController isKindOfClass:BZMLoginViewController.class]) {
-            [self.viewModel.navigator routeURL:BZMURLWithPath(BZMFrameManager.share.loginPattern) withParameters:nil];
+            [self.viewModel.navigator routeURL:BZMURLWithPattern(BZMFrameManager.share.loginPattern) withParameters:nil];
         }
     }
     

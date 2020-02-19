@@ -31,10 +31,17 @@
 #define kBZMSchemeResource                          (@"resource")
 #define kBZMSchemeDocuments                         (@"documents")
 
+#pragma mark - Pattern
+#define kBZMPatternWeb                              (@"*")
+#define kBZMPatternAlert                            (@"alert")
+#define kBZMPatternSheet                            (@"sheet")
+#define kBZMPatternPopup                            (@"popup")
+
 #pragma mark - 便捷
-#define kBZMFrameName                                (@"BZMFrame")
-#define kBZMVCSuffix                                 (@"ViewController")
-#define kBZMVMSuffix                                 (@"ViewModel")
+#define kBZMFrameName                               (@"BZMFrame")
+#define kBZMVCSuffix                                (@"ViewController")
+#define kBZMVMSuffix                                (@"ViewModel")
+#define kBZMBindObjectKey                           (@"kBZMBindObjectKey")
 
 //#pragma mark - 缓存
 //#define kBZMCachePrevUserID                          (@"kBZMCachePrevUserID")

@@ -53,12 +53,15 @@
     return [NSURL URLWithString:[urlString bzm_urlEncoded]];
 }
 
-+ (NSURL *)bzm_urlWithPath:(NSString *)path {
-    if (!path || ![path isKindOfClass:NSString.class] || !path.length) {
++ (NSURL *)bzm_urlWithPattern:(NSString *)pattern {
+    if (!pattern || ![pattern isKindOfClass:NSString.class] || !pattern.length || [pattern isEqualToString:@"/"]) {
         return nil;
     }
-    NSString *base = BZMStrWithFmt(@"https://m.%@.com", UIApplication.sharedApplication.bzm_urlScheme);
-    return [NSURL URLWithString:path relativeToURL:BZMURLWithStr(base)];
+    NSString *path = pattern;
+    if ([path hasPrefix:@"/"]) {
+        path = [path substringFromIndex:1];
+    }
+    return [NSURL URLWithString:BZMStrWithFmt(@"%@://%@", UIApplication.sharedApplication.bzm_urlScheme, path)];
 }
 
 @end

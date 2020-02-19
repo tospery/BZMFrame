@@ -20,6 +20,10 @@
     return @"model";
 }
 
++ (NSString *)viewModel {
+    return @"viewModel";
+}
+
 + (NSString *)user {
     return @"user";
 }

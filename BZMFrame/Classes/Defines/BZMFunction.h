@@ -85,7 +85,7 @@ NSLog(@"Error(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #define BZMStrWithFlt(x)                     ([NSString stringWithFormat:@"%.2f", (x)])
 #define BZMStrWithFmt(fmt, ...)              ([NSString stringWithFormat:(fmt), ##__VA_ARGS__])
 #define BZMURLWithStr(x)                     ([NSURL bzm_urlWithString:(x)])
-#define BZMURLWithPath(x)                   ([NSURL bzm_urlWithPath:(x)])
+#define BZMURLWithPattern(x)                       ([NSURL bzm_urlWithPattern:(x)])
 #define BZMImageColor(x)                     ([UIImage qmui_imageWithColor:(x)])
 #define BZMImageFrame(x)                    ([UIImage bzm_imageInFrame:BZMStrWithFmt(@"BZMFrame/%@", (x))])
 #define BZMRandomNumber(x, y)                ((NSInteger)((x) + (arc4random() % ((y) - (x) + 1))))

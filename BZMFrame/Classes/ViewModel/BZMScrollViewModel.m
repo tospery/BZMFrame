@@ -76,14 +76,14 @@
 }
 
 - (UIImage *)buttonBackgroundImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state {
-    UIImage *image = [UIImage qmui_imageWithColor:BZMColorKey(TINT) size:CGSizeMake(120, 30) cornerRadius:2.0f];
+    UIImage *image = [UIImage qmui_imageWithColor:BZMColorKey(PRIMARY) size:CGSizeMake(120, 30) cornerRadius:2.0f];
     image = [image imageWithAlignmentRectInsets:UIEdgeInsetsMake(0, -120, 0, -120)];
     return (UIControlStateNormal == state ? image : nil);
 }
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
     if (!self.error) {
-        return [UIImage.bzm_loading qmui_imageWithTintColor:BZMColorKey(TINT)];
+        return [UIImage.bzm_loading qmui_imageWithTintColor:BZMColorKey(PRIMARY)];
     }
     return self.error.bzm_displayImage;
 }

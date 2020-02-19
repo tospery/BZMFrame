@@ -26,7 +26,7 @@
         self.ocHandlers = BZMArrMember(parameters, BZMParameter.ocHandlers, nil);
         self.jsHandlers = BZMArrMember(parameters, BZMParameter.jsHandlers, nil);
         self.url = BZMObjWithDft(BZMURLMember(parameters, JLRouteURLKey, nil), BZMURLMember(parameters, BZMParameter.url, nil));
-        self.progressColor = BZMColorKey(TINT);
+        self.progressColor = BZMColorKey(PRIMARY);
     }
     return self;
 }

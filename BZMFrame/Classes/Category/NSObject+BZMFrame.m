@@ -42,8 +42,10 @@
         return [NSJSONSerialization JSONObjectWithData:(NSData *)self options:kNilOptions error:nil];
     }
     
-    if ([self conformsToProtocol:@protocol(MTLModel)]) {
-        return [(id<MTLModel>)self dictionaryValue];
+    if ([self conformsToProtocol:@protocol(MTLJSONSerializing)]) {
+        id<MTLJSONSerializing> model = (id<MTLJSONSerializing>)self;
+        return [MTLJSONAdapter JSONDictionaryFromModel:model error:nil];
+        // return [(id<MTLModel>)self dictionaryValue];
     }
     
     return nil;
