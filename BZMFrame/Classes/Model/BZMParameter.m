@@ -20,10 +20,6 @@
     return @"model";
 }
 
-+ (NSString *)viewModel {
-    return @"viewModel";
-}
-
 + (NSString *)user {
     return @"user";
 }
@@ -82,6 +78,10 @@
 
 + (NSString *)useUIWebView {
     return @"useUIWebView";
+}
+
++ (NSString *)popupAnimation {
+    return @"popupAnimation";
 }
 
 @end

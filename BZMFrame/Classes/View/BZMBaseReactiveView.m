@@ -26,15 +26,15 @@
 - (instancetype)initWithRouteParameters:(NSDictionary<NSString *,id> *)parameters {
     if (self = [self initWithFrame:CGRectZero]) {
         self.parameters = parameters;
-        id modelObject = BZMStrMember(parameters, BZMParameter.viewModel, nil).bzm_JSONObject;
-        if (modelObject && [modelObject isKindOfClass:NSDictionary.class]) {
-            NSString *name = NSStringFromClass(self.class);
-            name = [name stringByReplacingCharactersInRange:NSMakeRange(name.length - 4, 4) withString:@""];
-            Class modelClass = NSClassFromString(name);
-            if (modelClass && [modelClass isSubclassOfClass:MTLModel.class]) {
-                self.viewModel = [[modelClass alloc] initWithDictionary:(NSDictionary *)modelObject error:nil];
-            }
-        }
+//        id modelObject = BZMStrMember(parameters, BZMParameter.viewModel, nil).bzm_JSONObject;
+//        if (modelObject && [modelObject isKindOfClass:NSDictionary.class]) {
+//            NSString *name = NSStringFromClass(self.class);
+//            name = [name stringByReplacingCharactersInRange:NSMakeRange(name.length - 4, 4) withString:@""];
+//            Class modelClass = NSClassFromString(name);
+//            if (modelClass && [modelClass isSubclassOfClass:MTLModel.class]) {
+//                self.viewModel = [[modelClass alloc] initWithDictionary:(NSDictionary *)modelObject error:nil];
+//            }
+//        }
     }
     return self;
 }
