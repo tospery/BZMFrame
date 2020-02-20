@@ -210,6 +210,14 @@ BZMIntMember(NSDictionary *dict, NSString *key, NSInteger dft) {
     return [dict bzm_numberForKey:key withDefault:@(dft)].integerValue;
 }
 
+CG_INLINE CGFloat
+BZMFltMember(NSDictionary *dict, NSString *key, CGFloat dft) {
+    if (!dict || ![dict isKindOfClass:NSDictionary.class] || !dict.count) {
+        return dft;
+    }
+    return [dict bzm_numberForKey:key withDefault:@(dft)].floatValue;
+}
+
 CG_INLINE NSString *
 BZMStrMember(NSDictionary *dict, NSString *key, NSString *dft) {
     if (!dict || ![dict isKindOfClass:NSDictionary.class] || !dict.count) {

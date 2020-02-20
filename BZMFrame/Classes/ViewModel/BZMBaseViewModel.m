@@ -143,7 +143,10 @@
     }];
     [self.errors subscribeNext:^(NSError *error) {
         @strongify(self)
-        [self.viewController.view makeToast:BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)];
+        [self.navigator routeURL:BZMURLWithPattern(kBZMPatternToast) withParameters:@{
+            BZMParameter.message: BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)
+        }];
+        // [self.viewController.view makeToast:BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)];
     }];
     
     self.backCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(UIButton *button) {

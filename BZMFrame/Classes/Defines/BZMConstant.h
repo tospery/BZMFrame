@@ -36,6 +36,7 @@
 #define kBZMPatternAlert                            (@"alert")
 #define kBZMPatternSheet                            (@"sheet")
 #define kBZMPatternPopup                            (@"popup")
+#define kBZMPatternToast                            (@"toast")
 
 #pragma mark - 便捷
 #define kBZMFrameName                               (@"BZMFrame")

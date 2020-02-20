@@ -11,6 +11,7 @@
 #import <Toast/UIView+Toast.h>
 #import "BZMConstant.h"
 #import "BZMFunction.h"
+#import "BZMParameter.h"
 #import "BZMWebViewModel.h"
 #import "BZMWebProgressView.h"
 #import "NSString+BZMFrame.h"
@@ -55,7 +56,9 @@
                 ((id(*)(id, SEL, id, WVJBResponseCallback))[self.viewModel methodForSelector:selector])(self.viewModel, selector, data, responseCallback);
             }else {
                 BZMLogWarn(@"Web找不到oc handler: %@", method);
-                [self.view makeToast:BZMStrWithFmt(@"缺少%@方法", method)];
+                [self.viewModel.navigator routeURL:BZMURLWithPattern(kBZMPatternToast) withParameters:@{
+                    BZMParameter.message: BZMStrWithFmt(@"缺少%@方法", method)
+                }];
             }
         }];
     }

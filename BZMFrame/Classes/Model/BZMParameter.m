@@ -84,4 +84,20 @@
     return @"popupAnimation";
 }
 
++ (NSString *)message {
+    return @"message";
+}
+
++ (NSString *)duration {
+    return @"duration";
+}
+
++ (NSString *)position {
+    return @"position";
+}
+
++ (NSString *)block {
+    return @"block";
+}
+
 @end

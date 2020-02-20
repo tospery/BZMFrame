@@ -10,8 +10,10 @@
 #import <Toast/UIView+Toast.h>
 #import "BZMConstant.h"
 #import "BZMFunction.h"
+#import "BZMNavigator.h"
 #import "BZMUser.h"
 #import "BZMMisc.h"
+#import "UIView+BZMFrame.h"
 
 //BZMUser *gUser;
 //BZMMisc *gMisc;
@@ -47,6 +49,10 @@
     // Toast
     [CSToastManager setQueueEnabled:YES];
     [CSToastManager setDefaultPosition:CSToastPositionCenter];
+    // Route
+    [JLRoutes.globalRoutes addRoute:kBZMPatternToast handler:^BOOL(NSDictionary *parameters) {
+        return [BZMNavigator.share.topView bzm_toast:parameters];
+    }];
 }
 
 - (void)setupAppearance {

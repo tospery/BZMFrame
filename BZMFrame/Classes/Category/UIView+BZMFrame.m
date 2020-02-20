@@ -8,6 +8,10 @@
 
 #import "UIView+BZMFrame.h"
 #import <QMUIKit/QMUIKit.h>
+#import <Toast/UIView+Toast.h>
+#import "BZMType.h"
+#import "BZMFunction.h"
+#import "BZMParameter.h"
 
 @implementation UIView (BZMFrame)
 - (CGFloat)bzm_borderWidth {
@@ -43,6 +47,30 @@
         return (BZMBorderLayer *)self.layer;
     }
     return nil;
+}
+
+- (BOOL)bzm_toast:(NSDictionary *)parameters {
+    NSString *title = BZMStrMember(parameters, BZMParameter.title, nil);
+    NSString *message = BZMStrMember(parameters, BZMParameter.message, nil);
+    if (title.length == 0 && message.length == 0) {
+        return NO;
+    }
+    CGFloat duration = BZMFltMember(parameters, BZMParameter.duration, 1.5f);
+    id position = BZMStrMember(parameters, BZMParameter.position, @"center");
+    if ([position isEqualToString:@"top"]) {
+        position = CSToastPositionTop;
+    } else if ([position isEqualToString:@"bottom"]) {
+        position = CSToastPositionBottom;
+    } else {
+        position = CSToastPositionCenter;
+    }
+    BZMVoidBlock_id completion = BZMObjMember(parameters, BZMParameter.block, nil);
+    [self makeToast:message duration:duration position:position title:title image:nil style:nil completion:^(BOOL didTap) {
+        if (completion) {
+            completion(@(didTap));
+        }
+    }];
+    return YES;
 }
 
 @end

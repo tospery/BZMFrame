@@ -24,6 +24,14 @@
 @implementation BZMNavigator
 
 #pragma mark - Property
+- (UIView *)topView {
+    UIView *view = self.topNavigationController.topViewController.view;
+    if (!view) {
+        view = UIApplication.sharedApplication.delegate.window;
+    }
+    return view;
+}
+
 - (UINavigationController *)topNavigationController {
     return self.navigationControllers.lastObject;
 }
