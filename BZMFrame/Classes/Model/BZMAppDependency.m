@@ -10,6 +10,7 @@
 #import <Toast/UIView+Toast.h>
 #import "BZMConstant.h"
 #import "BZMFunction.h"
+#import "BZMParameter.h"
 #import "BZMNavigator.h"
 #import "BZMUser.h"
 #import "BZMMisc.h"
@@ -51,7 +52,12 @@
     [CSToastManager setDefaultPosition:CSToastPositionCenter];
     // Route
     [JLRoutes.globalRoutes addRoute:kBZMPatternToast handler:^BOOL(NSDictionary *parameters) {
-        return [BZMNavigator.share.topView bzm_toast:parameters];
+        BZMVoidBlock_id completion = BZMObjMember(parameters, BZMParameter.block, nil);
+        return [BZMNavigator.share.topView bzm_toastWithParameters:parameters completion:^(BOOL didTap) {
+            if (completion) {
+                completion(@(didTap));
+            }
+        }];
     }];
 }
 

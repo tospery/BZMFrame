@@ -25,7 +25,7 @@
 @property (class, strong, readonly) NSString *jsHandlers;
 @property (class, strong, readonly) NSString *canCache;
 @property (class, strong, readonly) NSString *useUIWebView;
-@property (class, strong, readonly) NSString *popupAnimation;
+@property (class, strong, readonly) NSString *animation;
 @property (class, strong, readonly) NSString *message;
 @property (class, strong, readonly) NSString *duration;
 @property (class, strong, readonly) NSString *position;

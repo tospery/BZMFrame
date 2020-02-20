@@ -126,7 +126,7 @@
     return viewController;
 }
 
-- (UIViewController *)popupViewModel:(BZMBaseViewModel *)viewModel animationType:(BZMPopupAnimationType)animationType completion:(BZMVoidBlock)completion {
+- (UIViewController *)popupViewModel:(BZMBaseViewModel *)viewModel animationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion {
     UIViewController *viewController = (UIViewController *)[self viewController:viewModel];
     [self.topNavigationController bzm_popupViewController:viewController animationType:animationType layout:BZMPopupLayoutCenter bgTouch:NO dismissed:completion];
     return viewController;
@@ -146,7 +146,7 @@
     [dismissingViewController dismissViewControllerAnimated:animated completion:completion];
 }
 
-- (void)closeViewModelWithAnimationType:(BZMCloseAnimationType)animationType completion:(BZMVoidBlock)completion {
+- (void)closeViewModelWithAnimationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion {
     [self.topNavigationController bzm_closeViewControllerWithAnimationType:animationType dismissed:completion];
 }
 

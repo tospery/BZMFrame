@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *subtitle;
 @property (nonatomic, copy, readonly) NSDictionary<NSString *,id> *parameters;
+@property (nonatomic, strong, readonly) NSString *animation;
 @property (nonatomic, strong, readonly) BZMBaseModel *model;
 @property (nonatomic, strong, readonly) BZMUser *user;
 @property (nonatomic, assign) BZMRequestMode requestMode;
@@ -42,7 +43,8 @@
 @property (nonatomic, strong, readonly) RACSubject *executing;
 @property (nonatomic, strong, readonly) RACSubject *willDisappearSignal;
 @property (nonatomic, strong, readonly) RACCommand *backCommand;
-@property (nonatomic, strong, readonly) RACCommand *closeCommand;
+@property (nonatomic, strong, readonly) RACCommand *didBackCommand;
+//@property (nonatomic, strong, readonly) RACCommand *closeCommand;
 @property (nonatomic, strong, readonly) RACCommand *requestRemoteDataCommand;
 //@property (nonatomic, strong, readonly) RACSignal *reloadSignal;
 @property (nonatomic, weak) BZMBaseViewController *viewController;

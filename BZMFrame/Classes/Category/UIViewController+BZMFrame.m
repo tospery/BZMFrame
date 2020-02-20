@@ -8,6 +8,7 @@
 #import "UIViewController+BZMFrame.h"
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
+#import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMPopupBackgroundView.h"
 #import "BZMPageViewController.h"
@@ -70,17 +71,17 @@ static void * const keypath = (void*)&keypath;
 }
 
 #pragma mark present
-- (void)bzm_popupViewController:(UIViewController*)popupViewController animationType:(BZMPopupAnimationType)animationType layout:(BZMPopupLayout)layout bgTouch:(BOOL)bgTouch dismissed:(void(^)(void))dismissed {
+- (void)bzm_popupViewController:(UIViewController*)popupViewController animationType:(BZMViewControllerAnimationType)animationType layout:(BZMPopupLayout)layout bgTouch:(BOOL)bgTouch dismissed:(void(^)(void))dismissed {
     self.bzm_popupViewController = popupViewController;
     [self presentPopupView:popupViewController.view animationType:animationType layout:layout bgTouch:bgTouch dismissed:dismissed];
 }
 
 #pragma mark dismiss
-- (void)bzm_closeViewControllerWithAnimationType:(BZMCloseAnimationType)animationType {
+- (void)bzm_closeViewControllerWithAnimationType:(BZMViewControllerAnimationType)animationType {
     [self bzm_closeViewControllerWithAnimationType:animationType dismissed:nil];
 }
 
-- (void)bzm_closeViewControllerWithAnimationType:(BZMCloseAnimationType)animationType dismissed:(void(^)(void))dismissed {
+- (void)bzm_closeViewControllerWithAnimationType:(BZMViewControllerAnimationType)animationType dismissed:(void(^)(void))dismissed {
     UIView *sourceView = [self bzm_topView];
     UIView *popupView = [sourceView viewWithTag:kBZMPopupViewTag];
     UIView *overlayView = [sourceView viewWithTag:kBZMOverlayViewTag];
@@ -119,7 +120,7 @@ static void * const keypath = (void*)&keypath;
 }
 
 #pragma mark view
-- (void)presentPopupView:(UIView *)popupView animationType:(BZMPopupAnimationType)animationType layout:(BZMPopupLayout)layout bgTouch:(BOOL)bgTouch dismissed:(void(^)(void))dismissed {
+- (void)presentPopupView:(UIView *)popupView animationType:(BZMViewControllerAnimationType)animationType layout:(BZMPopupLayout)layout bgTouch:(BOOL)bgTouch dismissed:(void(^)(void))dismissed {
     UIView *sourceView = [self bzm_topView];
     sourceView.tag = kBZMSourceViewTag;
     popupView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin |UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -179,7 +180,7 @@ static void * const keypath = (void*)&keypath;
 }
 
 - (void)dismissButtonPressed:(UIButton *)sender {
-    [self bzm_closeViewControllerWithAnimationType:(BZMCloseAnimationType)sender.tag];
+    [self bzm_closeViewControllerWithAnimationType:(BZMViewControllerAnimationType)sender.tag];
 //    if ([sender isKindOfClass:[UIButton class]]) {
 //        UIButton* dismissButton = sender;
 ////        switch (dismissButton.tag) {
@@ -208,7 +209,7 @@ static void * const keypath = (void*)&keypath;
 }
 
 #pragma mark animation
-- (void)showViewIn:(UIView *)popupView sourceView:(UIView *)sourceView overlayView:(UIView *)overlayView animationType:(BZMPopupAnimationType)animationType layout:(BZMPopupLayout)layout {
+- (void)showViewIn:(UIView *)popupView sourceView:(UIView *)sourceView overlayView:(UIView *)overlayView animationType:(BZMViewControllerAnimationType)animationType layout:(BZMPopupLayout)layout {
     CGSize sourceSize = sourceView.bounds.size;
     CGSize popupSize = popupView.bounds.size; // popupView.frame.size;
 
@@ -309,7 +310,7 @@ static void * const keypath = (void*)&keypath;
     CGFloat durationTime = kBZMPopupAnimationDuration;
     
     switch (animationType) {
-        case BZMPopupAnimationTypeNone: {
+        case BZMViewControllerAnimationTypeNone: {
             animationBlock();
             popupView.alpha = 1.0;
             popupView.transform = CGAffineTransformIdentity;
@@ -317,7 +318,7 @@ static void * const keypath = (void*)&keypath;
             completionBlock(YES);
             break;
         }
-        case BZMPopupAnimationTypeFadeIn: {
+        case BZMViewControllerAnimationTypeFade: {
             popupView.frame = finalContainerFrame;
             popupView.alpha = 0.0f;
             [UIView animateWithDuration:durationTime animations:^{
@@ -326,7 +327,7 @@ static void * const keypath = (void*)&keypath;
             } completion:completionBlock];
             break;
         }
-        case BZMPopupAnimationTypeGrowIn: {
+        case BZMViewControllerAnimationTypeGrow: {
             popupView.alpha = 0.0;
             popupView.frame = finalContainerFrame; // set frame before transform here...
             popupView.transform = CGAffineTransformMakeScale(0.85, 0.85);
@@ -338,7 +339,7 @@ static void * const keypath = (void*)&keypath;
             } completion:completionBlock];
             break;
         }
-        case BZMPopupAnimationTypeShrinkIn: {
+        case BZMViewControllerAnimationTypeShrink: {
             popupView.alpha = 0.0;
             popupView.frame = finalContainerFrame;
             popupView.transform = CGAffineTransformMakeScale(1.25, 1.25);
@@ -350,70 +351,13 @@ static void * const keypath = (void*)&keypath;
             } completion:completionBlock];
             break;
         }
-        case BZMPopupAnimationTypeSlideInFromTop: {
-            popupView.alpha = 1.0;
-            popupView.transform = CGAffineTransformIdentity;
-            
-            CGRect startFrame = finalContainerFrame;
-            startFrame.origin.y = -CGRectGetHeight(finalContainerFrame);
-            popupView.frame = startFrame;
-            
-
-            [UIView animateWithDuration:durationTime delay:0.0f options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
-                animationBlock();
-                popupView.frame = finalContainerFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMPopupAnimationTypeSlideInFromBottom: {
-            popupView.alpha = 1.0;
-            popupView.transform = CGAffineTransformIdentity;
-            
-            CGRect startFrame = finalContainerFrame;
-            startFrame.origin.y = CGRectGetHeight(sourceView.bounds);
-            popupView.frame = startFrame;
-
-            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
-                animationBlock();
-                popupView.frame = finalContainerFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMPopupAnimationTypeSlideInFromLeft: {
-            popupView.alpha = 1.0;
-            popupView.transform = CGAffineTransformIdentity;
-            
-            CGRect startFrame = finalContainerFrame;
-            startFrame.origin.x = -CGRectGetWidth(finalContainerFrame);
-            popupView.frame = startFrame;
-            
-            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
-                animationBlock();
-                popupView.frame = finalContainerFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMPopupAnimationTypeSlideInFromRight: {
-            popupView.alpha = 1.0;
-            popupView.transform = CGAffineTransformIdentity;
-            
-            CGRect startFrame = finalContainerFrame;
-            startFrame.origin.x = CGRectGetWidth(sourceView.bounds);
-            popupView.frame = startFrame;
-            
-            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
-                animationBlock();
-                popupView.frame = finalContainerFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMPopupAnimationTypeBounceIn: {
+        case BZMViewControllerAnimationTypeBounce: {
             popupView.alpha = 0.0;
             // set frame before transform here...
             CGRect startFrame = finalContainerFrame;
             popupView.frame = startFrame;
             popupView.transform = CGAffineTransformMakeScale(0.1, 0.1);
-            
+                
             [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:15.0 options:0 animations:^{
                 animationBlock();
                 popupView.alpha = 1.0;
@@ -421,68 +365,125 @@ static void * const keypath = (void*)&keypath;
             } completion:completionBlock];
             break;
         }
-        case BZMPopupAnimationTypeBounceInFromTop: {
-            popupView.alpha = 1.0;
-            popupView.transform = CGAffineTransformIdentity;
-            
-            CGRect startFrame = finalContainerFrame;
-            startFrame.origin.y = -CGRectGetHeight(finalContainerFrame);
-            popupView.frame = startFrame;
-            
-            [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:0 animations:^{
-                animationBlock();
-                popupView.frame = finalContainerFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMPopupAnimationTypeBounceInFromBottom: {
-            popupView.alpha = 1.0;
-            popupView.transform = CGAffineTransformIdentity;
-            
-            CGRect startFrame = finalContainerFrame;
-            startFrame.origin.y = CGRectGetHeight(sourceView.bounds);
-            popupView.frame = startFrame;
-            
-            [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:0 animations:^{
-                animationBlock();
-                popupView.frame = finalContainerFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMPopupAnimationTypeBounceInFromLeft: {
-            popupView.alpha = 1.0;
-            popupView.transform = CGAffineTransformIdentity;
-            
-            CGRect startFrame = finalContainerFrame;
-            startFrame.origin.x = -CGRectGetWidth(finalContainerFrame);
-            popupView.frame = startFrame;
-            
-            [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:0 animations:^{
-                animationBlock();
-                popupView.frame = finalContainerFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMPopupAnimationTypeBounceInFromRight: {
-            popupView.alpha = 1.0;
-            popupView.transform = CGAffineTransformIdentity;
-            
-            CGRect startFrame = finalContainerFrame;
-            startFrame.origin.x = CGRectGetWidth(sourceView.bounds);
-            popupView.frame = startFrame;
-            
-            [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:0 animations:^{
-                animationBlock();
-                popupView.frame = finalContainerFrame;
-            } completion:completionBlock];
-            break;
-        }
+//        case BZMPopupAnimationTypeSlideInFromTop: {
+//            popupView.alpha = 1.0;
+//            popupView.transform = CGAffineTransformIdentity;
+//
+//            CGRect startFrame = finalContainerFrame;
+//            startFrame.origin.y = -CGRectGetHeight(finalContainerFrame);
+//            popupView.frame = startFrame;
+//
+//
+//            [UIView animateWithDuration:durationTime delay:0.0f options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
+//                animationBlock();
+//                popupView.frame = finalContainerFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMPopupAnimationTypeSlideInFromBottom: {
+//            popupView.alpha = 1.0;
+//            popupView.transform = CGAffineTransformIdentity;
+//
+//            CGRect startFrame = finalContainerFrame;
+//            startFrame.origin.y = CGRectGetHeight(sourceView.bounds);
+//            popupView.frame = startFrame;
+//
+//            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
+//                animationBlock();
+//                popupView.frame = finalContainerFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMPopupAnimationTypeSlideInFromLeft: {
+//            popupView.alpha = 1.0;
+//            popupView.transform = CGAffineTransformIdentity;
+//
+//            CGRect startFrame = finalContainerFrame;
+//            startFrame.origin.x = -CGRectGetWidth(finalContainerFrame);
+//            popupView.frame = startFrame;
+//
+//            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
+//                animationBlock();
+//                popupView.frame = finalContainerFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMPopupAnimationTypeSlideInFromRight: {
+//            popupView.alpha = 1.0;
+//            popupView.transform = CGAffineTransformIdentity;
+//
+//            CGRect startFrame = finalContainerFrame;
+//            startFrame.origin.x = CGRectGetWidth(sourceView.bounds);
+//            popupView.frame = startFrame;
+//
+//            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
+//                animationBlock();
+//                popupView.frame = finalContainerFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMPopupAnimationTypeBounceInFromTop: {
+//            popupView.alpha = 1.0;
+//            popupView.transform = CGAffineTransformIdentity;
+//
+//            CGRect startFrame = finalContainerFrame;
+//            startFrame.origin.y = -CGRectGetHeight(finalContainerFrame);
+//            popupView.frame = startFrame;
+//
+//            [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:0 animations:^{
+//                animationBlock();
+//                popupView.frame = finalContainerFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMPopupAnimationTypeBounceInFromBottom: {
+//            popupView.alpha = 1.0;
+//            popupView.transform = CGAffineTransformIdentity;
+//
+//            CGRect startFrame = finalContainerFrame;
+//            startFrame.origin.y = CGRectGetHeight(sourceView.bounds);
+//            popupView.frame = startFrame;
+//
+//            [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:0 animations:^{
+//                animationBlock();
+//                popupView.frame = finalContainerFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMPopupAnimationTypeBounceInFromLeft: {
+//            popupView.alpha = 1.0;
+//            popupView.transform = CGAffineTransformIdentity;
+//
+//            CGRect startFrame = finalContainerFrame;
+//            startFrame.origin.x = -CGRectGetWidth(finalContainerFrame);
+//            popupView.frame = startFrame;
+//
+//            [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:0 animations:^{
+//                animationBlock();
+//                popupView.frame = finalContainerFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMPopupAnimationTypeBounceInFromRight: {
+//            popupView.alpha = 1.0;
+//            popupView.transform = CGAffineTransformIdentity;
+//
+//            CGRect startFrame = finalContainerFrame;
+//            startFrame.origin.x = CGRectGetWidth(sourceView.bounds);
+//            popupView.frame = startFrame;
+//
+//            [UIView animateWithDuration:(durationTime * 2) delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:10.0 options:0 animations:^{
+//                animationBlock();
+//                popupView.frame = finalContainerFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
         default:
             break;
     }
 }
 
-- (void)hideViewIn:(UIView *)popupView sourceView:(UIView *)sourceView overlayView:(UIView *)overlayView animationType:(BZMCloseAnimationType)animationType {
+- (void)hideViewIn:(UIView *)popupView sourceView:(UIView *)sourceView overlayView:(UIView *)overlayView animationType:(BZMViewControllerAnimationType)animationType {
 //    CGFloat durationTime = self.bzm_popupDurationTime;
 //    if (!durationTime) {
 //        durationTime = kBZMPopupAnimationDuration;
@@ -510,20 +511,20 @@ static void * const keypath = (void*)&keypath;
     };
     
     switch (animationType) {
-        case BZMCloseAnimationTypeNone: {
+        case BZMViewControllerAnimationTypeNone: {
             animationBlock();
             popupView.alpha = 0.0f;
             completionBlock(YES);
             break;
         }
-        case BZMCloseAnimationTypeFadeOut: {
+        case BZMViewControllerAnimationTypeFade: {
             [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
                 animationBlock();
                 popupView.alpha = 0.0;
             } completion:completionBlock];
             break;
         }
-        case BZMCloseAnimationTypeGrowOut: {
+        case BZMViewControllerAnimationTypeGrow: {
             [UIView animateWithDuration:duration1 delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
                 animationBlock();
                 popupView.alpha = 0.0;
@@ -531,7 +532,7 @@ static void * const keypath = (void*)&keypath;
             } completion:completionBlock];
             break;
         }
-        case BZMCloseAnimationTypeShrinkOut: {
+        case BZMViewControllerAnimationTypeShrink: {
             [UIView animateWithDuration:duration1 delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
                 animationBlock();
                 popupView.alpha = 0.0;
@@ -539,43 +540,7 @@ static void * const keypath = (void*)&keypath;
             } completion:completionBlock];
             break;
         }
-        case BZMCloseAnimationTypeSlideOutToTop: {
-            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
-                animationBlock();
-                CGRect finalFrame = popupView.frame;
-                finalFrame.origin.y = -CGRectGetHeight(finalFrame);
-                popupView.frame = finalFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMCloseAnimationTypeSlideOutToBottom: {
-            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
-                animationBlock();
-                CGRect finalFrame = popupView.frame;
-                finalFrame.origin.y = CGRectGetHeight(sourceView.bounds);
-                popupView.frame = finalFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMCloseAnimationTypeSlideOutToLeft: {
-            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
-                animationBlock();
-                CGRect finalFrame = popupView.frame;
-                finalFrame.origin.x = -CGRectGetWidth(finalFrame);
-                popupView.frame = finalFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMCloseAnimationTypeSlideOutToRight: {
-            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
-                animationBlock();
-                CGRect finalFrame = popupView.frame;
-                finalFrame.origin.x = CGRectGetWidth(sourceView.bounds);
-                popupView.frame = finalFrame;
-            } completion:completionBlock];
-            break;
-        }
-        case BZMCloseAnimationTypeBounceOut: {
+        case BZMViewControllerAnimationTypeBounce: {
             [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                 popupView.transform = CGAffineTransformMakeScale(1.1, 1.1);
             } completion:^(BOOL finished) {
@@ -587,66 +552,102 @@ static void * const keypath = (void*)&keypath;
             }];
             break;
         }
-        case BZMCloseAnimationTypeBounceOutToTop: {
-            [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                CGRect finalFrame = popupView.frame;
-                finalFrame.origin.y += 40.0;
-                popupView.frame = finalFrame;
-            } completion:^(BOOL finished) {
-                [UIView animateWithDuration:duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                    animationBlock();
-                    CGRect finalFrame = popupView.frame;
-                    finalFrame.origin.y = -CGRectGetHeight(finalFrame);
-                    popupView.frame = finalFrame;
-                } completion:completionBlock];
-            }];
-            break;
-        }
-        case BZMCloseAnimationTypeBounceOutToBottom: {
-            [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                CGRect finalFrame = popupView.frame;
-                finalFrame.origin.y -= 40.0;
-                popupView.frame = finalFrame;
-            } completion:^(BOOL finished) {
-                [UIView animateWithDuration:duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                    animationBlock();
-                    CGRect finalFrame = popupView.frame;
-                    finalFrame.origin.y = CGRectGetHeight(sourceView.bounds);
-                    popupView.frame = finalFrame;
-                } completion:completionBlock];
-            }];
-            break;
-        }
-        case BZMCloseAnimationTypeBounceOutToLeft: {
-            [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                CGRect finalFrame = popupView.frame;
-                finalFrame.origin.x += 40.0;
-                popupView.frame = finalFrame;
-            } completion:^(BOOL finished) {
-                [UIView animateWithDuration:duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                    animationBlock();
-                    CGRect finalFrame = popupView.frame;
-                    finalFrame.origin.x = -CGRectGetWidth(finalFrame);
-                    popupView.frame = finalFrame;
-                } completion:completionBlock];
-            }];
-            break;
-        }
-        case BZMCloseAnimationTypeBounceOutToRight: {
-            [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                CGRect finalFrame = popupView.frame;
-                finalFrame.origin.x -= 40.0;
-                popupView.frame = finalFrame;
-            } completion:^(BOOL finished) {
-                [UIView animateWithDuration:duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                    animationBlock();
-                    CGRect finalFrame = popupView.frame;
-                    finalFrame.origin.x = CGRectGetWidth(sourceView.bounds);
-                    popupView.frame = finalFrame;
-                } completion:completionBlock];
-            }];
-            break;
-        }
+//        case BZMCloseAnimationTypeSlideOutToTop: {
+//            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
+//                animationBlock();
+//                CGRect finalFrame = popupView.frame;
+//                finalFrame.origin.y = -CGRectGetHeight(finalFrame);
+//                popupView.frame = finalFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMCloseAnimationTypeSlideOutToBottom: {
+//            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
+//                animationBlock();
+//                CGRect finalFrame = popupView.frame;
+//                finalFrame.origin.y = CGRectGetHeight(sourceView.bounds);
+//                popupView.frame = finalFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMCloseAnimationTypeSlideOutToLeft: {
+//            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
+//                animationBlock();
+//                CGRect finalFrame = popupView.frame;
+//                finalFrame.origin.x = -CGRectGetWidth(finalFrame);
+//                popupView.frame = finalFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMCloseAnimationTypeSlideOutToRight: {
+//            [UIView animateWithDuration:durationTime delay:0 options:kBZMPopupAnimationOptionCurveIOS7 animations:^{
+//                animationBlock();
+//                CGRect finalFrame = popupView.frame;
+//                finalFrame.origin.x = CGRectGetWidth(sourceView.bounds);
+//                popupView.frame = finalFrame;
+//            } completion:completionBlock];
+//            break;
+//        }
+//        case BZMCloseAnimationTypeBounceOutToTop: {
+//            [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//                CGRect finalFrame = popupView.frame;
+//                finalFrame.origin.y += 40.0;
+//                popupView.frame = finalFrame;
+//            } completion:^(BOOL finished) {
+//                [UIView animateWithDuration:duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+//                    animationBlock();
+//                    CGRect finalFrame = popupView.frame;
+//                    finalFrame.origin.y = -CGRectGetHeight(finalFrame);
+//                    popupView.frame = finalFrame;
+//                } completion:completionBlock];
+//            }];
+//            break;
+//        }
+//        case BZMCloseAnimationTypeBounceOutToBottom: {
+//            [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//                CGRect finalFrame = popupView.frame;
+//                finalFrame.origin.y -= 40.0;
+//                popupView.frame = finalFrame;
+//            } completion:^(BOOL finished) {
+//                [UIView animateWithDuration:duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+//                    animationBlock();
+//                    CGRect finalFrame = popupView.frame;
+//                    finalFrame.origin.y = CGRectGetHeight(sourceView.bounds);
+//                    popupView.frame = finalFrame;
+//                } completion:completionBlock];
+//            }];
+//            break;
+//        }
+//        case BZMCloseAnimationTypeBounceOutToLeft: {
+//            [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//                CGRect finalFrame = popupView.frame;
+//                finalFrame.origin.x += 40.0;
+//                popupView.frame = finalFrame;
+//            } completion:^(BOOL finished) {
+//                [UIView animateWithDuration:duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+//                    animationBlock();
+//                    CGRect finalFrame = popupView.frame;
+//                    finalFrame.origin.x = -CGRectGetWidth(finalFrame);
+//                    popupView.frame = finalFrame;
+//                } completion:completionBlock];
+//            }];
+//            break;
+//        }
+//        case BZMCloseAnimationTypeBounceOutToRight: {
+//            [UIView animateWithDuration:duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//                CGRect finalFrame = popupView.frame;
+//                finalFrame.origin.x -= 40.0;
+//                popupView.frame = finalFrame;
+//            } completion:^(BOOL finished) {
+//                [UIView animateWithDuration:duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+//                    animationBlock();
+//                    CGRect finalFrame = popupView.frame;
+//                    finalFrame.origin.x = CGRectGetWidth(sourceView.bounds);
+//                    popupView.frame = finalFrame;
+//                } completion:completionBlock];
+//            }];
+//            break;
+//        }
         default:
             break;
     }
@@ -716,5 +717,18 @@ static void * const keypath = (void*)&keypath;
     return nil;
 }
 
-
 @end
+
+BZMViewControllerAnimationType BZMViewControllerAnimationTypeFromString(NSString *value) {
+    BZMViewControllerAnimationType type = BZMViewControllerAnimationTypeNone;
+    if ([value isEqualToString:kBZMAnimationFade]) {
+        type = BZMViewControllerAnimationTypeFade;
+    } else if ([value isEqualToString:kBZMAnimationGrow]) {
+        type = BZMViewControllerAnimationTypeGrow;
+    } else if ([value isEqualToString:kBZMAnimationShrink]) {
+        type = BZMViewControllerAnimationTypeShrink;
+    } else if ([value isEqualToString:kBZMAnimationBounce]) {
+        type = BZMViewControllerAnimationTypeBounce;
+    }
+    return type;
+}

@@ -16,12 +16,12 @@
 
 - (UIViewController *)pushViewModel:(BZMBaseViewModel *)viewModel animated:(BOOL)animated;
 - (UIViewController *)presentViewModel:(BZMBaseViewModel *)viewModel animated:(BOOL)animated completion:(BZMVoidBlock)completion;
-- (UIViewController *)popupViewModel:(BZMBaseViewModel *)viewModel animationType:(BZMPopupAnimationType)animationType completion:(BZMVoidBlock)completion;
+- (UIViewController *)popupViewModel:(BZMBaseViewModel *)viewModel animationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion;
 
 - (void)popViewModelAnimated:(BOOL)animated;
 - (void)popToRootViewModelAnimated:(BOOL)animated;
 - (void)dismissViewModelAnimated:(BOOL)animated completion:(BZMVoidBlock)completion;
-- (void)closeViewModelWithAnimationType:(BZMCloseAnimationType)animationType completion:(BZMVoidBlock)completion;
+- (void)closeViewModelWithAnimationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion;
 
 @end
 

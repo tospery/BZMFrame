@@ -18,7 +18,8 @@
 #import "BZMBaseViewController.h"
 
 @interface BZMBaseViewModel ()
-@property (nonatomic, copy, readwrite) NSDictionary<NSString *,id> *parameters;;
+@property (nonatomic, copy, readwrite) NSDictionary<NSString *,id> *parameters;
+@property (nonatomic, strong, readwrite) NSString *animation;
 @property (nonatomic, strong, readwrite) BZMBaseModel *model;
 @property (nonatomic, strong, readwrite) BZMUser *user;
 @property (nonatomic, strong, readwrite) NSArray *items;
@@ -28,7 +29,8 @@
 @property (nonatomic, strong, readwrite) RACSubject *executing;
 @property (nonatomic, strong, readwrite) RACSubject *willDisappearSignal;
 @property (nonatomic, strong, readwrite) RACCommand *backCommand;
-@property (nonatomic, strong, readwrite) RACCommand *closeCommand;
+@property (nonatomic, strong, readwrite) RACCommand *didBackCommand;
+//@property (nonatomic, strong, readwrite) RACCommand *closeCommand;
 @property (nonatomic, strong, readwrite) RACCommand *requestRemoteDataCommand;
 //@property (nonatomic, strong, readwrite) RACSignal *reloadSignal;
 
@@ -45,7 +47,7 @@
         self.hidesNavigationBar = BZMBoolMember(parameters, BZMParameter.hideNavBar, NO);
         self.hidesNavBottomLine = BZMBoolMember(parameters, BZMParameter.hideNavLine, NO);
         self.title = BZMStrMember(parameters, BZMParameter.title, nil);
-        
+        self.animation = BZMStrMember(parameters, BZMParameter.animation, nil);
 //        id modelObject = BZMStrMember(parameters, BZMParameter.model, nil).bzm_JSONObject;
 //        if (modelObject && [modelObject isKindOfClass:NSDictionary.class]) {
 //            Class modelClass = NSClassFromString([NSStringFromClass(self.class) stringByReplacingOccurrencesOfString:kBZMVMSuffix withString:@""]);
@@ -146,18 +148,40 @@
         [self.navigator routeURL:BZMURLWithPattern(kBZMPatternToast) withParameters:@{
             BZMParameter.message: BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)
         }];
-        // [self.viewController.view makeToast:BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)];
     }];
     
-    self.backCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(UIButton *button) {
+    self.backCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
         @strongify(self)
-        [self.navigator popViewModelAnimated:YES];
+        id data = nil;
+        BZMViewControllerBackType type = BZMViewControllerBackTypePop;
+        if ([input isKindOfClass:RACTuple.class]) {
+            RACTuple *tuple = (RACTuple *)input;
+            if ([tuple.first isKindOfClass:NSNumber.class]) {
+                NSNumber *number = (NSNumber *)tuple.first;
+                type = number.integerValue;
+            }
+            data = tuple.second;
+        } else if ([input isKindOfClass:NSNumber.class]) {
+            NSNumber *number = (NSNumber *)input;
+            type = number.integerValue;
+        }
+        if (BZMViewControllerBackTypePop == type) {
+            [self.navigator popViewModelAnimated:YES]; // YJX_TODO completion
+        } else if (BZMViewControllerBackTypeDismiss == type) {
+            [self.navigator dismissViewModelAnimated:YES completion:^{
+                @strongify(self)
+                [self.didBackCommand execute:data];
+            }];
+        }else if (BZMViewControllerBackTypeClose == type) {
+            [self.navigator closeViewModelWithAnimationType:BZMViewControllerAnimationTypeFromString(self.animation) completion:^{
+                @strongify(self)
+                [self.didBackCommand execute:data];
+            }];
+        }
         return RACSignal.empty;
     }];
-    self.closeCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(UIButton *button) {
-        @strongify(self)
-        [self.navigator dismissViewModelAnimated:YES completion:nil];
-        return RACSignal.empty;
+    self.didBackCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        return [RACSignal return:input];
     }];
     
 //    [[[RACObserve(self, dataSource) skip:1] deliverOnMainThread] subscribeNext:^(id x) {

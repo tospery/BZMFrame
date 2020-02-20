@@ -38,6 +38,13 @@
 #define kBZMPatternPopup                            (@"popup")
 #define kBZMPatternToast                            (@"toast")
 
+#pragma mark - Animation
+#define kBZMAnimationFade                           (@"fade")
+#define kBZMAnimationGrow                           (@"grow")
+#define kBZMAnimationShrink                         (@"shrink")
+#define kBZMAnimationSlide                          (@"slide")
+#define kBZMAnimationBounce                         (@"bounce")
+
 #pragma mark - 便捷
 #define kBZMFrameName                               (@"BZMFrame")
 #define kBZMVCSuffix                                (@"ViewController")

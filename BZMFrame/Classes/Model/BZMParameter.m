@@ -80,8 +80,8 @@
     return @"useUIWebView";
 }
 
-+ (NSString *)popupAnimation {
-    return @"popupAnimation";
++ (NSString *)animation {
+    return @"animation";
 }
 
 + (NSString *)message {

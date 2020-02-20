@@ -114,5 +114,11 @@ typedef NS_ENUM(NSUInteger, BZMPageMenuIndicatorScrollStyle) {
     BZMPageMenuIndicatorScrollStyleSameAsUserScroll,         //和用户左右滚动列表时的效果一样
 };
 
+typedef NS_ENUM(NSInteger, BZMViewControllerBackType){
+    BZMViewControllerBackTypePop,
+    BZMViewControllerBackTypeDismiss,
+    BZMViewControllerBackTypeClose
+};
+
 
 #endif /* BZMType_h */

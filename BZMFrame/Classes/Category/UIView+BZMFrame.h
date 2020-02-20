@@ -15,7 +15,7 @@
 @property (nonatomic, strong) UIColor *bzm_borderColor;
 @property (nonatomic, strong, readonly) BZMBorderLayer *bzm_borderLayer;
 
-- (BOOL)bzm_toast:(NSDictionary *)parameters;
+- (BOOL)bzm_toastWithParameters:(NSDictionary *)parameters completion:(void(^)(BOOL didTap))completion;
 
 @end
 

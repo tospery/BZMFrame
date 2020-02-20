@@ -49,7 +49,7 @@
     return nil;
 }
 
-- (BOOL)bzm_toast:(NSDictionary *)parameters {
+- (BOOL)bzm_toastWithParameters:(NSDictionary *)parameters completion:(void(^)(BOOL didTap))completion {
     NSString *title = BZMStrMember(parameters, BZMParameter.title, nil);
     NSString *message = BZMStrMember(parameters, BZMParameter.message, nil);
     if (title.length == 0 && message.length == 0) {
@@ -64,12 +64,7 @@
     } else {
         position = CSToastPositionCenter;
     }
-    BZMVoidBlock_id completion = BZMObjMember(parameters, BZMParameter.block, nil);
-    [self makeToast:message duration:duration position:position title:title image:nil style:nil completion:^(BOOL didTap) {
-        if (completion) {
-            completion(@(didTap));
-        }
-    }];
+    [self makeToast:message duration:duration position:position title:title image:nil style:nil completion:completion];
     return YES;
 }
 

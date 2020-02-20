@@ -68,11 +68,19 @@
     }
     if (self.navigationController.viewControllers.count > 1) {
         UIButton *backButton = [self.navigationBar addBackButtonToLeft];
-        backButton.rac_command = self.viewModel.backCommand;
+        @weakify(self)
+        [[backButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl *x) {
+            @strongify(self)
+            [self.viewModel.backCommand execute:@(BZMViewControllerBackTypePop)];
+        }];
     } else {
         if (self.presentingViewController) {
             UIButton *closeButton = [self.navigationBar addCloseButtonToLeft];
-            closeButton.rac_command = self.viewModel.closeCommand;
+            @weakify(self)
+            [[closeButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl *x) {
+                @strongify(self)
+                [self.viewModel.backCommand execute:@(BZMViewControllerBackTypeDismiss)];
+            }];
         }
     }
 }
