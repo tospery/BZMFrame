@@ -45,13 +45,24 @@
         self.hidesNavigationBar = BZMBoolMember(parameters, BZMParameter.hideNavBar, NO);
         self.hidesNavBottomLine = BZMBoolMember(parameters, BZMParameter.hideNavLine, NO);
         self.title = BZMStrMember(parameters, BZMParameter.title, nil);
-        id modelObject = BZMStrMember(parameters, BZMParameter.model, nil).bzm_JSONObject;
-        if (modelObject && [modelObject isKindOfClass:NSDictionary.class]) {
-            Class modelClass = NSClassFromString([NSStringFromClass(self.class) stringByReplacingOccurrencesOfString:kBZMVMSuffix withString:@""]);
-            if (modelClass && [modelClass isSubclassOfClass:MTLModel.class]) {
-                self.model = [[modelClass alloc] initWithDictionary:(NSDictionary *)modelObject error:nil];
+        
+//        id modelObject = BZMStrMember(parameters, BZMParameter.model, nil).bzm_JSONObject;
+//        if (modelObject && [modelObject isKindOfClass:NSDictionary.class]) {
+//            Class modelClass = NSClassFromString([NSStringFromClass(self.class) stringByReplacingOccurrencesOfString:kBZMVMSuffix withString:@""]);
+//            if (modelClass && [modelClass isSubclassOfClass:MTLModel.class]) {
+//                self.model = [[modelClass alloc] initWithDictionary:(NSDictionary *)modelObject error:nil];
+//            }
+//        }
+        
+        id model = BZMObjMember(parameters, BZMParameter.model, nil);
+        if (model && [model isKindOfClass:NSString.class]) {
+            Class class = NSClassFromString([NSStringFromClass(self.class) stringByReplacingOccurrencesOfString:kBZMVMSuffix withString:@""]);
+            if (class && [class conformsToProtocol:@protocol(MTLJSONSerializing)] /* && [class isSubclassOfClass:MTLModel.class]*/) {
+                model = [MTLJSONAdapter modelOfClass:class fromJSONDictionary:model error:nil];
             }
         }
+        self.model = model;
+        
         id userObject = BZMStrMember(parameters, BZMParameter.user, nil).bzm_JSONObject;
         Class userClass = NSClassFromString(@"User") ? NSClassFromString(@"User") : BZMUser.class;
         if (userObject && [userObject isKindOfClass:NSDictionary.class]) {

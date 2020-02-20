@@ -118,22 +118,9 @@
     return viewController;
 }
 
-//- (UIViewController *)presentPopupViewModel:(BZMBaseViewModel *)viewModel animated:(BOOL)animated completion:(BZMVoidBlock)completion {
-//    UIViewController *viewController = (UIViewController *)[self viewController:viewModel];
-////    UINavigationController *presentingViewController = self.topNavigationController;
-////    if (![viewController isKindOfClass:UINavigationController.class]) {
-////        viewController = [[BZMNavigationController alloc] initWithRootViewController:viewController];
-////    }
-////    [self pushNavigationController:(BZMNavigationController *)viewController];
-//    // YJX_TODO 通过参数配置bgTouch
-//    // [presentingViewController presentViewController:viewController animated:animated completion:completion];
-//    [self.topNavigationController bzm_presentPopupViewController:viewController animationType:BZMPopupPresentAnimationTypeFadeIn layout:BZMPopupLayoutCenter bgTouch:NO dismissed:completion];
-//    return viewController;
-//}
-
-- (UIViewController *)presentPopupViewModel:(BZMBaseViewModel *)viewModel animationType:(BZMPopupPresentAnimationType)animationType completion:(BZMVoidBlock)completion {
+- (UIViewController *)popupViewModel:(BZMBaseViewModel *)viewModel animationType:(BZMPopupAnimationType)animationType completion:(BZMVoidBlock)completion {
     UIViewController *viewController = (UIViewController *)[self viewController:viewModel];
-    [self.topNavigationController bzm_presentPopupViewController:viewController animationType:animationType layout:BZMPopupLayoutCenter bgTouch:NO dismissed:completion];
+    [self.topNavigationController bzm_popupViewController:viewController animationType:animationType layout:BZMPopupLayoutCenter bgTouch:NO dismissed:completion];
     return viewController;
 }
 
@@ -151,8 +138,8 @@
     [dismissingViewController dismissViewControllerAnimated:animated completion:completion];
 }
 
-- (void)dismissPopupViewModelWithAnimationType:(BZMPopupDismissAnimationType)animationType completion:(BZMVoidBlock)completion {
-    [self.topNavigationController bzm_dismissPopupViewControllerWithAnimationType:animationType dismissed:completion];
+- (void)closeViewModelWithAnimationType:(BZMCloseAnimationType)animationType completion:(BZMVoidBlock)completion {
+    [self.topNavigationController bzm_closeViewControllerWithAnimationType:animationType dismissed:completion];
 }
 
 #pragma mark - Class

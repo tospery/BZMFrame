@@ -11,36 +11,36 @@
 @class BZMPageViewController;
 @class BZMTabBarViewController;
 
-typedef NS_ENUM(NSInteger, BZMPopupPresentAnimationType){
-    BZMPopupPresentAnimationTypeNone,
-    BZMPopupPresentAnimationTypeFadeIn,
-    BZMPopupPresentAnimationTypeGrowIn,
-    BZMPopupPresentAnimationTypeShrinkIn,
-    BZMPopupPresentAnimationTypeSlideInFromTop,
-    BZMPopupPresentAnimationTypeSlideInFromBottom,
-    BZMPopupPresentAnimationTypeSlideInFromLeft,
-    BZMPopupPresentAnimationTypeSlideInFromRight,
-    BZMPopupPresentAnimationTypeBounceIn,
-    BZMPopupPresentAnimationTypeBounceInFromTop,
-    BZMPopupPresentAnimationTypeBounceInFromBottom,
-    BZMPopupPresentAnimationTypeBounceInFromLeft,
-    BZMPopupPresentAnimationTypeBounceInFromRight
+typedef NS_ENUM(NSInteger, BZMPopupAnimationType){
+    BZMPopupAnimationTypeNone,
+    BZMPopupAnimationTypeFadeIn,
+    BZMPopupAnimationTypeGrowIn,
+    BZMPopupAnimationTypeShrinkIn,
+    BZMPopupAnimationTypeSlideInFromTop,
+    BZMPopupAnimationTypeSlideInFromBottom,
+    BZMPopupAnimationTypeSlideInFromLeft,
+    BZMPopupAnimationTypeSlideInFromRight,
+    BZMPopupAnimationTypeBounceIn,
+    BZMPopupAnimationTypeBounceInFromTop,
+    BZMPopupAnimationTypeBounceInFromBottom,
+    BZMPopupAnimationTypeBounceInFromLeft,
+    BZMPopupAnimationTypeBounceInFromRight
 };
 
-typedef NS_ENUM(NSInteger, BZMPopupDismissAnimationType){
-    BZMPopupDismissAnimationTypeNone,
-    BZMPopupDismissAnimationTypeFadeOut,
-    BZMPopupDismissAnimationTypeGrowOut,
-    BZMPopupDismissAnimationTypeShrinkOut,
-    BZMPopupDismissAnimationTypeSlideOutToTop,
-    BZMPopupDismissAnimationTypeSlideOutToBottom,
-    BZMPopupDismissAnimationTypeSlideOutToLeft,
-    BZMPopupDismissAnimationTypeSlideOutToRight,
-    BZMPopupDismissAnimationTypeBounceOut,
-    BZMPopupDismissAnimationTypeBounceOutToTop,
-    BZMPopupDismissAnimationTypeBounceOutToBottom,
-    BZMPopupDismissAnimationTypeBounceOutToLeft,
-    BZMPopupDismissAnimationTypeBounceOutToRight,
+typedef NS_ENUM(NSInteger, BZMCloseAnimationType){
+    BZMCloseAnimationTypeNone,
+    BZMCloseAnimationTypeFadeOut,
+    BZMCloseAnimationTypeGrowOut,
+    BZMCloseAnimationTypeShrinkOut,
+    BZMCloseAnimationTypeSlideOutToTop,
+    BZMCloseAnimationTypeSlideOutToBottom,
+    BZMCloseAnimationTypeSlideOutToLeft,
+    BZMCloseAnimationTypeSlideOutToRight,
+    BZMCloseAnimationTypeBounceOut,
+    BZMCloseAnimationTypeBounceOutToTop,
+    BZMCloseAnimationTypeBounceOutToBottom,
+    BZMCloseAnimationTypeBounceOutToLeft,
+    BZMCloseAnimationTypeBounceOutToRight,
 };
 
 typedef NS_ENUM(NSInteger, BZMPopupLayoutHorizontal) {
@@ -74,9 +74,9 @@ extern const BZMPopupLayout BZMPopupLayoutCenter;
 @property (nonatomic, retain) UIViewController *bzm_popupViewController;
 @property (nonatomic, retain) BZMPopupBackgroundView *bzm_popupBackgroundView;
 
-- (void)bzm_presentPopupViewController:(UIViewController *)popupViewController animationType:(BZMPopupPresentAnimationType)animationType layout:(BZMPopupLayout)layout bgTouch:(BOOL)bgTouch dismissed:(void(^)(void))dismissed;
-- (void)bzm_dismissPopupViewControllerWithAnimationType:(BZMPopupDismissAnimationType)animationType;
-- (void)bzm_dismissPopupViewControllerWithAnimationType:(BZMPopupDismissAnimationType)animationType dismissed:(void(^)(void))dismissed;
+- (void)bzm_popupViewController:(UIViewController *)popupViewController animationType:(BZMPopupAnimationType)animationType layout:(BZMPopupLayout)layout bgTouch:(BOOL)bgTouch dismissed:(void(^)(void))dismissed;
+- (void)bzm_closeViewControllerWithAnimationType:(BZMCloseAnimationType)animationType;
+- (void)bzm_closeViewControllerWithAnimationType:(BZMCloseAnimationType)animationType dismissed:(void(^)(void))dismissed;
 
 /**
  获取控制器所在的BZMPageViewController
