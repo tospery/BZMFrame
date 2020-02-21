@@ -8,6 +8,7 @@
 
 #import "BZMCollectionViewModel.h"
 #import <QMUIKit/QMUIKit.h>
+#import "BZMConstant.h"
 #import "BZMSupplementaryView.h"
 #import "BZMCollectionCell.h"
 #import "NSArray+BZMFrame.h"
@@ -147,6 +148,15 @@
                     }
                 }
             }
+        }
+    }
+    
+    if (!view) {
+        if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+            view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kBZMIdentifierCollectionHeader forIndexPath:indexPath];
+        } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+            view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kBZMIdentifierCollectionFooter forIndexPath:indexPath];
+            isHeader = NO;
         }
     }
     

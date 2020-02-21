@@ -17,14 +17,15 @@
 @implementation BZMBaseSupplementaryView
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        [self didInitialize];
+        // [self didInitialize];
+        self.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
     }
     return self;
 }
 
-- (void)didInitialize {
-    self.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
-}
+//- (void)didInitialize {
+//    self.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
+//}
 
 - (void)bindViewModel:(id)viewModel {
 //    if (self.viewModel == viewModel) {

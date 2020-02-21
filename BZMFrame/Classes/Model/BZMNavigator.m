@@ -68,29 +68,9 @@
     return [[cls alloc] initWithViewModel:viewModel];
 }
 
-//- (BOOL)canRouteURL:(NSURL *)URL {
-//    return [JLRoutes canRouteURL:URL];
-//}
-//
-//- (BOOL)routeURL:(NSURL *)URL {
-//    return [JLRoutes routeURL:URL];
-//}
-//
-//- (BOOL)routePattern:(NSString *)pattern {
-//    NSString *scheme = UIApplication.sharedApplication.bzm_urlScheme;
-//    NSURL *url = BZMURLWithStr(BZMStrWithFmt(@"%@://m.%@.com%@", scheme, scheme, pattern));
-//    return [self routeURL:url];
-//}
-
 - (BOOL)routeURL:(NSURL *)URL withParameters:(NSDictionary *)parameters {
     return [JLRoutes routeURL:URL withParameters:parameters];
 }
-
-//- (BOOL)routePattern:(NSString *)pattern withParameters:(NSDictionary *)parameters {
-//    NSString *scheme = UIApplication.sharedApplication.bzm_urlScheme;
-//    NSURL *url = BZMURLWithStr(BZMStrWithFmt(@"%@://m.%@.com%@", scheme, scheme, pattern));
-//    return [JLRoutes routeURL:url withParameters:parameters];
-//}
 
 #pragma mark - Delegate
 #pragma mark BZMNavigationProtocol
@@ -132,12 +112,18 @@
     return viewController;
 }
 
-- (void)popViewModelAnimated:(BOOL)animated {
+- (void)popViewModelAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:completion];
     [self.topNavigationController popViewControllerAnimated:animated];
+    [CATransaction commit];
 }
 
-- (void)popToRootViewModelAnimated:(BOOL)animated {
+- (void)popToRootViewModelAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:completion];
     [self.topNavigationController popToRootViewControllerAnimated:animated];
+    [CATransaction commit];
 }
 
 - (void)dismissViewModelAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {

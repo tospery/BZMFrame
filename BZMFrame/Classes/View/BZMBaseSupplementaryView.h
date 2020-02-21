@@ -12,7 +12,7 @@
 @interface BZMBaseSupplementaryView : UICollectionReusableView <BZMSupplementaryView, BZMReactiveView>
 @property (nonatomic, strong, readonly) id viewModel;
 
-- (void)didInitialize;
+//- (void)didInitialize;
 
 //+ (NSString *)kind;
 //+ (NSString *)identifier;

@@ -115,7 +115,8 @@ typedef NS_ENUM(NSUInteger, BZMPageMenuIndicatorScrollStyle) {
 };
 
 typedef NS_ENUM(NSInteger, BZMViewControllerBackType){
-    BZMViewControllerBackTypePop,
+    BZMViewControllerBackTypePopOne,
+    BZMViewControllerBackTypePopAll,
     BZMViewControllerBackTypeDismiss,
     BZMViewControllerBackTypeClose
 };

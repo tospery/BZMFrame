@@ -153,7 +153,7 @@
     self.backCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
         @strongify(self)
         id data = nil;
-        BZMViewControllerBackType type = BZMViewControllerBackTypePop;
+        BZMViewControllerBackType type = BZMViewControllerBackTypePopOne;
         if ([input isKindOfClass:RACTuple.class]) {
             RACTuple *tuple = (RACTuple *)input;
             if ([tuple.first isKindOfClass:NSNumber.class]) {
@@ -165,18 +165,18 @@
             NSNumber *number = (NSNumber *)input;
             type = number.integerValue;
         }
-        if (BZMViewControllerBackTypePop == type) {
-            [self.navigator popViewModelAnimated:YES]; // YJX_TODO completion
+        BZMVoidBlock completion = ^(void) {
+            @strongify(self)
+            [self.didBackCommand execute:data];
+        };
+        if (BZMViewControllerBackTypePopOne == type) {
+            [self.navigator popViewModelAnimated:YES completion:completion];
+        } else if (BZMViewControllerBackTypePopAll == type) {
+            [self.navigator popToRootViewModelAnimated:YES completion:completion];
         } else if (BZMViewControllerBackTypeDismiss == type) {
-            [self.navigator dismissViewModelAnimated:YES completion:^{
-                @strongify(self)
-                [self.didBackCommand execute:data];
-            }];
-        }else if (BZMViewControllerBackTypeClose == type) {
-            [self.navigator closeViewModelWithAnimationType:BZMViewControllerAnimationTypeFromString(self.animation) completion:^{
-                @strongify(self)
-                [self.didBackCommand execute:data];
-            }];
+            [self.navigator dismissViewModelAnimated:YES completion:completion];
+        } else if (BZMViewControllerBackTypeClose == type) {
+            [self.navigator closeViewModelWithAnimationType:BZMViewControllerAnimationTypeFromString(self.animation) completion:completion];
         }
         return RACSignal.empty;
     }];

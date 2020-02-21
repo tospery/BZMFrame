@@ -71,7 +71,7 @@
         @weakify(self)
         [[backButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl *x) {
             @strongify(self)
-            [self.viewModel.backCommand execute:@(BZMViewControllerBackTypePop)];
+            [self.viewModel.backCommand execute:@(BZMViewControllerBackTypePopOne)];
         }];
     } else {
         if (self.presentingViewController) {

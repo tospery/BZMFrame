@@ -6,9 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BZMNavigator.h"
+#import "BZMProvider.h"
 
 @interface BZMAppDependency : NSObject
 @property (nonatomic, strong, readonly) UIWindow *window;
+@property (nonatomic, strong, readonly) BZMNavigator *navigator;
+@property (nonatomic, strong, readonly) BZMProvider *provider;
 
 - (instancetype)initWithWindow:(UIWindow *)window;
 

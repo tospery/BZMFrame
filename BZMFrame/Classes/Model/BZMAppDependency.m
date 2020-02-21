@@ -8,6 +8,7 @@
 #import "BZMAppDependency.h"
 #import <JLRoutes/JLRoutes.h>
 #import <Toast/UIView+Toast.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMParameter.h"
@@ -21,6 +22,8 @@
 
 @interface BZMAppDependency ()
 @property (nonatomic, strong, readwrite) UIWindow *window;
+@property (nonatomic, strong, readwrite) BZMNavigator *navigator;
+@property (nonatomic, strong, readwrite) BZMProvider *provider;
 
 @end
 
@@ -29,6 +32,8 @@
 - (instancetype)initWithWindow:(UIWindow *)window {
     if (self = [super init]) {
         self.window = window;
+        self.navigator = BZMNavigator.share;
+        self.provider = BZMProvider.share;
         [self setupFrame];
         [self setupVendor];
         [self setupAppearance];
@@ -51,9 +56,11 @@
     [CSToastManager setQueueEnabled:YES];
     [CSToastManager setDefaultPosition:CSToastPositionCenter];
     // Route
+    @weakify(self)
     [JLRoutes.globalRoutes addRoute:kBZMPatternToast handler:^BOOL(NSDictionary *parameters) {
         BZMVoidBlock_id completion = BZMObjMember(parameters, BZMParameter.block, nil);
-        return [BZMNavigator.share.topView bzm_toastWithParameters:parameters completion:^(BOOL didTap) {
+        @strongify(self)
+        return [self.navigator.topView bzm_toastWithParameters:parameters completion:^(BOOL didTap) {
             if (completion) {
                 completion(@(didTap));
             }
