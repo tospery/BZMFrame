@@ -2,19 +2,17 @@
 //  BZMAppDependency.h
 //  Pods
 //
-//  Created by 杨建祥 on 2019/12/30.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #import <UIKit/UIKit.h>
-#import "BZMNavigator.h"
 #import "BZMProvider.h"
+#import "BZMNavigator.h"
 
 @interface BZMAppDependency : NSObject
-@property (nonatomic, strong, readonly) UIWindow *window;
-@property (nonatomic, strong, readonly) BZMNavigator *navigator;
+@property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong, readonly) BZMProvider *provider;
-
-- (instancetype)initWithWindow:(UIWindow *)window;
+@property (nonatomic, strong, readonly) BZMNavigator *navigator;
 
 - (void)initialScreen;
 
@@ -32,9 +30,9 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application;
 - (void)applicationWillTerminate:(UIApplication *)application;
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url;
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options;
+
++ (instancetype)sharedInstance;
 
 @end
 

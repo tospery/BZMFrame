@@ -2,60 +2,15 @@
 //  NSString+BZMFrame.m
 //  Pods
 //
-//  Created by 杨建祥 on 2020/1/5.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #import "NSString+BZMFrame.h"
 
 @implementation NSString (BZMFrame)
 
-+ (NSString *)bzm_filePathInDocuments:(NSString *)fileName {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsPath = [paths objectAtIndex:0];
-    return [documentsPath stringByAppendingPathComponent:fileName];
-}
-
-+ (NSString *)bzm_stringWithObject:(id)value {
-    if ([value isKindOfClass:NSString.class]) {
-        return value;
-    }else if ([value isKindOfClass:NSNumber.class]) {
-        NSNumber *number = (NSNumber *)value;
-        return number.stringValue;
-    }
-    return nil;
-}
-
-// YJX_TODO 兼容性，变为属性
-- (NSString *)bzm_urlEncoded {
-    NSString *str = [self bzm_urlDecoded]; // 避免两次encode
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSString *result = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)str, NULL, NULL, kCFStringEncodingUTF8));
-#pragma clang diagnostic pop
-    return result;
-}
-
-- (NSString *)bzm_urlDecoded {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSString *result = CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)self, CFSTR(""), kCFStringEncodingUTF8));
-#pragma clang diagnostic pop
-    return result;
-}
-
-- (NSString *)bzm_urlComponentEncoded {
-    NSString *str = [self bzm_urlComponentDecoded]; // 避免两次encode
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSString *result = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(__bridge CFStringRef)str, NULL,(CFStringRef)@":/?#[]@!$ &'()*+,;=\"<>%{}|\\^~`",kCFStringEncodingUTF8));
-#pragma clang diagnostic pop
-    return result;
-}
-
-- (NSString *)bzm_urlComponentDecoded {
-    return [self bzm_urlDecoded];
-}
-
+#pragma mark - Property
+#pragma mark - Instance
 - (NSString *)bzm_underlineFromCamel {
     if (self.length == 0) return self;
     NSMutableString *string = [NSMutableString string];
@@ -89,50 +44,15 @@
     return string;
 }
 
-- (NSString *)bzm_firstCharLower {
-    if (self.length == 0) return self;
-    NSMutableString *string = [NSMutableString string];
-    [string appendString:[NSString stringWithFormat:@"%c", [self characterAtIndex:0]].lowercaseString];
-    if (self.length >= 2) [string appendString:[self substringFromIndex:1]];
-    return string;
-}
-
-- (NSString *)bzm_firstCharUpper {
-    if (self.length == 0) return self;
-    NSMutableString *string = [NSMutableString string];
-    [string appendString:[NSString stringWithFormat:@"%c", [self characterAtIndex:0]].uppercaseString];
-    if (self.length >= 2) [string appendString:[self substringFromIndex:1]];
-    return string;
-}
-
-- (BOOL)bzm_isPureInt {
-    NSScanner *scan = [NSScanner scannerWithString:self];
-    int val;
-    return [scan scanInt:&val] && [scan isAtEnd];
-}
-
-- (NSURL *)bzm_url {
-//    [self stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@"!$&'()*+,-./:;=?@_~%#[]"]];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored"-Wdeprecated-declarations"
-    return [NSURL URLWithString:(NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)self, (CFStringRef)@"!$&'()*+,-./:;=?@_~%#[]", NULL,kCFStringEncodingUTF8))];
-#pragma clang diagnostic pop
-}
-
-- (CGSize)bzm_sizeFits:(CGSize)size font:(UIFont *)font lines:(NSInteger)lines {
-    CGSize result = [self boundingRectWithSize:size options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading) attributes:(font ? @{NSFontAttributeName: font} : nil) context:nil].size;
-    if (font != nil && lines > 0) {
-        result.height = MIN(size.height, font.lineHeight * lines);
+#pragma mark - Class
++ (NSString *)bzm_stringWithObject:(id)object {
+    if ([object isKindOfClass:NSString.class]) {
+        return object;
+    }else if ([object isKindOfClass:NSNumber.class]) {
+        NSNumber *number = (NSNumber *)object;
+        return number.stringValue;
     }
-    return result;
-}
-
-- (CGFloat)bzm_widthFits:(CGFloat)height font:(UIFont *)font lines:(NSInteger)lines {
-    return ceil([self bzm_sizeFits:CGSizeMake(CGFLOAT_MAX, height) font:font lines:lines].width);
-}
-
-- (CGFloat)bzm_heightFits:(CGFloat)width font:(UIFont *)font lines:(NSInteger)lines {
-    return ceil([self bzm_sizeFits:CGSizeMake(width, CGFLOAT_MAX) font:font lines:lines].height);
+    return nil;
 }
 
 @end

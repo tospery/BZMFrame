@@ -2,11 +2,10 @@
 //  BZMNavigationController.m
 //  Pods
 //
-//  Created by 杨建祥 on 2019/12/30.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #import "BZMNavigationController.h"
-#import "BZMFunction.h"
 
 @interface BZMNavigationController ()
 
@@ -15,8 +14,6 @@
 @implementation BZMNavigationController
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController {
     if (self = [super initWithRootViewController:rootViewController]) {
-        // self.navigationBar.tintColor = BZMColorKey(BAR);
-        // self.navigationBar.hidden = YES;
         self.modalPresentationStyle = UIModalPresentationFullScreen;
     }
     return self;

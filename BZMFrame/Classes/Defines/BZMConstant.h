@@ -1,8 +1,8 @@
 //
 //  BZMConstant.h
-//  BZMFrame
+//  Pods
 //
-//  Created by 杨建祥 on 2019/12/30.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #ifndef BZMConstant_h
@@ -47,27 +47,8 @@
 
 #pragma mark - 便捷
 #define kBZMFrameName                               (@"BZMFrame")
-#define kBZMVCSuffix                                (@"ViewController")
-#define kBZMVMSuffix                                (@"ViewModel")
+//#define kBZMVCSuffix                                (@"ViewController")
+//#define kBZMVMSuffix                                (@"ViewModel")
 #define kBZMBindObjectKey                           (@"kBZMBindObjectKey")
-
-//#pragma mark - 缓存
-//#define kBZMCachePrevUserID                          (@"kBZMCachePrevUserID")
-//
-//
-//#pragma mark - Scheme协议
-
-//
-//
-//
-//
-//
-//
-//#pragma mark - 其他
-//#define kBZMBundleName                              (@"BZMFrame.bundle")
-//#define kBZMSimulatorString                         (@"Simulator")
-//#define kBZMUndefinedInteger                        (-1)
-//#define kBZMUndefinedFloat                          (-1.0f)
-//#define kBZMUndefinedEdgeInsets                     (UIEdgeInsetsMake(-1, -1, -1, -1))
 
 #endif /* BZMConstant_h */

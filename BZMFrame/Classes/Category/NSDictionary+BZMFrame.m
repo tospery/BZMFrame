@@ -2,7 +2,7 @@
 //  NSDictionary+BZMFrame.m
 //  Pods
 //
-//  Created by 杨建祥 on 2020/1/5.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #import "NSDictionary+BZMFrame.h"
@@ -10,20 +10,6 @@
 #import "NSString+BZMFrame.h"
 
 @implementation NSDictionary (BZMFrame)
-
-- (NSDictionary *)bzm_dictionaryByUnderlineValuesFromCamel {
-    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:self.count];
-    for (NSString *key in self.allKeys) {
-        NSString *value = [self objectForKey:key];
-        if (![value isKindOfClass:NSString.class]) {
-            [result setObject:value forKey:key];
-            continue;
-        }
-        value = value.bzm_underlineFromCamel;
-        [result setObject:value forKey:key];
-    }
-    return result;
-}
 
 - (NSString *)bzm_stringForKey:(id)key {
     return [self bzm_stringForKey:key withDefault:nil];
@@ -122,13 +108,26 @@
     return object;
 }
 
+- (NSDictionary *)bzm_dictionaryByUnderlineValuesFromCamel {
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:self.count];
+    for (NSString *key in self.allKeys) {
+        NSString *value = [self objectForKey:key];
+        if (![value isKindOfClass:NSString.class]) {
+            [result setObject:value forKey:key];
+            continue;
+        }
+        value = value.bzm_underlineFromCamel;
+        [result setObject:value forKey:key];
+    }
+    return result;
+}
+
 + (NSDictionary *)bzm_dictionaryFromID:(id)data {
     if (!data || ![data isKindOfClass:NSObject.class]) {
         return nil;
     }
-    
     NSObject *obj = (NSObject *)data;
-    return [obj bzm_JSONObject];
+    return obj.bzm_JSONObject;
 }
 
 @end

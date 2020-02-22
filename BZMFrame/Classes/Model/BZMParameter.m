@@ -2,14 +2,10 @@
 //  BZMParameter.m
 //  Pods
 //
-//  Created by 杨建祥 on 2020/1/21.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #import "BZMParameter.h"
-
-@interface BZMParameter ()
-
-@end
 
 @implementation BZMParameter
 + (NSString *)title {

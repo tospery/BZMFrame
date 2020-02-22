@@ -2,31 +2,20 @@
 //  BZMNavigator.h
 //  Pods
 //
-//  Created by 杨建祥 on 2020/1/5.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #import <UIKit/UIKit.h>
-#import "BZMNavigationProtocol.h"
+#import "BZMNavigable.h"
 
-@class BZMBaseViewController;
+@class BZMViewController;
 
-@interface BZMNavigator : NSObject <BZMNavigationProtocol>
+@interface BZMNavigator : NSObject <BZMNavigable>
 @property (nonatomic, strong, readonly) UIView *topView;
 @property (nonatomic, strong, readonly) UINavigationController *topNavigationController;
 
 - (void)pushNavigationController:(UINavigationController *)navigationController;
 - (UINavigationController *)popNavigationController;
-
-- (BZMBaseViewController *)viewController:(BZMBaseViewModel *)viewModel;
-
-//- (BOOL)canRouteURL:(NSURL *)URL;
-//- (BOOL)routeURL:(NSURL *)URL;
-//- (BOOL)routePattern:(NSString *)pattern;
-
-- (BOOL)routeURL:(NSURL *)URL withParameters:(NSDictionary *)parameters;
-//- (BOOL)routePattern:(NSString *)pattern withParameters:(NSDictionary *)parameters;
-
-+ (instancetype)share;
 
 @end
 

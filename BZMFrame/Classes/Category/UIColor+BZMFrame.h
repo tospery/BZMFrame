@@ -2,14 +2,24 @@
 //  UIColor+BZMFrame.h
 //  Pods
 //
-//  Created by 杨建祥 on 2020/1/3.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #import <UIKit/UIKit.h>
+#import <QMUIKit/QMUIKit.h>
+
+#define BZMColorRGB(r, g, b)                (UIColorMake((r), (g), (b)))
+#define BZMColorVal(value)                  ([UIColor bzm_colorWithHex:(value)])
+#define BZMColorStr(string)                 ([UIColor qmui_colorWithHexString:(string)])
+
+//#define BZMColorRGB(r, g, b)                 (UIColorMake((r), (g), (b)))
+//#define BZMColorKey(t)                       (DKColorPickerWithKey(t)(self.dk_manager.themeVersion))
+//#pragma mark 黑白
+//#define BZMColorClear                        (UIColorMakeWithRGBA(255, 255, 255, 0))
+//#define BZMColorWhite                        (UIColorMake(255, 255, 255))
+//#define BZMColorBlack                        (UIColorMake(0, 0, 0))
 
 @interface UIColor (BZMFrame)
-+ (UIColor *)bzm_colorWithHex:(NSInteger)hexValue;
-+ (UIColor *)bzm_colorWithHex:(NSInteger)hexValue alpha:(CGFloat)alpha;
 
 @end
 

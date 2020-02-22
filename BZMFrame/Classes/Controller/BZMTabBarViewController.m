@@ -2,17 +2,28 @@
 //  BZMTabBarViewController.m
 //  Pods
 //
-//  Created by 杨建祥 on 2019/12/31.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
 #import "BZMTabBarViewController.h"
 
 @interface BZMTabBarViewController ()
 @property (nonatomic, strong, readwrite) UITabBarController *innerTabBarController;
+@property (nonatomic, strong, readwrite) BZMTabBarViewReactor *reactor;
 
 @end
 
 @implementation BZMTabBarViewController
+@dynamic reactor;
+
+#pragma mark - Init
+- (instancetype)initWithReactor:(BZMViewReactor *)reactor {
+    if (self = [super initWithReactor:reactor]) {
+    }
+    return self;
+}
+
+#pragma mark - View
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -23,6 +34,13 @@
     [self.innerTabBarController didMoveToParentViewController:self];
 }
 
+#pragma mark - Bind
+- (void)bind:(BZMBaseReactor *)reactor {
+    [super bind:reactor];
+    [[self rac_signalForSelector:@selector(tabBarController:didSelectViewController:) fromProtocol:@protocol(UITabBarControllerDelegate)] subscribe:self.reactor.selectSubject];
+}
+
+#pragma mark - Orientation
 - (BOOL)shouldAutorotate {
     return self.innerTabBarController.selectedViewController.shouldAutorotate;
 }

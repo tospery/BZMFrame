@@ -2,36 +2,12 @@
 //  BZMScrollViewController.h
 //  Pods
 //
-//  Created by 杨建祥 on 2019/12/30.
+//  Created by 杨建祥 on 2020/2/22.
 //
 
-#import "BZMBaseViewController.h"
-#import "BZMScrollViewModel.h"
+#import "BZMViewController.h"
 
-typedef NS_ENUM(NSInteger, BZMScrollDirection){
-    BZMScrollDirectionNone,
-    BZMScrollDirectionUp,
-    BZMScrollDirectionDown
-};
-
-@interface BZMScrollViewController : BZMBaseViewController <UIScrollViewDelegate, DZNEmptyDataSetDelegate>
-@property (nonatomic, assign, readonly) CGFloat lastPosition;
-@property (nonatomic, assign, readonly) BZMScrollDirection scrollDirection;
-@property (nonatomic, strong) UIScrollView *scrollView;
-
-- (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths;
-- (void)preloadNextPage;
-
-- (void)setupRefresh:(BOOL)enable;
-- (void)setupMore:(BOOL)enable;
-
-- (void)beginRefresh;
-- (void)triggerRefresh;
-- (void)endRefresh;
-
-- (void)beginMore;
-- (void)triggerMore;
-- (void)endMore;
+@interface BZMScrollViewController : BZMViewController
 
 @end
 
