@@ -103,6 +103,7 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self.view bringSubviewToFront:self.navigationBar];
+    [self layoutEmptyView];
 }
 
 #pragma mark - Super
@@ -296,7 +297,83 @@
     }
 }
 
-#pragma mark - Notification
+#pragma mark - Public
+#pragma mark empty
+- (BZMEmptyView *)emptyView {
+    if (!_emptyView && self.isViewLoaded) {
+        _emptyView = [[BZMEmptyView alloc] initWithFrame:self.view.bounds];
+        _emptyView.dk_backgroundColorPicker = DKColorPickerWithKey(BG);
+    }
+    return _emptyView;
+}
+
+- (void)showEmptyView {
+    [self.view addSubview:self.emptyView];
+}
+
+- (void)hideEmptyView {
+    [_emptyView removeFromSuperview];
+}
+
+- (BOOL)isEmptyViewShowing {
+    return _emptyView && _emptyView.superview;
+}
+
+- (void)showEmptyViewWithLoading {
+    [self showEmptyView];
+    [self.emptyView setImage:nil];
+    [self.emptyView setLoadingViewHidden:NO];
+    [self.emptyView setTextLabelText:nil];
+    [self.emptyView setDetailTextLabelText:nil];
+    [self.emptyView setActionButtonTitle:nil];
+}
+
+- (void)showEmptyViewWithText:(NSString *)text
+                   detailText:(NSString *)detailText
+                  buttonTitle:(NSString *)buttonTitle
+                 buttonAction:(SEL)action {
+    [self showEmptyViewWithLoading:NO image:nil text:text detailText:detailText buttonTitle:buttonTitle buttonAction:action];
+}
+
+- (void)showEmptyViewWithImage:(UIImage *)image
+                          text:(NSString *)text
+                    detailText:(NSString *)detailText
+                   buttonTitle:(NSString *)buttonTitle
+                  buttonAction:(SEL)action {
+    [self showEmptyViewWithLoading:NO image:image text:text detailText:detailText buttonTitle:buttonTitle buttonAction:action];
+}
+
+- (void)showEmptyViewWithLoading:(BOOL)showLoading
+                           image:(UIImage *)image
+                            text:(NSString *)text
+                      detailText:(NSString *)detailText
+                     buttonTitle:(NSString *)buttonTitle
+                    buttonAction:(SEL)action {
+    [self showEmptyView];
+    [self.emptyView setLoadingViewHidden:!showLoading];
+    [self.emptyView setImage:image];
+    [self.emptyView setTextLabelText:text];
+    [self.emptyView setDetailTextLabelText:detailText];
+    [self.emptyView setActionButtonTitle:buttonTitle];
+    [self.emptyView.actionButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [self.emptyView.actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (BOOL)layoutEmptyView {
+    if (_emptyView) {
+        BOOL viewDidLoad = self.emptyView.superview && [self isViewLoaded];
+        if (viewDidLoad) {
+            CGSize newEmptyViewSize = self.emptyView.superview.bounds.size;
+            CGSize oldEmptyViewSize = self.emptyView.frame.size;
+            if (!CGSizeEqualToSize(newEmptyViewSize, oldEmptyViewSize)) {
+                self.emptyView.qmui_frameApplyTransform = CGRectFlatMake(CGRectGetMinX(self.emptyView.frame), CGRectGetMinY(self.emptyView.frame), newEmptyViewSize.width, newEmptyViewSize.height);
+            }
+            return YES;
+        }
+    }
+    return NO;
+}
+
 #pragma mark - Delegate
 #pragma mark UINavigationControllerBackButtonHandlerProtocol
 - (BOOL)forceEnableInteractivePopGestureRecognizer {

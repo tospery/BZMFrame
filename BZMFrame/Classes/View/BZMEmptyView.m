@@ -1,13 +1,13 @@
 //
-//  BZMLabel.m
+//  BZMEmptyView.m
 //  Pods
 //
 //  Created by 杨建祥 on 2020/2/22.
 //
 
-#import "BZMLabel.h"
+#import "BZMEmptyView.h"
 
-@implementation BZMLabel
+@implementation BZMEmptyView
 
 /*
 // Only override drawRect: if you perform custom drawing.

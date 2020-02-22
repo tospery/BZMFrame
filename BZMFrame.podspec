@@ -38,6 +38,10 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Foundation', 'UIKit', 'Accelerate', 'QuartzCore', 'CoreLocation', 'SystemConfiguration', 'AdSupport', 'WebKit', 'CoreGraphics', 'Photos'
+  s.dependency 'QMUIKit/QMUICore', '4.0.4'
+  s.dependency 'QMUIKit/QMUIComponents/QMUILabel', '4.0.4'
+  s.dependency 'QMUIKit/QMUIComponents/QMUIButton', '4.0.4'
+  s.dependency 'QMUIKit/QMUIComponents/QMUIEmptyView', '4.0.4'
   s.dependency 'RESTful', '1.0.0'
   s.dependency 'CocoaLumberjack', '3.6.0'
   s.dependency 'SDWebImage', '5.4.0'
@@ -48,9 +52,7 @@ Pod::Spec.new do |s|
   s.dependency 'GVUserDefaults', '1.0.2'
   s.dependency 'DZNEmptyDataSet', '1.8.1'
   s.dependency 'JLRoutes', '2.1'
-  s.dependency 'QMUIKit/QMUICore', '4.0.4'
   s.dependency 'TYAlertController', '1.2.0'
   s.dependency 'Toast', '4.0.0'
   s.dependency 'DKNightVersion', '2.4.3'
-  s.dependency 'TTTAttributedLabel', '2.0.0'
 end
