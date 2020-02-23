@@ -6,6 +6,8 @@
 //
 
 #import "BZMTabBarViewReactor.h"
+#import "BZMParameter.h"
+#import "NSDictionary+BZMFrame.h"
 
 @interface BZMTabBarViewReactor ()
 @property (nonatomic, strong, readwrite) RACSubject *selectSubject;
@@ -17,7 +19,7 @@
 #pragma mark - Init
 - (instancetype)initWithRouteParameters:(NSDictionary *)parameters {
     if (self = [super initWithRouteParameters:parameters]) {
-        // self.hidesNavigationBar = BZMBoolMember(parameters, BZMParameter.hideNavBar, YES);
+        self.hidesNavigationBar = BZMBoolMember(parameters, BZMParameter.hideNavBar, YES);
     }
     return self;
 }

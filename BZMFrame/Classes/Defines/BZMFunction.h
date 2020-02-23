@@ -8,6 +8,23 @@
 #ifndef BZMFunction_h
 #define BZMFunction_h
 
+#import <QMUIKit/QMUIKit.h>
+
+#pragma mark - 标准尺寸
+#define BZMScreenWidth                       ScreenBoundsSize.width
+#define BZMScreenHeight                      ScreenBoundsSize.height
+#define BZMStatusBarHeight                   StatusBarHeight
+#define BZMStatusBarHeightConstant           StatusBarHeightConstant
+#define BZMNavBarHeight                      NavigationBarHeight
+#define BZMNavContentTop                     NavigationContentTop
+#define BZMNavContentTopConstant             NavigationContentTopConstant
+#define BZMTabBarHeight                      TabBarHeight
+#define BZMToolBarHeight                     ToolBarHeight
+
+#pragma mark - 安全区域
+#define BZMSafeArea                          SafeAreaInsetsConstantForDeviceWithNotch
+#define BZMSafeBottom                        BZMSafeArea.bottom
+
 #pragma mark - 日志
 #ifdef DEBUG
 #define BZMLogVerbose(fmt, ...)                                                                 \

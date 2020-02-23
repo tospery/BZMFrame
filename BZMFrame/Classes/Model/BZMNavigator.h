@@ -17,5 +17,7 @@
 - (void)pushNavigationController:(UINavigationController *)navigationController;
 - (UINavigationController *)popNavigationController;
 
+- (BOOL)routeURL:(NSURL *)url withParameters:(NSDictionary *)parameters;
+
 @end
 

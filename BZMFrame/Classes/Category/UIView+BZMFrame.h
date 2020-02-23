@@ -6,8 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DKNightVersion/DKNightVersion.h>
 
 @interface UIView (BZMFrame)
+@property (nonatomic, copy, setter = dk_setBorderColorPicker:) DKColorPicker dk_borderColorPicker;
 
 - (BOOL)bzm_toastWithParameters:(NSDictionary *)parameters completion:(void(^)(BOOL didTap))completion;
 

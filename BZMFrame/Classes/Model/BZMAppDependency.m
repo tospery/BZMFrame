@@ -27,6 +27,10 @@
     if (self = [super init]) {
         self.provider = [[BZMProvider alloc] init];
         self.navigator = [[BZMNavigator alloc] init];
+        [self setupFrame];
+        [self setupVendor];
+        [self setupAppearance];
+        [self setupData];
     }
     return self;
 }

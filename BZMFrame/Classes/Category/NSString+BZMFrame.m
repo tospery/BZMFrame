@@ -55,4 +55,10 @@
     return nil;
 }
 
++ (NSString *)bzm_filePathInDocuments:(NSString *)fileName {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    return [documentsPath stringByAppendingPathComponent:fileName];
+}
+
 @end

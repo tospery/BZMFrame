@@ -6,12 +6,28 @@
 //
 
 #import "UIView+BZMFrame.h"
+#import <QMUIKit/QMUIKit.h>
 #import <Toast/UIView+Toast.h>
 #import "BZMFunction.h"
 #import "BZMParameter.h"
 #import "NSDictionary+BZMFrame.h"
 
+@interface UIView ()
+@property (nonatomic, strong) NSMutableDictionary<NSString *, DKColorPicker> *pickers;
+
+@end
+
 @implementation UIView (BZMFrame)
+
+- (DKColorPicker)dk_borderColorPicker {
+    return objc_getAssociatedObject(self, @selector(dk_borderColorPicker));
+}
+
+- (void)dk_setBorderColorPicker:(DKColorPicker)picker {
+    objc_setAssociatedObject(self, @selector(dk_borderColorPicker), picker, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    self.qmui_borderColor = picker(self.dk_manager.themeVersion);
+    [self.pickers setValue:[picker copy] forKey:@"setQmui_borderColor"];
+}
 
 - (BOOL)bzm_toastWithParameters:(NSDictionary *)parameters completion:(void(^)(BOOL didTap))completion {
     NSString *title = BZMStrMember(parameters, BZMParameter.title, nil);
