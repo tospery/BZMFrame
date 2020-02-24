@@ -7,7 +7,10 @@
 
 #import "BZMScrollViewController.h"
 
-@interface BZMCollectionViewController : BZMScrollViewController
+@interface BZMCollectionViewController : BZMScrollViewController <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@property (nonatomic, strong, readonly) UICollectionView *collectionView;
+
+- (UICollectionViewLayout *)collectionViewLayout;
 
 @end
 

@@ -18,4 +18,8 @@
     
 }
 
++ (NSString *)kind {
+    return UICollectionElementKindSectionHeader;
+}
+
 @end

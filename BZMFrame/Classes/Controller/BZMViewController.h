@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, BZMViewControllerBackType){
     BZMViewControllerBackTypeClose
 };
 
+/// UI的显示与操作（视图/导航）
 @interface BZMViewController : UIViewController <BZMReactive>
 @property (nonatomic, assign, readonly) CGFloat contentTop;
 @property (nonatomic, assign, readonly) CGFloat contentBottom;
@@ -27,6 +28,8 @@ typedef NS_ENUM(NSInteger, BZMViewControllerBackType){
 @property (nonatomic, strong, readonly) BZMViewReactor *reactor;
 
 - (instancetype)initWithReactor:(BZMViewReactor *)reactor;
+
+- (void)reloadData;
 
 @end
 

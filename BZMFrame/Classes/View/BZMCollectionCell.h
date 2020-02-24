@@ -6,8 +6,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BZMReactive.h"
+#import "BZMCollectionReactor.h"
 
-@interface BZMCollectionCell : UICollectionViewCell
+@interface BZMCollectionCell : UICollectionViewCell <BZMReactive>
+@property (nonatomic, strong, readonly) BZMCollectionReactor *reactor;
 
 @end
 

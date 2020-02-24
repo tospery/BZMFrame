@@ -19,7 +19,6 @@
 #import "NSError+BZMFrame.h"
 
 @interface BZMViewReactor ()
-@property (nonatomic, strong, readwrite) NSString *animation;
 @property (nonatomic, strong, readwrite) NSDictionary *parameters;
 @property (nonatomic, strong, readwrite) BZMUser *user;
 @property (nonatomic, strong, readwrite) BZMProvider *provider;
@@ -29,7 +28,10 @@
 @property (nonatomic, strong, readwrite) RACSubject *errors;
 @property (nonatomic, strong, readwrite) RACSubject *executing;
 @property (nonatomic, strong, readwrite) RACSubject *navigate;
-@property (nonatomic, strong, readwrite) RACCommand *dataCommand;
+@property (nonatomic, strong, readwrite) RACSignal *loadSignal;
+@property (nonatomic, strong, readwrite) RACCommand *fetchCommand;
+@property (nonatomic, strong, readwrite) RACCommand *requestCommand;
+@property (nonatomic, strong, readwrite) RACCommand *resultCommand;
 
 @end
 
@@ -67,7 +69,12 @@
 }
 
 - (void)didInitialize {
-    
+    [super didInitialize];
+    @weakify(self)
+    RAC(self, dataSource) = [self.loadSignal map:^id(id data) {
+        @strongify(self)
+        return [self data2Source:data];
+    }];
 }
 
 #pragma mark - View
@@ -79,79 +86,106 @@
     return _provider;
 }
 
-//- (RACCommand *)backCommand {
-//    if (!_backCommand) {
-//        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-//            id data = nil;
-//            BZMViewControllerBackType type = BZMViewControllerBackTypePopOne;
-//            if ([input isKindOfClass:RACTuple.class]) {
-//                RACTuple *tuple = (RACTuple *)input;
-//                if ([tuple.first isKindOfClass:NSNumber.class]) {
-//                    NSNumber *number = (NSNumber *)tuple.first;
-//                    type = number.integerValue;
-//                }
-//                data = tuple.second;
-//            } else if ([input isKindOfClass:NSNumber.class]) {
-//                NSNumber *number = (NSNumber *)input;
-//                type = number.integerValue;
-//            }
-//            @weakify(self)
-//            BZMVoidBlock completion = ^(void) {
-//                @strongify(self)
-//                [self.didBackCommand execute:data];
-//            };
-//            if (BZMViewControllerBackTypePopOne == type) {
-//                [self.navigator popReactorAnimated:YES completion:completion];
-//            } else if (BZMViewControllerBackTypePopAll == type) {
-//                [self.navigator popToRootReactorAnimated:YES completion:completion];
-//            } else if (BZMViewControllerBackTypeDismiss == type) {
-//                [self.navigator dismissReactorAnimated:YES completion:completion];
-//            } else if (BZMViewControllerBackTypeClose == type) {
-//                [self.navigator closeReactorWithAnimationType:BZMViewControllerAnimationTypeFromString(self.animation) completion:completion];
-//            }
-//            return RACSignal.empty;
-//        }];
-//        _backCommand = command;
-//    }
-//    return _backCommand;
-//}
-//
-- (RACCommand *)dataCommand {
-    if (!_dataCommand) {
-        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-            return [RACSignal return:input];
-        }];
-        _dataCommand = command;
-    }
-    return _dataCommand;
-}
-
 - (RACSubject *)errors {
     if (!_errors) {
-        RACSubject *subject = [RACSubject subject];
-        _errors = subject;
+        _errors = [RACSubject subject];
     }
     return _errors;
 }
 
 - (RACSubject *)executing {
     if (!_executing) {
-        RACSubject *subject = [RACSubject subject];
-        _executing = subject;
+        _executing = [RACSubject subject];
     }
     return _executing;
 }
 
 - (RACSubject *)navigate {
     if (!_navigate) {
-        RACSubject *subject = [RACSubject subject];
-        _navigate = subject;
+        _navigate = [RACSubject subject];
     }
     return _navigate;
 }
 
-#pragma mark - Bind
+- (RACSignal *)loadSignal {
+    if (!_loadSignal) {
+        RACSignal *signal = nil;
+        if (self.shouldFetchLocalData && !self.shouldRequestRemoteData) {
+            signal = self.fetchCommand.executionSignals.switchToLatest;
+        } else if (!self.shouldFetchLocalData && self.shouldRequestRemoteData) {
+            signal = self.requestCommand.executionSignals.switchToLatest;
+        } else if (self.shouldFetchLocalData && self.shouldRequestRemoteData) {
+            signal = [RACSignal merge:@[self.fetchCommand.executionSignals.switchToLatest, self.requestCommand.executionSignals.switchToLatest]];
+        } else {
+            signal = RACSignal.empty;
+        }
+        _loadSignal = signal;
+    }
+    return _loadSignal;
+}
+
+- (RACCommand *)fetchCommand {
+    if (!_fetchCommand) {
+        @weakify(self)
+        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+            @strongify(self)
+            return [RACSignal return:[self fetchLocal]];
+        }];
+        _fetchCommand = command;
+    }
+    return _fetchCommand;
+}
+
+- (RACCommand *)requestCommand {
+    if (!_requestCommand) {
+        @weakify(self)
+        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(NSNumber *page) {
+            @strongify(self)
+            return [[self requestWithPage:page.integerValue] takeUntil:self.rac_willDeallocSignal];
+        }];
+        [[command.errors filter:self.errorFilter] subscribe:self.errors];
+        _requestCommand = command;
+    }
+    return _requestCommand;
+}
+
+- (RACCommand *)resultCommand {
+    if (!_resultCommand) {
+        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+            return [RACSignal return:input];
+        }];
+        _resultCommand = command;
+    }
+    return _resultCommand;
+}
+
+#pragma mark - Data
+- (id)fetchLocal {
+    return nil;
+}
+
+- (RACSignal *)requestWithPage:(NSInteger)page {
+    return RACSignal.empty;
+}
+
+- (NSArray *)data2Source:(id)data {
+    return nil;
+}
+
+#pragma mark - Error
+- (BOOL (^)(NSError *error))errorFilter {
+    // @weakify(self)
+    return ^(NSError *error) {
+//        @strongify(self)
+//        self.error = error;
+//        BOOL handled = ![self.viewController handleError];
+//        return handled;
+        return YES;
+    };
+}
+
 #pragma mark - Delegate
+
 #pragma mark - Class
 + (instancetype)allocWithZone:(struct _NSZone *)zone {
     BZMViewReactor *reactor = [super allocWithZone:zone];

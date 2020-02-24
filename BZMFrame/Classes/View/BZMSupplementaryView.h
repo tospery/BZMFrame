@@ -7,8 +7,9 @@
 
 #import <UIKit/UIKit.h>
 #import "BZMReactive.h"
+#import "BZMSupplementary.h"
 
-@interface BZMSupplementaryView : UICollectionReusableView <BZMReactive>
+@interface BZMSupplementaryView : UICollectionReusableView <BZMReactive, BZMSupplementary>
 
 @end
 

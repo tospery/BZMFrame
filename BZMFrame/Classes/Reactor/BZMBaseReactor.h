@@ -9,5 +9,7 @@
 
 @interface BZMBaseReactor : NSObject
 
+- (void)didInitialize;
+
 @end
 

@@ -143,20 +143,17 @@
 #pragma mark - Bind
 - (void)bind:(BZMViewReactor *)reactor {
     @weakify(self)
-    // Bind
-//    [[self.backButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
-//        @strongify(self)
-//        [self.reactor.backCommand execute:@(BZMViewControllerBackTypePopOne)];
-//    }];
-//    [[self.closeButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
-//        @strongify(self)
-//        [self.reactor.backCommand execute:@(BZMViewControllerBackTypeDismiss)];
-//    }];
-    
     // Action (View -> Reactor)
+    [[self rac_signalForSelector:@selector(bind:)] subscribeNext:^(RACTuple *x) {
+        // load
+    }];
     
     // State (Reactor -> View)
     RAC(self.navigationBar.titleLabel, text) = RACObserve(self.reactor, title);
+    [RACObserve(self.reactor, dataSource).deliverOnMainThread subscribeNext:^(id x) {
+        @strongify(self)
+        [self reloadData];
+    }];
     [[RACObserve(self.reactor, hidesNavigationBar) skip:1].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
         @strongify(self)
         hide.boolValue ? [self removeNavigationBar] : [self addNavigationBar];
@@ -183,7 +180,7 @@
     }];
     [self.reactor.navigate subscribeNext:^(id input) {
         @strongify(self)
-        id data = nil;
+        id result = nil;
         BZMViewControllerBackType type = BZMViewControllerBackTypePopOne;
         if ([input isKindOfClass:RACTuple.class]) {
             RACTuple *tuple = (RACTuple *)input;
@@ -191,14 +188,14 @@
                 NSNumber *number = (NSNumber *)tuple.first;
                 type = number.integerValue;
             }
-            data = tuple.second;
+            result = tuple.second;
         } else if ([input isKindOfClass:NSNumber.class]) {
             NSNumber *number = (NSNumber *)input;
             type = number.integerValue;
         }
         BZMVoidBlock completion = ^(void) {
             @strongify(self)
-            [self.reactor.dataCommand execute:data];
+            [self.reactor.resultCommand execute:result];
         };
         if (BZMViewControllerBackTypePopOne == type) {
             [self.navigator popReactorAnimated:YES completion:completion];
@@ -210,6 +207,11 @@
             [self.navigator closeReactorWithAnimationType:BZMViewControllerAnimationTypeFromString(self.reactor.animation) completion:completion];
         }
     }];
+}
+
+#pragma mark - Reload
+- (void)reloadData {
+    
 }
 
 #pragma mark - Navigation

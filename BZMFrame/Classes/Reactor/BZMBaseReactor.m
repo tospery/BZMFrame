@@ -13,4 +13,8 @@
 
 @implementation BZMBaseReactor
 
+- (void)didInitialize {
+    
+}
+
 @end
