@@ -12,7 +12,6 @@
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, copy) BZMVoidBlock didLoginBlock;
-@property (nonatomic, strong) RACCommand *loginCommand;
 @property (nonatomic, strong, readonly) RACSignal *validateSignal;
 
 @end

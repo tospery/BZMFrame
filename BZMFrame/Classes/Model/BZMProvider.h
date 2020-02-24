@@ -9,5 +9,7 @@
 
 @interface BZMProvider : NSObject
 
+- (void)didInitialize;
+
 @end
 

@@ -12,5 +12,15 @@
 @end
 
 @implementation BZMProvider
+- (instancetype)init {
+    if (self = [super init]) {
+        [self didInitialize];
+    }
+    return self;
+}
+
+- (void)didInitialize {
+    
+}
 
 @end

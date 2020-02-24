@@ -16,6 +16,11 @@
 @property (nonatomic, strong, readonly) NSString *bzm_underlineFromCamel;
 @property (nonatomic, strong, readonly) NSString *bzm_camelFromUnderline;
 
+- (NSString *)bzm_urlEncoded;
+- (NSString *)bzm_urlDecoded;
+- (NSString *)bzm_urlComponentEncoded;
+- (NSString *)bzm_urlComponentDecoded;
+
 + (NSString *)bzm_stringWithObject:(id)object;
 + (NSString *)bzm_filePathInDocuments:(NSString *)fileName;
 

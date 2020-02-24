@@ -17,18 +17,39 @@
 #import "NSString+BZMFrame.h"
 #import "NSBundle+BZMFrame.h"
 
+@interface UIImage ()
+@property (nonatomic, strong) NSMutableDictionary<NSString *, DKColorPicker> *pickers;
+
+@end
+
 @implementation UIImage (BZMFrame)
 
+- (DKColorPicker)dk_tintColorPicker {
+    return objc_getAssociatedObject(self, @selector(dk_tintColorPicker));
+}
+
+- (void)dk_setTintColorPicker:(DKColorPicker)picker {
+    objc_setAssociatedObject(self, @selector(dk_tintColorPicker), picker, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    [self qmui_imageWithTintColor:picker(self.dk_manager.themeVersion)];
+    [self.pickers setValue:[picker copy] forKey:@"setTintColor"];
+}
+
 + (UIImage *)bzm_back {
-    return [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(10, 18) lineWidth:1.5 tintColor:nil];
+    UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(10, 18) lineWidth:1.5 tintColor:nil];
+    image.dk_tintColorPicker = DKColorPickerWithKey(BAR);
+    return image;
 }
 
 + (UIImage *)bzm_close {
-    return [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:nil];
+    UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) lineWidth:1.5 tintColor:nil];
+    image.dk_tintColorPicker = DKColorPickerWithKey(BAR);
+    return image;
 }
 
 + (UIImage *)bzm_indicator {
-    return [UIImage qmui_imageWithShape:QMUIImageShapeDisclosureIndicator size:CGSizeMake(8, 14) lineWidth:1 tintColor:nil];
+    UIImage *image = [UIImage qmui_imageWithShape:QMUIImageShapeDisclosureIndicator size:CGSizeMake(8, 14) lineWidth:1 tintColor:nil];
+    image.dk_tintColorPicker = DKColorPickerWithKey(IND);
+    return image;
 }
 
 + (UIImage *)bzm_loading {

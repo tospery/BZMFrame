@@ -8,6 +8,7 @@
 #import "BZMBaseReactor.h"
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <JLRoutes/JLRRouteHandler.h>
+#import "BZMUser.h"
 #import "BZMProvider.h"
 #import "BZMNavigator.h"
 
@@ -26,10 +27,13 @@
 @property (nonatomic, strong, readonly) NSString *animation;
 @property (nonatomic, strong, readonly) NSDictionary *parameters;
 @property (nonatomic, strong) NSArray *dataSource;
+@property (nonatomic, strong, readonly) BZMUser *user;
 @property (nonatomic, strong, readonly) BZMProvider *provider;
-@property (nonatomic, strong, readonly) BZMNavigator *navigator;
-@property (nonatomic, strong, readonly) RACCommand *backCommand;
-@property (nonatomic, strong, readonly) RACCommand *didBackCommand;
+//@property (nonatomic, strong, readonly) BZMNavigator *navigator;
+//@property (nonatomic, strong, readonly) RACCommand *backCommand;
+//@property (nonatomic, strong, readonly) RACCommand *didBackCommand;
+@property (nonatomic, strong, readonly) RACSubject *errors;
+@property (nonatomic, strong, readonly) RACSubject *executing;
 
 /// 自有响应式命令/信号的初始化
 - (void)didInitialize;

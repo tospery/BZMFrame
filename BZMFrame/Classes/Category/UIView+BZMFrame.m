@@ -26,7 +26,24 @@
 - (void)dk_setBorderColorPicker:(DKColorPicker)picker {
     objc_setAssociatedObject(self, @selector(dk_borderColorPicker), picker, OBJC_ASSOCIATION_COPY_NONATOMIC);
     self.qmui_borderColor = picker(self.dk_manager.themeVersion);
-    [self.pickers setValue:[picker copy] forKey:@"setQmui_borderColor"];
+    [self.pickers setValue:[picker copy] forKey:@"setBorderColor"];
+}
+
+- (CGFloat)bzm_borderWidth {
+    return self.layer.borderWidth;
+}
+
+- (void)setBzm_borderWidth:(CGFloat)borderWidth {
+    self.layer.borderWidth = flat(borderWidth);
+}
+
+- (CGFloat)bzm_cornerRadius {
+    return self.layer.cornerRadius;
+}
+
+- (void)setBzm_cornerRadius:(CGFloat)cornerRadius {
+    self.layer.masksToBounds = YES;
+    self.layer.cornerRadius = flat(cornerRadius);
 }
 
 - (BOOL)bzm_toastWithParameters:(NSDictionary *)parameters completion:(void(^)(BOOL didTap))completion {

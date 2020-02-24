@@ -19,10 +19,10 @@
 - (UIViewController *)presentReactor:(BZMViewReactor *)viewModel animated:(BOOL)animated completion:(BZMVoidBlock)completion;
 - (UIViewController *)popupReactor:(BZMViewReactor *)viewModel animationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion;
 
-- (void)popReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion;
-- (void)popToRootReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion;
-- (void)dismissReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion;
-- (void)closeReactorWithAnimationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion;
+//- (void)popReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion;
+//- (void)popToRootReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion;
+//- (void)dismissReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion;
+//- (void)closeReactorWithAnimationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion;
 
 @end
 

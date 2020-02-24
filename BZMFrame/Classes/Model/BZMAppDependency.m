@@ -12,6 +12,8 @@
 #import "BZMType.h"
 #import "BZMConstant.h"
 #import "BZMFunction.h"
+#import "BZMUser.h"
+#import "BZMMisc.h"
 #import "BZMParameter.h"
 
 @interface BZMAppDependency ()
@@ -88,7 +90,7 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    
+    [self save];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -100,12 +102,28 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    
+    [self save];
 }
 
 #pragma mark url
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
     return [JLRoutes routeURL:url];
+}
+
+#pragma mark save
+- (void)save {
+    Class cls = NSClassFromString(@"User");
+    if ([cls isSubclassOfClass:BZMUser.class]) {
+        SEL sel = NSSelectorFromString(@"current");
+        BZMUser *user = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+        [user saveWithKey:nil];
+    }
+    cls = NSClassFromString(@"Misc");
+    if ([cls isSubclassOfClass:BZMMisc.class]) {
+        SEL sel = NSSelectorFromString(@"current");
+        BZMMisc *misc = ((id (*)(id, SEL))[cls methodForSelector:sel])(cls, sel);
+        [misc saveWithKey:nil];
+    }
 }
 
 #pragma mark - Delegate

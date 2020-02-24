@@ -9,7 +9,6 @@
 
 @implementation NSString (BZMFrame)
 
-#pragma mark - Property
 #pragma mark - Instance
 - (NSString *)bzm_underlineFromCamel {
     if (self.length == 0) return self;
@@ -42,6 +41,37 @@
         }
     }
     return string;
+}
+
+// YJX_TODO 兼容性，变为属性
+- (NSString *)bzm_urlEncoded {
+    NSString *str = [self bzm_urlDecoded]; // 避免两次encode
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSString *result = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)str, NULL, NULL, kCFStringEncodingUTF8));
+#pragma clang diagnostic pop
+    return result;
+}
+
+- (NSString *)bzm_urlDecoded {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSString *result = CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)self, CFSTR(""), kCFStringEncodingUTF8));
+#pragma clang diagnostic pop
+    return result;
+}
+
+- (NSString *)bzm_urlComponentEncoded {
+    NSString *str = [self bzm_urlComponentDecoded]; // 避免两次encode
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSString *result = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(__bridge CFStringRef)str, NULL,(CFStringRef)@":/?#[]@!$ &'()*+,;=\"<>%{}|\\^~`",kCFStringEncodingUTF8));
+#pragma clang diagnostic pop
+    return result;
+}
+
+- (NSString *)bzm_urlComponentDecoded {
+    return [self bzm_urlDecoded];
 }
 
 #pragma mark - Class

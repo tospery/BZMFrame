@@ -30,19 +30,19 @@
 
 #pragma mark - View
 #pragma mark - Property
-- (RACSubject *)selectSubject {
-    if (!_selectSubject) {
-        RACSubject *subject = [RACSubject subject];
-        @weakify(self)
-        [subject subscribeNext:^(RACTuple *tuple) {
-            @strongify(self)
-            [self.navigator popNavigationController];
-            [self.navigator pushNavigationController:tuple.second];
-        }];
-        _selectSubject = subject;
-    }
-    return _selectSubject;
-}
+//- (RACSubject *)selectSubject {
+//    if (!_selectSubject) {
+//        RACSubject *subject = [RACSubject subject];
+//        @weakify(self)
+//        [subject subscribeNext:^(RACTuple *tuple) {
+//            @strongify(self)
+//            [self.navigator popNavigationController];
+//            [self.navigator pushNavigationController:tuple.second];
+//        }];
+//        _selectSubject = subject;
+//    }
+//    return _selectSubject;
+//}
 
 #pragma mark - Method
 #pragma mark super

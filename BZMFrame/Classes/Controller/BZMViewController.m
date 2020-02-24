@@ -8,7 +8,17 @@
 #import "BZMViewController.h"
 #import <QMUIKit/QMUIKit.h>
 #import <DKNightVersion/DKNightVersion.h>
+#import <Toast/UIView+Toast.h>
+#import "BZMType.h"
+#import "BZMConstant.h"
 #import "BZMFunction.h"
+#import "BZMString.h"
+#import "BZMAppDependency.h"
+#import "BZMParameter.h"
+#import "BZMViewController.h"
+#import "NSDictionary+BZMFrame.h"
+#import "UIViewController+BZMFrame.h"
+#import "NSError+BZMFrame.h"
 
 @interface BZMViewController ()
 @property (nonatomic, strong) UIButton *backButton;
@@ -115,14 +125,14 @@
 - (void)bind:(BZMViewReactor *)reactor {
     // action (View -> Reactor)
     @weakify(self)
-    [[self.backButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
-        @strongify(self)
-        [self.reactor.backCommand execute:@(BZMViewControllerBackTypePopOne)];
-    }];
-    [[self.closeButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
-        @strongify(self)
-        [self.reactor.backCommand execute:@(BZMViewControllerBackTypeDismiss)];
-    }];
+//    [[self.backButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
+//        @strongify(self)
+//        [self.reactor.backCommand execute:@(BZMViewControllerBackTypePopOne)];
+//    }];
+//    [[self.closeButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
+//        @strongify(self)
+//        [self.reactor.backCommand execute:@(BZMViewControllerBackTypeDismiss)];
+//    }];
     
     // state (Reactor -> View)
     RAC(self.navigationBar.titleLabel, text) = RACObserve(self.reactor, title);
@@ -133,6 +143,22 @@
     [[RACObserve(self.reactor, hidesNavBottomLine) skip:1].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
         @strongify(self)
         self.navigationBar.qmui_borderLayer.hidden = hide.boolValue;
+    }];
+    [[self.reactor.executing skip:1] subscribeNext:^(NSNumber *executing) {
+        @strongify(self)
+        if (executing.boolValue) {
+            self.view.userInteractionEnabled = NO;
+            [self.view makeToastActivity:CSToastPositionCenter];
+        } else {
+            self.view.userInteractionEnabled = YES;
+            [self.view hideToastActivity];
+        }
+    }];
+    [self.reactor.errors subscribeNext:^(NSError *error) {
+        @strongify(self)
+//        [self.reactor.navigator routeURL:BZMURLWithPattern(kBZMPatternToast) withParameters:@{
+//            BZMParameter.message: BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)
+//        }];
     }];
 }
 

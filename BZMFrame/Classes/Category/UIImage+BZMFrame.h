@@ -6,10 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DKNightVersion/DKNightVersion.h>
 
-#define BZMImageFrame(x)                    ([UIImage bzm_imageInFrame:BZMStrWithFmt(@"BZMFrame/%@", (x))])
+#define BZMImageFrame(x)        ([UIImage bzm_imageInFrame:BZMStrWithFmt(@"BZMFrame/%@", (x))])
 
 @interface UIImage (BZMFrame)
+@property (nonatomic, copy, setter = dk_setTintColorPicker:) DKColorPicker dk_tintColorPicker;
 @property (class, strong, readonly) UIImage *bzm_back;
 @property (class, strong, readonly) UIImage *bzm_close;
 @property (class, strong, readonly) UIImage *bzm_indicator;

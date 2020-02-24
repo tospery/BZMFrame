@@ -10,6 +10,13 @@
 
 #import <QMUIKit/QMUIKit.h>
 
+#pragma mark - 本地化
+#ifdef BZMEnableFuncLocalize
+#define BZMT(local, display)                 (local)
+#else
+#define BZMT(local, display)                 (display)
+#endif
+
 #pragma mark - 标准尺寸
 #define BZMScreenWidth                       ScreenBoundsSize.width
 #define BZMScreenHeight                      ScreenBoundsSize.height
@@ -47,6 +54,33 @@ NSLog(@"Warn(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #define BZMLogError(fmt, ...)                                                                   \
 NSLog(@"Error(%s, %d): " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #endif
+
+#pragma mark - 尺寸
+CG_INLINE CGFloat
+BZMMetric(CGFloat value) {
+    return flat(value / 375.f * BZMScreenWidth);
+}
+
+CG_INLINE CGFloat
+BZMScale(CGFloat value) {
+    return flat(value * BZMScreenWidth);
+}
+
+#pragma mark - 通知
+CG_INLINE void
+BZMAddObserver(NSString *name, id observer, SEL selector, id object) {
+    [NSNotificationCenter.defaultCenter addObserver:observer selector:selector name:name object:object];
+}
+
+CG_INLINE void
+BZMNotify(NSString *notificationName, id object, NSDictionary *userInfo) {
+    [NSNotificationCenter.defaultCenter postNotificationName:notificationName object:object userInfo:userInfo];
+}
+
+CG_INLINE void
+BZMRemoveObserver(id observer) {
+    [NSNotificationCenter.defaultCenter removeObserver:observer];
+}
 
 #pragma mark - 默认
 CG_INLINE BOOL

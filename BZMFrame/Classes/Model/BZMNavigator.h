@@ -12,6 +12,7 @@
 
 @interface BZMNavigator : NSObject <BZMNavigable>
 @property (nonatomic, strong, readonly) UIView *topView;
+@property (nonatomic, strong, readonly) UIViewController *topViewController;
 @property (nonatomic, strong, readonly) UINavigationController *topNavigationController;
 
 - (void)pushNavigationController:(UINavigationController *)navigationController;
