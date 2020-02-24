@@ -8,7 +8,7 @@
 #import "BZMScrollViewReactor.h"
 
 @interface BZMTabBarViewReactor : BZMScrollViewReactor
-@property (nonatomic, strong, readonly) RACSubject *selectSubject;
+//@property (nonatomic, strong, readonly) RACSubject *selectSubject;
 
 @end
 

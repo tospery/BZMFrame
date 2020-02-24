@@ -15,6 +15,8 @@
 #import "BZMUser.h"
 #import "BZMMisc.h"
 #import "BZMParameter.h"
+#import "NSDictionary+BZMFrame.h"
+#import "UIView+BZMFrame.h"
 
 @interface BZMAppDependency ()
 @property (nonatomic, strong, readwrite) BZMProvider *provider;
@@ -51,16 +53,16 @@
     [CSToastManager setQueueEnabled:YES];
     [CSToastManager setDefaultPosition:CSToastPositionCenter];
     // Route
-//    @weakify(self)
-//    [JLRoutes.globalRoutes addRoute:kBZMPatternToast handler:^BOOL(NSDictionary *parameters) {
-//        BZMVoidBlock_id completion = BZMObjMember(parameters, BZMParameter.block, nil);
-//        @strongify(self)
-//        return [self.navigator.topView bzm_toastWithParameters:parameters completion:^(BOOL didTap) {
-//            if (completion) {
-//                completion(@(didTap));
-//            }
-//        }];
-//    }];
+    @weakify(self)
+    [JLRoutes.globalRoutes addRoute:kBZMPatternToast handler:^BOOL(NSDictionary *parameters) {
+        BZMVoidBlock_id completion = BZMObjMember(parameters, BZMParameter.block, nil);
+        @strongify(self)
+        return [self.navigator.topView bzm_toastWithParameters:parameters completion:^(BOOL didTap) {
+            if (completion) {
+                completion(@(didTap));
+            }
+        }];
+    }];
 }
 
 - (void)setupVendor {

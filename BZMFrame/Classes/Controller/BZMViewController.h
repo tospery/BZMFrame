@@ -9,6 +9,7 @@
 #import "BZMReactive.h"
 #import "BZMViewReactor.h"
 #import "BZMNavigationBar.h"
+#import "BZMNavigator.h"
 
 typedef NS_ENUM(NSInteger, BZMViewControllerBackType){
     BZMViewControllerBackTypePopOne,
@@ -22,6 +23,7 @@ typedef NS_ENUM(NSInteger, BZMViewControllerBackType){
 @property (nonatomic, assign, readonly) CGFloat contentBottom;
 @property (nonatomic, assign, readonly) CGRect contentFrame;
 @property (nonatomic, strong, readonly) BZMNavigationBar *navigationBar;
+@property (nonatomic, strong, readonly) BZMNavigator *navigator;
 @property (nonatomic, strong, readonly) BZMViewReactor *reactor;
 
 - (instancetype)initWithReactor:(BZMViewReactor *)reactor;

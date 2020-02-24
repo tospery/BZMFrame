@@ -21,12 +21,13 @@
 #import "NSError+BZMFrame.h"
 
 @interface BZMViewController ()
-@property (nonatomic, strong) UIButton *backButton;
-@property (nonatomic, strong) UIButton *closeButton;
+//@property (nonatomic, strong) UIButton *backButton;
+//@property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, assign, readwrite) CGFloat contentTop;
 @property (nonatomic, assign, readwrite) CGFloat contentBottom;
 @property (nonatomic, assign, readwrite) CGRect contentFrame;
 @property (nonatomic, strong, readwrite) BZMNavigationBar *navigationBar;
+@property (nonatomic, strong, readwrite) BZMNavigator *navigator;
 @property (nonatomic, strong, readwrite) BZMViewReactor *reactor;
 
 @end
@@ -60,10 +61,20 @@
     }
     
     if (self.navigationController.viewControllers.count > 1) {
-        self.backButton = [self.navigationBar addBackButtonToLeft];
+        UIButton *backButton = [self.navigationBar addBackButtonToLeft];
+        @weakify(self)
+        [[backButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
+            @strongify(self)
+            [self.navigator popReactorAnimated:YES completion:nil];
+        }];
     } else {
         if (self.presentingViewController) {
-            self.closeButton = [self.navigationBar addCloseButtonToLeft];
+            UIButton *closeButton = [self.navigationBar addCloseButtonToLeft];
+            @weakify(self)
+            [[closeButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
+                @strongify(self)
+                [self.navigator dismissReactorAnimated:YES completion:nil];
+            }];
         }
     }
 }
@@ -85,6 +96,14 @@
 }
 
 #pragma mark - Property
+- (BZMNavigator *)navigator {
+    if (!_navigator) {
+        _navigator = BZMAppDependency.sharedInstance.navigator;
+    }
+    return _navigator;
+}
+
+
 - (BZMNavigationBar *)navigationBar {
     if (!_navigationBar) {
         BZMNavigationBar *navigationBar = [[BZMNavigationBar alloc] init];
@@ -123,8 +142,8 @@
 
 #pragma mark - Bind
 - (void)bind:(BZMViewReactor *)reactor {
-    // action (View -> Reactor)
     @weakify(self)
+    // Bind
 //    [[self.backButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIControl *button) {
 //        @strongify(self)
 //        [self.reactor.backCommand execute:@(BZMViewControllerBackTypePopOne)];
@@ -134,7 +153,9 @@
 //        [self.reactor.backCommand execute:@(BZMViewControllerBackTypeDismiss)];
 //    }];
     
-    // state (Reactor -> View)
+    // Action (View -> Reactor)
+    
+    // State (Reactor -> View)
     RAC(self.navigationBar.titleLabel, text) = RACObserve(self.reactor, title);
     [[RACObserve(self.reactor, hidesNavigationBar) skip:1].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
         @strongify(self)
@@ -156,9 +177,38 @@
     }];
     [self.reactor.errors subscribeNext:^(NSError *error) {
         @strongify(self)
-//        [self.reactor.navigator routeURL:BZMURLWithPattern(kBZMPatternToast) withParameters:@{
-//            BZMParameter.message: BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)
-//        }];
+        [self.navigator routeURL:BZMURLWithPattern(kBZMPatternToast) withParameters:@{
+            BZMParameter.message: BZMStrWithDft(error.bzm_displayMessage, kStringErrorUnknown)
+        }];
+    }];
+    [self.reactor.navigate subscribeNext:^(id input) {
+        @strongify(self)
+        id data = nil;
+        BZMViewControllerBackType type = BZMViewControllerBackTypePopOne;
+        if ([input isKindOfClass:RACTuple.class]) {
+            RACTuple *tuple = (RACTuple *)input;
+            if ([tuple.first isKindOfClass:NSNumber.class]) {
+                NSNumber *number = (NSNumber *)tuple.first;
+                type = number.integerValue;
+            }
+            data = tuple.second;
+        } else if ([input isKindOfClass:NSNumber.class]) {
+            NSNumber *number = (NSNumber *)input;
+            type = number.integerValue;
+        }
+        BZMVoidBlock completion = ^(void) {
+            @strongify(self)
+            [self.reactor.dataCommand execute:data];
+        };
+        if (BZMViewControllerBackTypePopOne == type) {
+            [self.navigator popReactorAnimated:YES completion:completion];
+        } else if (BZMViewControllerBackTypePopAll == type) {
+            [self.navigator popToRootReactorAnimated:YES completion:completion];
+        } else if (BZMViewControllerBackTypeDismiss == type) {
+            [self.navigator dismissReactorAnimated:YES completion:completion];
+        } else if (BZMViewControllerBackTypeClose == type) {
+            [self.navigator closeReactorWithAnimationType:BZMViewControllerAnimationTypeFromString(self.reactor.animation) completion:completion];
+        }
     }];
 }
 

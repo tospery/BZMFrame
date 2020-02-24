@@ -10,7 +10,6 @@
 #import <JLRoutes/JLRRouteHandler.h>
 #import "BZMUser.h"
 #import "BZMProvider.h"
-#import "BZMNavigator.h"
 
 @class BZMViewReactor;
 
@@ -34,6 +33,8 @@
 //@property (nonatomic, strong, readonly) RACCommand *didBackCommand;
 @property (nonatomic, strong, readonly) RACSubject *errors;
 @property (nonatomic, strong, readonly) RACSubject *executing;
+@property (nonatomic, strong, readonly) RACSubject *navigate;
+@property (nonatomic, strong, readonly) RACCommand *dataCommand;
 
 /// 自有响应式命令/信号的初始化
 - (void)didInitialize;

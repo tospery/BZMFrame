@@ -28,6 +28,8 @@
 //@property (nonatomic, strong, readwrite) RACCommand *didBackCommand;
 @property (nonatomic, strong, readwrite) RACSubject *errors;
 @property (nonatomic, strong, readwrite) RACSubject *executing;
+@property (nonatomic, strong, readwrite) RACSubject *navigate;
+@property (nonatomic, strong, readwrite) RACCommand *dataCommand;
 
 @end
 
@@ -45,12 +47,20 @@
         self.animation = BZMStrMember(parameters, BZMParameter.animation, nil);
         // User
         NSDictionary *json = BZMStrMember(parameters, BZMParameter.user, nil).bzm_JSONObject;
-        Class class = NSClassFromString(@"User");
-        if (json && [json isKindOfClass:NSDictionary.class] &&
-            class && [class conformsToProtocol:@protocol(MTLJSONSerializing)]) {
-            self.user = [MTLJSONAdapter modelOfClass:class fromJSONDictionary:json error:nil];
+        if (json && [json isKindOfClass:NSDictionary.class]) {
+            Class class = NSClassFromString(@"User");
+            if (class && [class conformsToProtocol:@protocol(MTLJSONSerializing)]) {
+                self.user = [MTLJSONAdapter modelOfClass:class fromJSONDictionary:json error:nil];
+            } else {
+                self.user = [BZMUser current];
+            }
         } else {
-            self.user = [BZMUser current];
+            Class class = NSClassFromString(@"User");
+            if (class && [class isSubclassOfClass:BZMBaseModel.class]) {
+                self.user = [class current];
+            } else {
+                self.user = [BZMUser current];
+            }
         }
     }
     return self;
@@ -68,13 +78,6 @@
     }
     return _provider;
 }
-
-//- (BZMNavigator *)navigator {
-//    if (!_navigator) {
-//        _navigator = BZMAppDependency.sharedInstance.navigator;
-//    }
-//    return _navigator;
-//}
 
 //- (RACCommand *)backCommand {
 //    if (!_backCommand) {
@@ -113,15 +116,15 @@
 //    return _backCommand;
 //}
 //
-//- (RACCommand *)didBackCommand {
-//    if (!_didBackCommand) {
-//        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-//            return [RACSignal return:input];
-//        }];
-//        _didBackCommand = command;
-//    }
-//    return _didBackCommand;
-//}
+- (RACCommand *)dataCommand {
+    if (!_dataCommand) {
+        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+            return [RACSignal return:input];
+        }];
+        _dataCommand = command;
+    }
+    return _dataCommand;
+}
 
 - (RACSubject *)errors {
     if (!_errors) {
@@ -137,6 +140,14 @@
         _executing = subject;
     }
     return _executing;
+}
+
+- (RACSubject *)navigate {
+    if (!_navigate) {
+        RACSubject *subject = [RACSubject subject];
+        _navigate = subject;
+    }
+    return _navigate;
 }
 
 #pragma mark - Bind

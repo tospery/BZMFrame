@@ -113,28 +113,28 @@
     return viewController;
 }
 
-//- (void)popReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {
-//    [CATransaction begin];
-//    [CATransaction setCompletionBlock:completion];
-//    [self.topNavigationController popViewControllerAnimated:animated];
-//    [CATransaction commit];
-//}
-//
-//- (void)popToRootReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {
-//    [CATransaction begin];
-//    [CATransaction setCompletionBlock:completion];
-//    [self.topNavigationController popToRootViewControllerAnimated:animated];
-//    [CATransaction commit];
-//}
-//
-//- (void)dismissReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {
-//    UINavigationController *dismissingViewController = self.topNavigationController;
-//    [self popNavigationController];
-//    [dismissingViewController dismissViewControllerAnimated:animated completion:completion];
-//}
-//
-//- (void)closeReactorWithAnimationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion {
-//    [self.topNavigationController bzm_closeViewControllerWithAnimationType:animationType dismissed:completion];
-//}
+- (void)popReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:completion];
+    [self.topNavigationController popViewControllerAnimated:animated];
+    [CATransaction commit];
+}
+
+- (void)popToRootReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:completion];
+    [self.topNavigationController popToRootViewControllerAnimated:animated];
+    [CATransaction commit];
+}
+
+- (void)dismissReactorAnimated:(BOOL)animated completion:(BZMVoidBlock)completion {
+    UINavigationController *dismissingViewController = self.topNavigationController;
+    [self popNavigationController];
+    [dismissingViewController dismissViewControllerAnimated:animated completion:completion];
+}
+
+- (void)closeReactorWithAnimationType:(BZMViewControllerAnimationType)animationType completion:(BZMVoidBlock)completion {
+    [self.topNavigationController bzm_closeViewControllerWithAnimationType:animationType dismissed:completion];
+}
 
 @end

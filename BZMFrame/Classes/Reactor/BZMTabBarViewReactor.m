@@ -10,7 +10,7 @@
 #import "NSDictionary+BZMFrame.h"
 
 @interface BZMTabBarViewReactor ()
-@property (nonatomic, strong, readwrite) RACSubject *selectSubject;
+//@property (nonatomic, strong, readwrite) RACSubject *selectSubject;
 
 @end
 

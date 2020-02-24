@@ -37,7 +37,13 @@
 #pragma mark - Bind
 - (void)bind:(BZMBaseReactor *)reactor {
     [super bind:reactor];
-    [[self rac_signalForSelector:@selector(tabBarController:didSelectViewController:) fromProtocol:@protocol(UITabBarControllerDelegate)] subscribe:self.reactor.selectSubject];
+    // Bind
+    @weakify(self)
+    [[self rac_signalForSelector:@selector(tabBarController:didSelectViewController:) fromProtocol:@protocol(UITabBarControllerDelegate)] subscribeNext:^(RACTuple *tuple) {
+        @strongify(self)
+        [self.navigator popNavigationController];
+        [self.navigator pushNavigationController:tuple.second];
+    }];
 }
 
 #pragma mark - Orientation
