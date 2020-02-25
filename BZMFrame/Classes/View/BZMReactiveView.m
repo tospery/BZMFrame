@@ -15,7 +15,9 @@
 @implementation BZMReactiveView
 
 - (void)bind:(BZMBaseReactor *)reactor { 
-    
+    self.reactor = reactor;
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 @end

@@ -82,6 +82,8 @@
 #import "BZMWebProgressView.h"
 #import "BZMNormalCollectionCell.h"
 #import "BZMBorderLayer.h"
+#import "BZMLabel.h"
+#import "BZMButton.h"
 //#import "BZMTableCell.h"
 //#import "BZMBaseSupplementaryView.h"
 //#import "BZMWebProgressView.h"
