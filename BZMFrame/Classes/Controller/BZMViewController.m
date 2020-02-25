@@ -39,6 +39,17 @@
     if (self = [super init]) {
         self.hidesBottomBarWhenPushed = YES;
         self.reactor = reactor;
+        @weakify(self)
+        [[self rac_signalForSelector:@selector(bind:)] subscribeNext:^(RACTuple *tuple) {
+            @strongify(self)
+            if (self.reactor.shouldRequestRemoteData) {
+                if (!self.reactor.dataSource) {
+                    [self triggerLoad];
+                }else {
+                    [self triggerUpdate];
+                }
+            }
+        }];
     }
     return self;
 }
@@ -144,9 +155,9 @@
 - (void)bind:(BZMViewReactor *)reactor {
     @weakify(self)
     // Action (View -> Reactor)
-    [[self rac_signalForSelector:@selector(bind:)] subscribeNext:^(RACTuple *x) {
-        // load
-    }];
+//    [[self rac_signalForSelector:@selector(bind:)] subscribeNext:^(RACTuple *x) {
+//        // load
+//    }];
     
     // State (Reactor -> View)
     RAC(self.navigationBar.titleLabel, text) = RACObserve(self.reactor, title);
@@ -180,33 +191,78 @@
     }];
     [self.reactor.navigate subscribeNext:^(id input) {
         @strongify(self)
-        id result = nil;
-        BZMViewControllerBackType type = BZMViewControllerBackTypePopOne;
-        if ([input isKindOfClass:RACTuple.class]) {
+        if ([input isKindOfClass:RACTuple.class] && [(RACTuple *)input count] == 2) {
             RACTuple *tuple = (RACTuple *)input;
-            if ([tuple.first isKindOfClass:NSNumber.class]) {
-                NSNumber *number = (NSNumber *)tuple.first;
-                type = number.integerValue;
+            id first = tuple.first;
+            id second = tuple.second;
+            // 1. forward
+            if ([first isKindOfClass:NSURL.class] &&
+                (!second || [second isKindOfClass:NSDictionary.class])) {
+                [self.navigator routeURL:first withParameters:second];
             }
-            result = tuple.second;
-        } else if ([input isKindOfClass:NSNumber.class]) {
-            NSNumber *number = (NSNumber *)input;
-            type = number.integerValue;
-        }
-        BZMVoidBlock completion = ^(void) {
-            @strongify(self)
-            [self.reactor.resultCommand execute:result];
-        };
-        if (BZMViewControllerBackTypePopOne == type) {
-            [self.navigator popReactorAnimated:YES completion:completion];
-        } else if (BZMViewControllerBackTypePopAll == type) {
-            [self.navigator popToRootReactorAnimated:YES completion:completion];
-        } else if (BZMViewControllerBackTypeDismiss == type) {
-            [self.navigator dismissReactorAnimated:YES completion:completion];
-        } else if (BZMViewControllerBackTypeClose == type) {
-            [self.navigator closeReactorWithAnimationType:BZMViewControllerAnimationTypeFromString(self.reactor.animation) completion:completion];
+            // 2. back
+            else if ([first isKindOfClass:NSNumber.class]) {
+                BZMViewControllerBackType type = [(NSNumber *)first integerValue];
+                BZMVoidBlock completion = ^(void) {
+                    @strongify(self)
+                    [self.reactor.resultCommand execute:second];
+                };
+                if (BZMViewControllerBackTypePopOne == type) {
+                    [self.navigator popReactorAnimated:YES completion:completion];
+                } else if (BZMViewControllerBackTypePopAll == type) {
+                    [self.navigator popToRootReactorAnimated:YES completion:completion];
+                } else if (BZMViewControllerBackTypeDismiss == type) {
+                    [self.navigator dismissReactorAnimated:YES completion:completion];
+                } else if (BZMViewControllerBackTypeClose == type) {
+                    [self.navigator closeReactorWithAnimationType:BZMViewControllerAnimationTypeFromString(self.reactor.animation) completion:completion];
+                }
+            }
         }
     }];
+}
+
+#pragma mark - Load
+- (void)beginLoad {
+    self.reactor.requestMode = BZMRequestModeLoad;
+    if (self.reactor.error || self.reactor.dataSource) {
+        self.reactor.error = nil;
+        if (self.reactor.shouldFetchLocalData) {
+            self.reactor.dataSource = [self.reactor data2Source:[self.reactor fetchLocalData]];
+        } else {
+            self.reactor.dataSource = nil;
+        }
+    }
+}
+
+- (void)triggerLoad {
+    
+}
+
+- (void)endLoad {
+    self.reactor.requestMode = BZMRequestModeNone;
+}
+
+#pragma mark - Update
+- (void)beginUpdate {
+    self.reactor.requestMode = BZMRequestModeUpdate;
+    self.view.userInteractionEnabled = NO;
+    [self.view makeToastActivity:CSToastPositionCenter];
+}
+
+- (void)triggerUpdate {
+    [self beginUpdate];
+    @weakify(self)
+    [[self.reactor.requestRemoteCommand execute:nil].deliverOnMainThread subscribeNext:^(id data) {
+    } completed:^{
+        @strongify(self)
+        [self endUpdate];
+    }];
+}
+
+- (void)endUpdate {
+    self.reactor.requestMode = BZMRequestModeNone;
+    self.view.userInteractionEnabled = YES;
+    [self.view hideToastActivity];
 }
 
 #pragma mark - Reload

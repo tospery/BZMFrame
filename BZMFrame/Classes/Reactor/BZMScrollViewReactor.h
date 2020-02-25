@@ -7,6 +7,7 @@
 
 #import "BZMViewReactor.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+#import "BZMPage.h"
 
 @class BZMScrollViewReactor;
 
@@ -18,7 +19,11 @@
 @property (nonatomic, assign) BOOL shouldPullToRefresh;
 @property (nonatomic, assign) BOOL shouldScrollToMore;
 @property (nonatomic, assign) BOOL hasMoreData;
+@property (nonatomic, strong, readonly) BZMPage *page;
 @property (nonatomic, strong, readonly) RACCommand *selectCommand;
+
+- (NSInteger)offsetForPage:(NSInteger)page;
+- (NSInteger)nextPageIndex;
 
 @end
 

@@ -24,8 +24,8 @@
     return @"url";
 }
 
-+ (NSString *)fetchLocal {
-    return @"fetchLocal";
++ (NSString *)fetchLocalData {
+    return @"fetchLocalData";
 }
 
 + (NSString *)requestRemote {

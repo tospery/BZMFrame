@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BZMPage.h"
 
 @interface BZMFrameManager : NSObject
 @property (nonatomic, assign) CGFloat autoLogin;
@@ -13,7 +14,8 @@
 @property (nonatomic, strong) NSString *loginPattern;
 @property (nonatomic, strong) NSString *baseURLString;
 @property (nonatomic, strong) NSString *appScheme;
-// @property (nonatomic, strong) BZMPage *page;
+@property (nonatomic, strong) BZMPage *page;
+
 
 + (instancetype)sharedInstance;
 

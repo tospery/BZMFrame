@@ -29,6 +29,14 @@ typedef NS_ENUM(NSInteger, BZMViewControllerBackType){
 
 - (instancetype)initWithReactor:(BZMViewReactor *)reactor;
 
+- (void)beginLoad;
+- (void)triggerLoad;
+- (void)endLoad;
+
+- (void)beginUpdate;
+- (void)triggerUpdate;
+- (void)endUpdate;
+
 - (void)reloadData;
 
 @end

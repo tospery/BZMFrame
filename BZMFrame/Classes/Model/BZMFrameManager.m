@@ -22,6 +22,7 @@
         self.appScheme = UIApplication.sharedApplication.bzm_urlScheme;
         self.baseURLString = BZMStrWithFmt(@"https://m.%@.com", self.appScheme);
         self.fontScale = IS_320WIDTH_SCREEN ? -2 : 0;
+        self.page = [[BZMPage alloc] init];
     }
     return self;
 }

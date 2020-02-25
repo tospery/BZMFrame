@@ -28,9 +28,9 @@
 @property (nonatomic, strong, readwrite) RACSubject *errors;
 @property (nonatomic, strong, readwrite) RACSubject *executing;
 @property (nonatomic, strong, readwrite) RACSubject *navigate;
-@property (nonatomic, strong, readwrite) RACSignal *loadSignal;
-@property (nonatomic, strong, readwrite) RACCommand *fetchCommand;
-@property (nonatomic, strong, readwrite) RACCommand *requestCommand;
+//@property (nonatomic, strong, readwrite) RACSignal *loadSignal;
+//@property (nonatomic, strong, readwrite) RACCommand *fetchLocalCommand;
+@property (nonatomic, strong, readwrite) RACCommand *requestRemoteCommand;
 @property (nonatomic, strong, readwrite) RACCommand *resultCommand;
 
 @end
@@ -41,7 +41,7 @@
 - (instancetype)initWithRouteParameters:(NSDictionary *)parameters {
     if (self = [super init]) {
         self.parameters = parameters;
-        self.shouldFetchLocalData = BZMBoolMember(parameters, BZMParameter.fetchLocal, YES);
+        self.shouldFetchLocalData = BZMBoolMember(parameters, BZMParameter.fetchLocalData, YES);
         self.shouldRequestRemoteData = BZMBoolMember(parameters, BZMParameter.requestRemote, NO);
         self.hidesNavigationBar = BZMBoolMember(parameters, BZMParameter.hideNavBar, NO);
         self.hidesNavBottomLine = BZMBoolMember(parameters, BZMParameter.hideNavLine, NO);
@@ -71,10 +71,23 @@
 - (void)didInitialize {
     [super didInitialize];
     @weakify(self)
-    RAC(self, dataSource) = [self.loadSignal map:^id(id data) {
-        @strongify(self)
-        return [self data2Source:data];
-    }];
+    RACSignal *requestRemoteSignal = self.requestRemoteCommand.executionSignals.switchToLatest;
+    if (self.shouldFetchLocalData && !self.shouldRequestRemoteData) {
+        RAC(self, dataSource) = [[RACSignal return:[self fetchLocalData]] map:^id(id data) {
+            @strongify(self)
+            return [self data2Source:data];
+        }];
+    } else if (!self.shouldFetchLocalData && self.shouldRequestRemoteData) {
+        RAC(self, dataSource) = [requestRemoteSignal map:^id(id data) {
+            @strongify(self)
+            return [self data2Source:data];
+        }];
+    } else if (self.shouldFetchLocalData && self.shouldRequestRemoteData) {
+        RAC(self, dataSource) = [[requestRemoteSignal startWith:[self fetchLocalData]] map:^id(id data) {
+            @strongify(self)
+            return [self data2Source:data];
+        }];
+    }
 }
 
 #pragma mark - View
@@ -107,46 +120,46 @@
     return _navigate;
 }
 
-- (RACSignal *)loadSignal {
-    if (!_loadSignal) {
-        RACSignal *signal = nil;
-        if (self.shouldFetchLocalData && !self.shouldRequestRemoteData) {
-            signal = self.fetchCommand.executionSignals.switchToLatest;
-        } else if (!self.shouldFetchLocalData && self.shouldRequestRemoteData) {
-            signal = self.requestCommand.executionSignals.switchToLatest;
-        } else if (self.shouldFetchLocalData && self.shouldRequestRemoteData) {
-            signal = [RACSignal merge:@[self.fetchCommand.executionSignals.switchToLatest, self.requestCommand.executionSignals.switchToLatest]];
-        } else {
-            signal = RACSignal.empty;
-        }
-        _loadSignal = signal;
-    }
-    return _loadSignal;
-}
+//- (RACSignal *)loadSignal {
+//    if (!_loadSignal) {
+//        RACSignal *signal = nil;
+//        if (self.shouldFetchLocalData && !self.shouldRequestRemoteData) {
+//            signal = self.fetchLocalCommand.executionSignals.switchToLatest;
+//        } else if (!self.shouldFetchLocalData && self.shouldRequestRemoteData) {
+//            signal = self.requestRemoteCommand.executionSignals.switchToLatest;
+//        } else if (self.shouldFetchLocalData && self.shouldRequestRemoteData) {
+//            signal = [RACSignal merge:@[self.fetchLocalCommand.executionSignals.switchToLatest, self.requestRemoteCommand.executionSignals.switchToLatest]];
+//        } else {
+//            signal = RACSignal.empty;
+//        }
+//        _loadSignal = signal;
+//    }
+//    return _loadSignal;
+//}
 
-- (RACCommand *)fetchCommand {
-    if (!_fetchCommand) {
-        @weakify(self)
-        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-            @strongify(self)
-            return [RACSignal return:[self fetchLocal]];
-        }];
-        _fetchCommand = command;
-    }
-    return _fetchCommand;
-}
+//- (RACCommand *)fetchLocalCommand {
+//    if (!_fetchLocalCommand) {
+//        @weakify(self)
+//        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+//            @strongify(self)
+//            return [RACSignal return:[self fetchLocalData]];
+//        }];
+//        _fetchLocalCommand = command;
+//    }
+//    return _fetchLocalCommand;
+//}
 
-- (RACCommand *)requestCommand {
-    if (!_requestCommand) {
+- (RACCommand *)requestRemoteCommand {
+    if (!_requestRemoteCommand) {
         @weakify(self)
         RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(NSNumber *page) {
             @strongify(self)
-            return [[self requestWithPage:page.integerValue] takeUntil:self.rac_willDeallocSignal];
+            return [[self requestRemoteSignalWithPage:page.integerValue] takeUntil:self.rac_willDeallocSignal];
         }];
         [[command.errors filter:self.errorFilter] subscribe:self.errors];
-        _requestCommand = command;
+        _requestRemoteCommand = command;
     }
-    return _requestCommand;
+    return _requestRemoteCommand;
 }
 
 - (RACCommand *)resultCommand {
@@ -160,11 +173,11 @@
 }
 
 #pragma mark - Data
-- (id)fetchLocal {
+- (id)fetchLocalData {
     return nil;
 }
 
-- (RACSignal *)requestWithPage:(NSInteger)page {
+- (RACSignal *)requestRemoteSignalWithPage:(NSInteger)page {
     return RACSignal.empty;
 }
 
@@ -184,7 +197,15 @@
     };
 }
 
-#pragma mark - Delegate
+#pragma mark - Load
+//- (void)load {
+//    if (self.shouldFetchLocalData) {
+//        [self.fetchLocalCommand execute:nil];
+//    }
+//    if (self.shouldRequestRemoteData) {
+//        [self.requestRemoteCommand execute:@(1)];
+//    }
+//}
 
 #pragma mark - Class
 + (instancetype)allocWithZone:(struct _NSZone *)zone {

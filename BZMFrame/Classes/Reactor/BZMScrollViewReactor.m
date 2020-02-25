@@ -9,9 +9,11 @@
 #import "BZMConstant.h"
 #import "BZMFunction.h"
 #import "BZMParameter.h"
+#import "BZMFrameManager.h"
 #import "NSDictionary+BZMFrame.h"
 
 @interface BZMScrollViewReactor ()
+@property (nonatomic, strong, readwrite) BZMPage *page;
 @property (nonatomic, strong, readwrite) RACCommand *selectCommand;
 
 @end
@@ -23,9 +25,9 @@
     if (self = [super initWithRouteParameters:parameters]) {
         self.shouldPullToRefresh = BZMBoolMember(parameters, BZMParameter.pullRefresh, NO);
         self.shouldScrollToMore = BZMBoolMember(parameters, BZMParameter.scrollMore, NO);
-//        self.page = [[BZMPage alloc] init];
-//        self.page.start = BZMIntMember(parameters, BZMParameter.page, BZMFrameManager.share.page.start);
-//        self.page.size = BZMIntMember(parameters, BZMParameter.pageSize, BZMFrameManager.share.page.size);
+        self.page = [[BZMPage alloc] init];
+        self.page.start = BZMIntMember(parameters, BZMParameter.page, BZMFrameManager.sharedInstance.page.start);
+        self.page.size = BZMIntMember(parameters, BZMParameter.pageSize, BZMFrameManager.sharedInstance.page.size);
     }
     return self;
 }
@@ -46,10 +48,15 @@
     return _selectCommand;
 }
 
-#pragma mark - Method
-#pragma mark super
-#pragma mark public
-#pragma mark private
+#pragma mark - Page
+- (NSInteger)offsetForPage:(NSInteger)page {
+    return (page - 1) * self.page.size;
+}
+
+- (NSInteger)nextPageIndex {
+    return self.page.index + 1;
+}
+
 #pragma mark - Delegate
 #pragma mark DZNEmptyDataSetSource
 - (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {

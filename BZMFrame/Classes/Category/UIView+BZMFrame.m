@@ -46,6 +46,13 @@
     self.layer.cornerRadius = flat(cornerRadius);
 }
 
+- (BZMBorderLayer *)bzm_borderLayer {
+    if ([self.layer isKindOfClass:BZMBorderLayer.class]) {
+        return (BZMBorderLayer *)self.layer;
+    }
+    return nil;
+}
+
 - (BOOL)bzm_toastWithParameters:(NSDictionary *)parameters completion:(void(^)(BOOL didTap))completion {
     NSString *title = BZMStrMember(parameters, BZMParameter.title, nil);
     NSString *message = BZMStrMember(parameters, BZMParameter.message, nil);

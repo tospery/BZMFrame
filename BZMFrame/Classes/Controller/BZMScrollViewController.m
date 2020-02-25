@@ -61,10 +61,124 @@
 }
 
 #pragma mark - Property
-#pragma mark - Method
-#pragma mark super
-#pragma mark public
-#pragma mark private
+
+#pragma mark - Reload
+- (void)reloadData {
+    [super reloadData];
+    if ([self.scrollView isMemberOfClass:UIScrollView.class]) {
+        [self.scrollView reloadEmptyDataSet];
+    }
+}
+
+#pragma mark - Load
+- (void)beginLoad {
+    [super beginLoad];
+    [self setupRefresh:NO];
+    [self setupMore:NO];
+}
+
+- (void)triggerLoad {
+    [self beginLoad];
+    @weakify(self)
+    [[self.reactor.requestRemoteCommand execute:@(self.reactor.page.start)].deliverOnMainThread subscribeNext:^(id data) {
+        @strongify(self)
+        self.reactor.page.index = self.reactor.page.start;
+    } completed:^{
+        @strongify(self)
+        [self endLoad];
+    }];
+}
+
+- (void)endLoad {
+    [super endLoad];
+    if (self.reactor.shouldPullToRefresh) {
+        [self setupRefresh:YES];
+    }
+    if (self.reactor.shouldScrollToMore) {
+        [self setupMore:YES];
+        if (!self.reactor.hasMoreData) {
+            [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+        }
+    }
+}
+
+#pragma mark - Refresh
+- (void)setupRefresh:(BOOL)enable {
+    if (enable) {
+        self.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(triggerRefresh)];
+    }else {
+        [self.scrollView.mj_header removeFromSuperview];
+        self.scrollView.mj_header = nil;
+    }
+}
+
+- (void)beginRefresh {
+    self.reactor.requestMode = BZMRequestModeRefresh;
+    if (self.reactor.error) {
+        self.reactor.error = nil;
+    }
+}
+
+- (void)triggerRefresh {
+    [self beginRefresh];
+    @weakify(self)
+    [[self.reactor.requestRemoteCommand execute:@(self.reactor.page.start)].deliverOnMainThread subscribeNext:^(id data) {
+        @strongify(self)
+        self.reactor.page.index = self.reactor.page.start;
+    } completed:^{
+        @strongify(self)
+        [self endRefresh];
+    }];
+}
+
+- (void)endRefresh {
+    self.reactor.requestMode = BZMRequestModeNone;
+    [self.scrollView.mj_header endRefreshing];
+    if (self.reactor.shouldScrollToMore) {
+        if (self.reactor.hasMoreData) {
+            [self.scrollView.mj_footer resetNoMoreData];
+        } else {
+            [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+        }
+    }
+}
+
+#pragma mark - More
+- (void)setupMore:(BOOL)enable {
+    if (enable) {
+        self.scrollView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(triggerMore)];
+    }else {
+        [self.scrollView.mj_footer removeFromSuperview];
+        self.scrollView.mj_footer = nil;
+    }
+}
+
+- (void)beginMore {
+    self.reactor.requestMode = BZMRequestModeMore;
+}
+
+- (void)triggerMore {
+    [self beginMore];
+    @weakify(self)
+    NSInteger pageIndex = [self.reactor nextPageIndex];
+    [[self.reactor.requestRemoteCommand execute:@(pageIndex)].deliverOnMainThread subscribeNext:^(id data) {
+        @strongify(self)
+        self.reactor.page.index = pageIndex;
+    } completed:^{
+        @strongify(self)
+        [self endMore];
+    }];
+}
+
+- (void)endMore {
+    self.reactor.requestMode = BZMRequestModeNone;
+    if (self.reactor.hasMoreData) {
+        [self.scrollView.mj_footer endRefreshing];
+    }else {
+        [self.scrollView.mj_footer endRefreshingWithNoMoreData];
+    }
+}
+
 #pragma mark - Delegate
 #pragma mark DZNEmptyDataSetDelegate
 - (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView {
