@@ -10,8 +10,13 @@
 #import <MJRefresh/MJRefresh.h>
 #import <DKNightVersion/DKNightVersion.h>
 #import "BZMFunction.h"
+#import "BZMFrameManager.h"
+#import "BZMAppDependency.h"
 #import "BZMWebViewController.h"
+#import "BZMLoginViewController.h"
 #import "BZMCollectionViewController.h"
+#import "NSError+BZMFrame.h"
+#import "NSURL+BZMFrame.h"
 #import "UIScrollView+BZMFrame.h"
 
 @interface BZMScrollViewController ()
@@ -62,12 +67,91 @@
 
 #pragma mark - Property
 
-#pragma mark - Reload
+#pragma mark - Bind
+- (void)bind:(BZMBaseReactor *)reactor {
+    [super bind:reactor];
+    @weakify(self)
+    [RACObserve(self.reactor, shouldPullToRefresh).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *should) {
+        @strongify(self)
+        [self setupRefresh:should.boolValue];
+    }];
+    [RACObserve(self.reactor, shouldScrollToMore).distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *should) {
+        @strongify(self)
+        [self setupMore:should.boolValue];
+    }];
+    
+////    [self.reactor.errors doNext:^(id x) {
+////        NSLog(@"");
+////    }];
+//    [self.reactor.errors subscribeNext:^(id  _Nullable x) {
+//        NSLog(@"");
+//    }];
+}
+
 - (void)reloadData {
     [super reloadData];
     if ([self.scrollView isMemberOfClass:UIScrollView.class]) {
         [self.scrollView reloadEmptyDataSet];
     }
+}
+
+- (BOOL)handleError {
+    BOOL handled = NO;
+    if (!self.reactor.error) {
+        return handled;
+    }
+    
+    BZMRequestMode requestMode = self.reactor.requestMode;
+    self.reactor.requestMode = BZMRequestModeNone;
+    
+    handled = YES;
+    switch (requestMode) {
+        case BZMRequestModeNone: {
+            if (self.reactor.user.isLogined) {
+                [self triggerLoad];
+            } else {
+                if (BZMErrorCodeUnauthorized != self.reactor.error.code) {
+                    [self triggerLoad];
+                }
+            }
+            break;
+        }
+        case BZMRequestModeLoad: {
+            [self reloadData];
+            break;
+        }
+        case BZMRequestModeRefresh: {
+            [self.scrollView.mj_header endRefreshing];
+            @weakify(self)
+            [RACScheduler.currentScheduler afterDelay:1 schedule:^{
+                @strongify(self)
+                [self setupRefresh:NO];
+            }];
+            [self setupMore:NO];
+            self.reactor.dataSource = nil;
+            break;
+        }
+        case BZMRequestModeMore: {
+            handled = NO;
+            [self.scrollView.mj_footer endRefreshing];
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    
+    if (BZMErrorCodeUnauthorized == self.reactor.error.code) {
+        if (self.reactor.user.isLogined) {
+            [self.reactor.user logout];
+        }
+        if (BZMFrameManager.sharedInstance.autoLogin &&
+            ![self.navigator.topViewController isKindOfClass:BZMLoginViewController.class]) {
+            [self.navigator routeURL:BZMURLWithPattern(BZMFrameManager.sharedInstance.loginPattern) withParameters:nil];
+        }
+    }
+    
+    return handled;
 }
 
 #pragma mark - Load
@@ -198,11 +282,11 @@
 }
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button {
-    [self.reactor handleError];
+    [self handleError];
 }
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view {
-    [self.reactor handleError];
+    [self handleError];
 }
 
 #pragma mark UIScrollViewDelegate

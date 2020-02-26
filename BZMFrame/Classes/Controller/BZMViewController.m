@@ -42,15 +42,15 @@
         @weakify(self)
         [[self rac_signalForSelector:@selector(bind:)] subscribeNext:^(RACTuple *tuple) {
             @strongify(self)
-//            if (self.reactor.shouldRequestRemoteData) {
-//                if (!self.reactor.dataSource) {
-//                    [self triggerLoad];
-//                }else {
-//                    [self triggerUpdate];
-//                }
-//            }
+            if (self.reactor.shouldRequestRemoteData) {
+                if (!self.reactor.dataSource) {
+                    [self triggerLoad];
+                }else {
+                    [self triggerUpdate];
+                }
+            }
             // [self.reactor.loadCommand execute:nil];
-            [self.reactor.load sendNext:nil];
+            //[self.reactor.load sendNext:nil];
         }];
     }
     return self;
@@ -157,15 +157,17 @@
 - (void)bind:(BZMViewReactor *)reactor {
     @weakify(self)
     // Action (View -> Reactor)
-//    [[self rac_signalForSelector:@selector(bind:)] subscribeNext:^(RACTuple *x) {
-//        // load
-//    }];
+    [[self.reactor.requestRemoteCommand.errors filter:self.errorFilter] subscribe:self.reactor.errors];
     
     // State (Reactor -> View)
     RAC(self.navigationBar.titleLabel, text) = RACObserve(self.reactor, title);
     [RACObserve(self.reactor, dataSource).deliverOnMainThread subscribeNext:^(id x) {
         @strongify(self)
         [self reloadData];
+    }];
+    [[[RACObserve(self.reactor.user, isLogined) skip:1] ignore:@(NO)].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *isLogined) {
+        @strongify(self)
+        [self handleError];
     }];
     [[RACObserve(self.reactor, hidesNavigationBar) skip:1].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *hide) {
         @strongify(self)
@@ -185,16 +187,16 @@
             [self.view hideToastActivity];
         }
     }];
-    [self.reactor.load subscribeNext:^(id x) {
-        @strongify(self)
-        if (self.reactor.shouldRequestRemoteData) {
-            if (!self.reactor.dataSource) {
-                [self triggerLoad];
-            }else {
-                [self triggerUpdate];
-            }
-        }
-    }];
+//    [self.reactor.load subscribeNext:^(id x) {
+//        @strongify(self)
+//        if (self.reactor.shouldRequestRemoteData) {
+//            if (!self.reactor.dataSource) {
+//                [self triggerLoad];
+//            }else {
+//                [self triggerUpdate];
+//            }
+//        }
+//    }];
     [self.reactor.errors subscribeNext:^(NSError *error) {
         @strongify(self)
         [self.navigator routeURL:BZMURLWithPattern(kBZMPatternToast) withParameters:@{
@@ -231,6 +233,20 @@
             }
         }
     }];
+}
+
+- (BOOL (^)(NSError *error))errorFilter {
+    @weakify(self)
+    return ^(NSError *error) {
+        @strongify(self)
+        self.reactor.error = error;
+        BOOL handled = ![self handleError];
+        return handled;
+    };
+}
+
+- (BOOL)handleError {
+    return NO;
 }
 
 #pragma mark - Load

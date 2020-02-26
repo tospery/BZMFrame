@@ -25,7 +25,7 @@
 //@property (nonatomic, strong, readwrite) BZMNavigator *navigator;
 //@property (nonatomic, strong, readwrite) RACCommand *backCommand;
 //@property (nonatomic, strong, readwrite) RACCommand *didBackCommand;
-@property (nonatomic, strong, readwrite) RACSubject *load;
+// @property (nonatomic, strong, readwrite) RACSubject *load;
 @property (nonatomic, strong, readwrite) RACSubject *errors;
 @property (nonatomic, strong, readwrite) RACSubject *executing;
 @property (nonatomic, strong, readwrite) RACSubject *navigate;
@@ -73,11 +73,6 @@
 - (void)didInitialize {
     [super didInitialize];
     @weakify(self)
-    [[[RACObserve(self.user, isLogined) skip:1] ignore:@(NO)].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *isLogined) {
-        @strongify(self)
-        [self handleError];
-    }];
-    
     RACSignal *requestRemoteSignal = self.requestRemoteCommand.executionSignals.switchToLatest;
     if (self.shouldFetchLocalData && !self.shouldRequestRemoteData) {
         RAC(self, dataSource) = [[RACSignal return:[self fetchLocalData]] map:^id(id data) {
@@ -106,12 +101,12 @@
     return _provider;
 }
 
-- (RACSubject *)load {
-    if (!_load) {
-        _load = [RACSubject subject];
-    }
-    return _load;
-}
+//- (RACSubject *)load {
+//    if (!_load) {
+//        _load = [RACSubject subject];
+//    }
+//    return _load;
+//}
 
 - (RACSubject *)errors {
     if (!_errors) {
@@ -170,7 +165,7 @@
             @strongify(self)
             return [[self requestRemoteSignalWithPage:page.integerValue] takeUntil:self.rac_willDeallocSignal];
         }];
-        [[command.errors filter:self.errorFilter] subscribe:self.errors];
+        // [[command.errors filter:self.errorFilter] subscribe:self.errors];
         _requestRemoteCommand = command;
     }
     return _requestRemoteCommand;
@@ -208,31 +203,6 @@
 - (NSArray *)data2Source:(id)data {
     return nil;
 }
-
-#pragma mark - Error
-- (BOOL (^)(NSError *error))errorFilter {
-    @weakify(self)
-    return ^(NSError *error) {
-        @strongify(self)
-        self.error = error;
-        BOOL handled = ![self handleError];
-        return handled;
-    };
-}
-
-- (BOOL)handleError {
-    return NO;
-}
-
-#pragma mark - Load
-//- (void)load {
-//    if (self.shouldFetchLocalData) {
-//        [self.fetchLocalCommand execute:nil];
-//    }
-//    if (self.shouldRequestRemoteData) {
-//        [self.requestRemoteCommand execute:@(1)];
-//    }
-//}
 
 #pragma mark - Class
 + (instancetype)allocWithZone:(struct _NSZone *)zone {

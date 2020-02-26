@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, BZMRequestMode) {
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BZMRequestMode requestMode;
 @property (nonatomic, strong, readonly) BZMProvider *provider;
-@property (nonatomic, strong, readonly) RACSubject *load;
+// @property (nonatomic, strong, readonly) RACSubject *load;
 @property (nonatomic, strong, readonly) RACSubject *errors;
 @property (nonatomic, strong, readonly) RACSubject *executing;
 @property (nonatomic, strong, readonly) RACSubject *navigate;
@@ -52,9 +52,6 @@ typedef NS_ENUM(NSInteger, BZMRequestMode) {
 
 - (id)fetchLocalData;
 - (RACSignal *)requestRemoteSignalWithPage:(NSInteger)page;
-
-- (BOOL (^)(NSError *error))errorFilter;
-- (BOOL)handleError;
 
 - (NSArray *)data2Source:(id)data;
 

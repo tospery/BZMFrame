@@ -64,63 +64,6 @@
 }
 
 #pragma mark - Error
-- (BOOL)handleError {
-    BOOL handled = NO;
-    if (!self.error) {
-        return handled;
-    }
-    
-    BZMRequestMode requestMode = self.requestMode;
-    self.requestMode = BZMRequestModeNone;
-    
-    switch (requestMode) {
-        case BZMRequestModeNone: {
-            if (self.user.isLogined) {
-                [self.load sendNext:nil];
-            } else {
-                if (BZMErrorCodeUnauthorized != self.error.code) {
-                    [self.load sendNext:nil];
-                }
-            }
-            break;
-        }
-        case BZMRequestModeLoad: {
-            handled = YES;
-            self.dataSource = nil;
-            break;
-        }
-        case BZMRequestModeRefresh: {
-//            [self.scrollView.mj_header endRefreshing];
-//            @weakify(self)
-//            [RACScheduler.currentScheduler afterDelay:1 schedule:^{
-//                @strongify(self)
-//                [self setupRefresh:NO];
-//            }];
-//            [self setupMore:NO];
-//            self.viewModel.dataSource = nil;
-            break;
-        }
-        case BZMRequestModeMore: {
-//            handled = NO;
-//            [self.scrollView.mj_footer endRefreshing];
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-    
-    if (BZMErrorCodeUnauthorized == self.error.code) {
-        if (self.user.isLogined) {
-            [self.user logout];
-        }
-        if (BZMFrameManager.sharedInstance.autoLogin && ![BZMAppDependency.sharedInstance.navigator.topViewController isKindOfClass:BZMLoginViewController.class]) {
-            [self.navigate sendNext:RACTuplePack(BZMURLWithPattern(BZMFrameManager.sharedInstance.loginPattern), nil)];
-        }
-    }
-    
-    return handled;
-}
 
 #pragma mark - Delegate
 #pragma mark DZNEmptyDataSetSource

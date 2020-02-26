@@ -39,5 +39,8 @@ typedef NS_ENUM(NSInteger, BZMViewControllerBackType){
 
 - (void)reloadData;
 
+- (BOOL (^)(NSError *error))errorFilter;
+- (BOOL)handleError;
+
 @end
 
