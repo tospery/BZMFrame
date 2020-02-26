@@ -134,6 +134,17 @@
         case BZMRequestModeMore: {
             handled = NO;
             [self.scrollView.mj_footer endRefreshing];
+//            if (BZMErrorCodeUnauthorized == self.reactor.error.code) {
+//                @weakify(self)
+//                [RACScheduler.mainThreadScheduler afterDelay:1 schedule:^{
+//                    @strongify(self)
+//                    [self setupMore:NO];
+//                }];
+//                [self setupRefresh:NO];
+//                self.reactor.dataSource = nil;
+//            } else {
+//                handled = NO;
+//            }
             break;
         }
         default: {
