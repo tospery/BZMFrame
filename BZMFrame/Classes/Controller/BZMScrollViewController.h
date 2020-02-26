@@ -22,16 +22,16 @@ typedef NS_ENUM(NSInteger, BZMScrollDirection){
 //- (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths;
 //- (void)preloadNextPage;
 //
-//- (void)setupRefresh:(BOOL)enable;
-//- (void)setupMore:(BOOL)enable;
-//
-//- (void)beginRefresh;
-//- (void)triggerRefresh;
-//- (void)endRefresh;
-//
-//- (void)beginMore;
-//- (void)triggerMore;
-//- (void)endMore;
+
+- (void)setupRefresh:(BOOL)enable;
+- (void)beginRefresh;
+- (void)triggerRefresh;
+- (void)endRefresh;
+
+- (void)setupMore:(BOOL)enable;
+- (void)beginMore;
+- (void)triggerMore;
+- (void)endMore;
 
 @end
 

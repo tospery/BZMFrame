@@ -176,7 +176,7 @@
 - (UIColor *)colorForBorder:(BZMBorderPosition)position {
     UIColor *color = [self.borderColors bzm_objectForKey:@(position)];
     if (!color || ![color isKindOfClass:UIColor.class]) {
-        return DKColorPickerWithKey(SEP)(self.dk_manager.themeVersion);
+        return BZMColorKey(SEP);
     }
     return color;
 }

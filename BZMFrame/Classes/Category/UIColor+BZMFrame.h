@@ -7,10 +7,12 @@
 
 #import <UIKit/UIKit.h>
 #import <QMUIKit/QMUIKit.h>
+#import <DKNightVersion/DKNightVersion.h>
 
 #define BZMColorRGB(r, g, b)                (UIColorMake((r), (g), (b)))
 #define BZMColorVal(value)                  ([UIColor bzm_colorWithHex:(value)])
 #define BZMColorStr(string)                 ([UIColor qmui_colorWithHexString:(string)])
+#define BZMColorKey(t)                      (DKColorPickerWithKey(t)(self.dk_manager.themeVersion))
 
 //#define BZMColorRGB(r, g, b)                 (UIColorMake((r), (g), (b)))
 //#define BZMColorKey(t)                       (DKColorPickerWithKey(t)(self.dk_manager.themeVersion))

@@ -32,6 +32,9 @@
 #define BZMSafeArea                          SafeAreaInsetsConstantForDeviceWithNotch
 #define BZMSafeBottom                        BZMSafeArea.bottom
 
+#pragma mark - 便捷方法
+#define BZMRandomNumber(x, y)                ((NSInteger)((x) + (arc4random() % ((y) - (x) + 1))))
+
 #pragma mark - 日志
 #ifdef DEBUG
 #define BZMLogVerbose(fmt, ...)                                                                 \

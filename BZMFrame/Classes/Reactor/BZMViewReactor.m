@@ -25,12 +25,14 @@
 //@property (nonatomic, strong, readwrite) BZMNavigator *navigator;
 //@property (nonatomic, strong, readwrite) RACCommand *backCommand;
 //@property (nonatomic, strong, readwrite) RACCommand *didBackCommand;
+@property (nonatomic, strong, readwrite) RACSubject *load;
 @property (nonatomic, strong, readwrite) RACSubject *errors;
 @property (nonatomic, strong, readwrite) RACSubject *executing;
 @property (nonatomic, strong, readwrite) RACSubject *navigate;
 //@property (nonatomic, strong, readwrite) RACSignal *loadSignal;
 //@property (nonatomic, strong, readwrite) RACCommand *fetchLocalCommand;
 @property (nonatomic, strong, readwrite) RACCommand *requestRemoteCommand;
+//@property (nonatomic, strong, readwrite) RACCommand *loadCommand;
 @property (nonatomic, strong, readwrite) RACCommand *resultCommand;
 
 @end
@@ -71,6 +73,11 @@
 - (void)didInitialize {
     [super didInitialize];
     @weakify(self)
+    [[[RACObserve(self.user, isLogined) skip:1] ignore:@(NO)].distinctUntilChanged.deliverOnMainThread subscribeNext:^(NSNumber *isLogined) {
+        @strongify(self)
+        [self handleError];
+    }];
+    
     RACSignal *requestRemoteSignal = self.requestRemoteCommand.executionSignals.switchToLatest;
     if (self.shouldFetchLocalData && !self.shouldRequestRemoteData) {
         RAC(self, dataSource) = [[RACSignal return:[self fetchLocalData]] map:^id(id data) {
@@ -97,6 +104,13 @@
         _provider = BZMAppDependency.sharedInstance.provider;
     }
     return _provider;
+}
+
+- (RACSubject *)load {
+    if (!_load) {
+        _load = [RACSubject subject];
+    }
+    return _load;
 }
 
 - (RACSubject *)errors {
@@ -172,6 +186,16 @@
     return _resultCommand;
 }
 
+//- (RACCommand *)loadCommand {
+//    if (!_loadCommand) {
+//        RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+//            return [RACSignal return:input];
+//        }];
+//        _loadCommand = command;
+//    }
+//    return _loadCommand;
+//}
+
 #pragma mark - Data
 - (id)fetchLocalData {
     return nil;
@@ -187,14 +211,17 @@
 
 #pragma mark - Error
 - (BOOL (^)(NSError *error))errorFilter {
-    // @weakify(self)
+    @weakify(self)
     return ^(NSError *error) {
-//        @strongify(self)
-//        self.error = error;
-//        BOOL handled = ![self.viewController handleError];
-//        return handled;
-        return YES;
+        @strongify(self)
+        self.error = error;
+        BOOL handled = ![self handleError];
+        return handled;
     };
+}
+
+- (BOOL)handleError {
+    return NO;
 }
 
 #pragma mark - Load

@@ -42,13 +42,15 @@
         @weakify(self)
         [[self rac_signalForSelector:@selector(bind:)] subscribeNext:^(RACTuple *tuple) {
             @strongify(self)
-            if (self.reactor.shouldRequestRemoteData) {
-                if (!self.reactor.dataSource) {
-                    [self triggerLoad];
-                }else {
-                    [self triggerUpdate];
-                }
-            }
+//            if (self.reactor.shouldRequestRemoteData) {
+//                if (!self.reactor.dataSource) {
+//                    [self triggerLoad];
+//                }else {
+//                    [self triggerUpdate];
+//                }
+//            }
+            // [self.reactor.loadCommand execute:nil];
+            [self.reactor.load sendNext:nil];
         }];
     }
     return self;
@@ -181,6 +183,16 @@
         } else {
             self.view.userInteractionEnabled = YES;
             [self.view hideToastActivity];
+        }
+    }];
+    [self.reactor.load subscribeNext:^(id x) {
+        @strongify(self)
+        if (self.reactor.shouldRequestRemoteData) {
+            if (!self.reactor.dataSource) {
+                [self triggerLoad];
+            }else {
+                [self triggerUpdate];
+            }
         }
     }];
     [self.reactor.errors subscribeNext:^(NSError *error) {

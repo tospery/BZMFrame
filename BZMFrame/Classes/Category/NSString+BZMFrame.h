@@ -21,6 +21,10 @@
 - (NSString *)bzm_urlComponentEncoded;
 - (NSString *)bzm_urlComponentDecoded;
 
+- (CGSize)bzm_sizeFits:(CGSize)size font:(UIFont *)font lines:(NSInteger)lines;
+- (CGFloat)bzm_widthFits:(CGFloat)height font:(UIFont *)font lines:(NSInteger)lines;
+- (CGFloat)bzm_heightFits:(CGFloat)width font:(UIFont *)font lines:(NSInteger)lines;
+
 + (NSString *)bzm_stringWithObject:(id)object;
 + (NSString *)bzm_filePathInDocuments:(NSString *)fileName;
 

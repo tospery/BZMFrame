@@ -182,8 +182,7 @@
 #pragma mark - Delegate
 #pragma mark DZNEmptyDataSetDelegate
 - (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView {
-    // return (self.viewModel.shouldRequestRemoteData && !self.viewModel.dataSource);
-    return NO;
+    return (self.reactor.shouldRequestRemoteData && !self.reactor.dataSource);
 }
 
 - (BOOL)emptyDataSetShouldAllowTouch:(UIScrollView *)scrollView {
@@ -195,40 +194,15 @@
 }
 
 - (BOOL)emptyDataSetShouldAnimateImageView:(UIScrollView *)scrollView {
-    // return !self.viewModel.error;
-    return NO;
+    return !self.reactor.error;
 }
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button {
-    //    if (TBErrorCodeAppLoginExpired == self.viewModel.error.code) {
-    //        [(TBUser *)[TBUser current] openLoginIfNeed:^(BOOL isRelogin) {
-    //            if (isRelogin) {
-    //                [self triggerLoad];
-    //            }
-    //        } withError:self.viewModel.error];
-    //    }else {
-    //        [self triggerLoad];
-    //    }
-
-    // [self triggerLoad];
-    
-    // [self handleError];
+    [self.reactor handleError];
 }
 
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view {
-    //    if (TBErrorCodeAppLoginExpired == self.viewModel.error.code) {
-    //        [(TBUser *)[TBUser current] openLoginIfNeed:^(BOOL isRelogin) {
-    //            if (isRelogin) {
-    //                [self triggerLoad];
-    //            }
-    //        } withError:self.viewModel.error];
-    //    }else {
-    //        [self triggerLoad];
-    //    }
-
-    // [self triggerLoad];
-    
-    // [self handleError];
+    [self.reactor handleError];
 }
 
 #pragma mark UIScrollViewDelegate
